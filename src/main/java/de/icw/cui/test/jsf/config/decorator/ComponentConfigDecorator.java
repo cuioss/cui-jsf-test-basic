@@ -6,6 +6,11 @@ import static java.util.Objects.requireNonNull;
 import javax.faces.application.Application;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UISelectBoolean;
+import javax.faces.component.UISelectOne;
 import javax.faces.component.UIViewRoot;
 import javax.faces.component.behavior.ClientBehavior;
 import javax.faces.component.behavior.FacesBehavior;
@@ -125,7 +130,7 @@ public class ComponentConfigDecorator {
         checkArgument(converter.isAnnotationPresent(FacesConverter.class),
                 "In order to work this method needs a converter annotated with 'javax.faces.convert.FacesConverter', converterClass:"
                         + converter.getName());
-        final FacesConverter facesConverter = converter.getAnnotation(FacesConverter.class);
+        final var facesConverter = converter.getAnnotation(FacesConverter.class);
         if (!Object.class.equals(facesConverter.forClass())) {
             registerConverter(converter, facesConverter.forClass());
         }
@@ -220,7 +225,7 @@ public class ComponentConfigDecorator {
      *         usage
      */
     public ComponentConfigDecorator registerMockRendererForHtmlOutputText() {
-        registerMockRenderer(HtmlOutputText.COMPONENT_FAMILY, TEXT_RENDERER_ID);
+        registerMockRenderer(UIOutput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
         return this;
     }
 
@@ -231,7 +236,7 @@ public class ComponentConfigDecorator {
      *         usage
      */
     public ComponentConfigDecorator registerMockRendererForHtmlSelectBooleanCheckbox() {
-        registerMockRenderer(HtmlSelectBooleanCheckbox.COMPONENT_FAMILY, SELECTBOOLEAN_RENDERER_ID);
+        registerMockRenderer(UISelectBoolean.COMPONENT_FAMILY, SELECTBOOLEAN_RENDERER_ID);
         return this;
     }
 
@@ -242,7 +247,7 @@ public class ComponentConfigDecorator {
      *         usage
      */
     public ComponentConfigDecorator registerMockRendererForHtmlSelectOneRadio() {
-        registerMockRenderer(HtmlSelectOneRadio.COMPONENT_FAMILY, SELECTONE_RENDERER_ID);
+        registerMockRenderer(UISelectOne.COMPONENT_FAMILY, SELECTONE_RENDERER_ID);
         return this;
     }
 
@@ -253,7 +258,7 @@ public class ComponentConfigDecorator {
      *         usage
      */
     public ComponentConfigDecorator registerMockRendererForHtmlInputText() {
-        registerMockRenderer(HtmlInputText.COMPONENT_FAMILY, TEXT_RENDERER_ID);
+        registerMockRenderer(UIInput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
         return this;
     }
 
@@ -264,7 +269,7 @@ public class ComponentConfigDecorator {
      *         usage
      */
     public ComponentConfigDecorator registerMockRendererForHtmlForm() {
-        registerMockRenderer(HtmlForm.COMPONENT_FAMILY, FORM_RENDERER_ID);
+        registerMockRenderer(UIForm.COMPONENT_FAMILY, FORM_RENDERER_ID);
         return this;
     }
 
@@ -319,7 +324,7 @@ public class ComponentConfigDecorator {
         } catch (final InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException("Unable to instantiate given renderer due to ", e);
         }
-        final FacesRenderer config = renderer.getAnnotation(FacesRenderer.class);
+        final var config = renderer.getAnnotation(FacesRenderer.class);
         return registerRenderer(config.componentFamily(), config.rendererType(), instance);
     }
 

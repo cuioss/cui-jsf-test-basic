@@ -10,12 +10,13 @@ import static org.junit.Assert.fail;
 import java.io.Serializable;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.Behavior;
+import javax.faces.component.UIForm;
+import javax.faces.component.UIInput;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UISelectBoolean;
+import javax.faces.component.UISelectOne;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.component.html.HtmlSelectOneRadio;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.IntegerConverter;
@@ -74,7 +75,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         decorator.registerRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
                 RendererWithAnnotation.RENDERER_TYPE, new RendererWithAnnotation());
 
-        final Renderer renderer =
+        final var renderer =
             facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
                     RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
@@ -87,7 +88,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
                 RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.class);
 
-        final Renderer renderer =
+        final var renderer =
             facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
                     RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
@@ -96,11 +97,11 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     public void shouldRegisterMockRenderer() {
-        assertRendererIsNotRegistered(HtmlForm.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE);
-        decorator.registerMockRenderer(HtmlForm.COMPONENT_FAMILY,
+        decorator.registerMockRenderer(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE);
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlForm.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE));
     }
 
@@ -118,46 +119,46 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     public void shouldRegisterMockRendererForHtmlOutput() {
-        assertRendererIsNotRegistered(HtmlOutputText.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UIOutput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlOutputText();
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlOutputText.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIOutput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID));
     }
 
     @Test
     public void shouldRegisterMockRendererForHtmlInput() {
-        assertRendererIsNotRegistered(HtmlInputText.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UIInput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlInputText();
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlInputText.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIInput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID));
     }
 
     @Test
     public void shouldRegisterMockRendererForHtmlForm() {
-        assertRendererIsNotRegistered(HtmlForm.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY,
                 FORM_RENDERER_ID);
         decorator.registerMockRendererForHtmlForm();
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlForm.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
                 FORM_RENDERER_ID));
     }
 
     @Test
     public void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
-        assertRendererIsNotRegistered(HtmlSelectBooleanCheckbox.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlSelectBooleanCheckbox.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID));
     }
 
     @Test
     public void shouldRegisterMockRendererForHtmlSelectOneRadio() {
-        assertRendererIsNotRegistered(HtmlSelectOneRadio.COMPONENT_FAMILY,
+        assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
-        assertNotNull(facesContext.getRenderKit().getRenderer(HtmlSelectOneRadio.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTONE_RENDERER_ID));
     }
 
@@ -230,7 +231,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.BEHAVIOR_ID,
                 BehaviorWithAnnotation.class);
-        final Behavior behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(behavior.getClass(), BehaviorWithAnnotation.class);
     }
@@ -239,7 +240,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     public void shouldRegisterBehaviorWithAnnotation() {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.class);
-        final Behavior behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(behavior.getClass(), BehaviorWithAnnotation.class);
     }

@@ -6,8 +6,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -47,10 +45,10 @@ public class BeanConfigDecorator {
         requireNonNull(emptyToNull(name), NAME_MUST_NOT_BE_NULL);
         requireNonNull(managedBean, BEAN_MUST_NOT_BE_NULL);
 
-        final ExpressionFactory expressionFactory =
+        final var expressionFactory =
             facesContext.getApplication().getExpressionFactory();
 
-        final ValueExpression ve =
+        final var ve =
             expressionFactory.createValueExpression(facesContext.getELContext(),
                     checkManagedBeanKey(name), managedBean.getClass());
         ve.setValue(facesContext.getELContext(), managedBean);
@@ -80,7 +78,7 @@ public class BeanConfigDecorator {
         }
 
         if (null == name) {
-            final StringBuilder builder = new StringBuilder();
+            final var builder = new StringBuilder();
             builder.append(Character.toLowerCase(type.getSimpleName().charAt(0)));
             builder.append(type.getSimpleName().substring(1));
             name = builder.toString();
@@ -97,7 +95,7 @@ public class BeanConfigDecorator {
      */
     public static String checkManagedBeanKey(final String managedBeanKey) {
         requireNonNull(emptyToNull(managedBeanKey), NAME_MUST_NOT_BE_NULL);
-        String elKey = managedBeanKey;
+        var elKey = managedBeanKey;
         if (!elKey.startsWith(EL_START)) {
             elKey = String.format(EL_WRAPPER, elKey);
         }

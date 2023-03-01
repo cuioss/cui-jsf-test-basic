@@ -4,7 +4,6 @@ import static io.cui.tools.string.MoreStrings.isEmpty;
 
 import java.io.IOException;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import javax.faces.component.EditableValueHolder;
 import javax.faces.component.UIComponent;
@@ -65,7 +64,7 @@ public class CuiMockRenderer extends Renderer {
             writeBasicAttributes(context, component);
 
             if (component instanceof EditableValueHolder) {
-                ValueHolder valueHolder = (ValueHolder) component;
+                var valueHolder = (ValueHolder) component;
                 context.getResponseWriter().writeAttribute(VALUE, valueHolder.getValue(), VALUE);
             } else if (component instanceof UIOutcomeTarget) {
                 handleOutputTarget(context, component);
@@ -81,7 +80,7 @@ public class CuiMockRenderer extends Renderer {
 
     private void handleOutcomeTargetLink(final FacesContext context, final UIComponent component) throws IOException {
         if (component instanceof HtmlOutcomeTargetLink) {
-            HtmlOutcomeTargetLink output = (HtmlOutcomeTargetLink) component;
+            var output = (HtmlOutcomeTargetLink) component;
             if (null != output.getTarget()) {
                 context.getResponseWriter().writeAttribute(TARGET, output.getTarget(), TARGET);
             }
@@ -89,14 +88,14 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private void handleUIOutput(final FacesContext context, final UIComponent component) throws IOException {
-        UIOutput output = (UIOutput) component;
+        var output = (UIOutput) component;
         if (null != output.getValue()) {
             context.getResponseWriter().writeText(output.getValue(), VALUE);
         }
     }
 
     private void handleHtmlOutputLink(final FacesContext context, final UIComponent component) throws IOException {
-        HtmlOutputLink output = (HtmlOutputLink) component;
+        var output = (HtmlOutputLink) component;
         if (null != output.getTarget()) {
             context.getResponseWriter().writeAttribute(TARGET, output.getTarget(), TARGET);
         }
@@ -106,7 +105,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private void handleOutputTarget(final FacesContext context, final UIComponent component) throws IOException {
-        UIOutcomeTarget output = (UIOutcomeTarget) component;
+        var output = (UIOutcomeTarget) component;
         if (null != output.getOutcome()) {
             context.getResponseWriter().writeAttribute(OUTCOME, output.getOutcome(), OUTCOME);
         }
@@ -138,7 +137,7 @@ public class CuiMockRenderer extends Renderer {
 
     private void writeIdAndName(final FacesContext context, final UIComponent component) throws IOException {
         if (!isEmpty(component.getId()) || component instanceof UIInput) {
-            String id = component.getClientId();
+            var id = component.getClientId();
             context.getResponseWriter().writeAttribute("id", id, null);
             context.getResponseWriter().writeAttribute("name", id, null);
         }
@@ -147,9 +146,9 @@ public class CuiMockRenderer extends Renderer {
     private static void writeAttributeIfPresent(final FacesContext context, final UIComponent component,
             final String propertyName, final String attributeName)
         throws IOException {
-        Optional<PropertyHolder> holder = PropertyHolder.from(component.getClass(), propertyName);
+        var holder = PropertyHolder.from(component.getClass(), propertyName);
         if (holder.isPresent() && holder.get().getReadWrite().isReadable()) {
-            Object propertyValue = holder.get().readFrom(component);
+            var propertyValue = holder.get().readFrom(component);
             if (null != propertyValue) {
                 context.getResponseWriter().writeAttribute(attributeName, propertyValue, null);
             }

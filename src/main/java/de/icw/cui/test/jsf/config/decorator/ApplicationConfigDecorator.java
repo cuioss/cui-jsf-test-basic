@@ -1,6 +1,5 @@
 package de.icw.cui.test.jsf.config.decorator;
 
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -108,7 +107,7 @@ public class ApplicationConfigDecorator {
      */
     public ApplicationConfigDecorator setProjectStage(final ProjectStage projectStage) {
         try {
-            Field projectStageField = MockApplication20.class.getDeclaredField("_projectStage");
+            var projectStageField = MockApplication20.class.getDeclaredField("_projectStage");
             projectStageField.setAccessible(true);
             projectStageField.set(getMockApplicationInstance(application), projectStage);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
@@ -151,7 +150,7 @@ public class ApplicationConfigDecorator {
      *         usage
      */
     public ApplicationConfigDecorator addInitParameter(final String key, final String value) {
-        MockServletContext context = (MockServletContext) facesContext.getExternalContext().getContext();
+        var context = (MockServletContext) facesContext.getExternalContext().getContext();
         context.addInitParameter(key, value);
         return this;
     }

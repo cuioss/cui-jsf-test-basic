@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Set;
-
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExternalContext;
@@ -35,7 +33,6 @@ import de.icw.cui.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.icw.cui.test.jsf.config.decorator.BeanConfigDecorator;
 import de.icw.cui.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.icw.cui.test.jsf.config.decorator.RequestConfigDecorator;
-import de.icw.cui.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
 import io.cui.test.valueobjects.util.IdentityResourceBundle;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -107,7 +104,7 @@ public class ConfigurableFacesTest {
             new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
                     (MockExternalContext22) getExternalContext());
 
-        final Set<JsfTestConfiguration> annotations = extractJsfTestConfiguration(getClass());
+        final var annotations = extractJsfTestConfiguration(getClass());
         configureApplication(this, applicationConfigDecorator, annotations);
         configureComponents(this, componentConfigDecorator, annotations);
         configureManagedBeans(this, beanConfigDecorator, annotations);
@@ -154,7 +151,7 @@ public class ConfigurableFacesTest {
     public void assertNavigatedWithOutcome(final String outcome) {
         assertNotNull("Outcome must not be null", emptyToNull(outcome));
         assertTrue("Response is not committed", getFacesContext().getExternalContext().isResponseCommitted());
-        CuiMockConfigurableNavigationHandler handler = getApplicationConfigDecorator().getMockNavigationHandler();
+        var handler = getApplicationConfigDecorator().getMockNavigationHandler();
         assertTrue("handleNavigation is not called", handler.isHandleNavigationCalled());
         assertEquals(outcome, handler.getCalledOutcome());
     }
@@ -168,7 +165,7 @@ public class ConfigurableFacesTest {
     public void assertRedirect(final String redirectUrl) {
         assertNotNull("redirectUrl must not be null", emptyToNull(redirectUrl));
         assertTrue("Response is not committed", getFacesContext().getExternalContext().isResponseCommitted());
-        HttpServletResponse tempResponse = (HttpServletResponse) getExternalContext().getResponse();
+        var tempResponse = (HttpServletResponse) getExternalContext().getResponse();
         assertTrue("Response must provide a header with the name " + LOCATION_HEADER,
                 tempResponse.containsHeader(LOCATION_HEADER));
         assertEquals(redirectUrl, tempResponse.getHeader(LOCATION_HEADER));

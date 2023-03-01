@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.List;
-
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -41,8 +39,8 @@ public final class HtmlTreeAsserts {
     public static void assertHtmlTreeEquals(final Document expected, final Document actual) {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
-        Element expectedNode = expected.getRootElement();
-        Element actualNode = actual.getRootElement();
+        var expectedNode = expected.getRootElement();
+        var actualNode = actual.getRootElement();
         assertElementWithChildrenEquals(expectedNode, actualNode, "");
     }
 
@@ -58,15 +56,15 @@ public final class HtmlTreeAsserts {
      */
     public static void assertElementWithChildrenEquals(final Element expected, final Element actual,
             final String pointer) {
-        String currentPointer = pointer + ">" + expected.getName();
+        var currentPointer = pointer + ">" + expected.getName();
         assertElementEquals(expected, actual, currentPointer);
-        List<Element> expectedChildren = expected.getChildren();
-        List<Element> actualChildren = actual.getChildren();
+        var expectedChildren = expected.getChildren();
+        var actualChildren = actual.getChildren();
         if (null != expected.getAttribute("id")) {
             currentPointer = currentPointer + "[" + expected.getAttribute("id").getValue() + "]";
         }
-        String expectedTextChild = expected.getTextNormalize();
-        String actualTextChild = actual.getTextNormalize();
+        var expectedTextChild = expected.getTextNormalize();
+        var actualTextChild = actual.getTextNormalize();
         assertEquals(expectedTextChild, actualTextChild,
                 String.format("%s: The text content of the elements are not equal, expected=%s, actual=%s",
                         currentPointer, expectedTextChild, actualTextChild));
@@ -77,7 +75,7 @@ public final class HtmlTreeAsserts {
             fail(String.format("%s: The number of children is not equal, expected=%s, actual=%s", currentPointer,
                     expectedChildren.toString(), actualChildren.toString()));
         }
-        for (int i = 0; i < expectedChildren.size(); i++) {
+        for (var i = 0; i < expectedChildren.size(); i++) {
             assertElementWithChildrenEquals(expectedChildren.get(i), actualChildren.get(i), currentPointer);
         }
     }
@@ -98,8 +96,8 @@ public final class HtmlTreeAsserts {
         assertEquals(expected.getName(), actual.getName(),
                 String.format("%s: The names are not equal, expected=%s, actual=%s", pointer, expected.toString(),
                         actual.toString()));
-        List<Attribute> expectedAttributes = expected.getAttributes();
-        List<Attribute> actualAttributes = actual.getAttributes();
+        var expectedAttributes = expected.getAttributes();
+        var actualAttributes = actual.getAttributes();
         if (expectedAttributes.isEmpty() && actualAttributes.isEmpty()) {
             return;
         }
@@ -109,7 +107,7 @@ public final class HtmlTreeAsserts {
             fail(String.format("%s: The number of the attributes are not equal, expected=%s, actual=%s", pointer,
                     expectedAttributes.toString(), actualAttributes.toString()));
         }
-        for (int i = 0; i < expectedAttributes.size(); i++) {
+        for (var i = 0; i < expectedAttributes.size(); i++) {
             assertAttributeEquals(expectedAttributes.get(i), actualAttributes.get(i), pointer);
         }
     }

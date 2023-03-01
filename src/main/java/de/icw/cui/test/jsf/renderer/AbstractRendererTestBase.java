@@ -109,7 +109,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @SuppressWarnings("resource")
     public String renderToString(final UIComponent toBeRendered) {
         requireNonNull(toBeRendered);
-        StringWriter output = new StringWriter();
+        var output = new StringWriter();
         getFacesContext().setResponseWriter(new MockResponseWriter(output));
         final Renderer testRenderer = getRenderer();
         try {
@@ -129,7 +129,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @param expected must not be null
      */
     public void assertRenderResult(final UIComponent toBeRendered, final Document expected) {
-        String rendered = renderToString(toBeRendered);
+        var rendered = renderToString(toBeRendered);
         assertNotNull("Render Result must not be empty.", emptyToNull(rendered));
         HtmlTreeAsserts.assertHtmlTreeEquals(expected, DomUtils.htmlStringToDocument(rendered));
     }
@@ -215,7 +215,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @SuppressWarnings({ "squid:S1166" })
     public // see comment: expected
     void shouldThrowNPEOnMissingParameterForConvertClientId() {
-        final String someId = "SomeId";
+        final var someId = "SomeId";
         try {
             renderer.convertClientId(null, someId);
             fail(NPE_ON_MSSING_FC_EXPECTED);

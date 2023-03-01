@@ -44,7 +44,7 @@ public final class ConfigurationHelper {
             final Class<?> annotated) {
         requireNonNull(annotated);
 
-        final CollectionBuilder<JsfTestConfiguration> builder = new CollectionBuilder<>();
+        final var builder = new CollectionBuilder<JsfTestConfiguration>();
 
         MoreReflection.extractAllAnnotations(annotated, JsfTestConfiguration.class)
                 .forEach(builder::add);

@@ -18,7 +18,6 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.PostAddToViewEvent;
 import javax.faces.render.Renderer;
 
-import org.jdom2.Document;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -84,10 +83,10 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     @Test
     public void shouldHandleRendererAttributeAsserts() {
         for (RendererAttributeAssert attributeAssert : activeAsserts) {
-            UIComponent component = getWrappedComponent();
+            var component = getWrappedComponent();
             attributeAssert.applyAttribute(component);
             component.processEvent(new PostAddToViewEvent(component));
-            Document document = DomUtils.htmlStringToDocument(super.renderToString(component));
+            var document = DomUtils.htmlStringToDocument(super.renderToString(component));
             attributeAssert.assertAttributeSet(document.getRootElement());
         }
     }
@@ -97,9 +96,9 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      *         {@link HtmlForm} in case {@link #isWrapComponentInForm()} is {@code true}
      */
     protected UIComponent getWrappedComponent() {
-        UIComponent component = getComponent();
+        var component = getComponent();
         if (wrapComponentInForm) {
-            HtmlForm form = new HtmlForm();
+            var form = new HtmlForm();
             form.getChildren().add(component);
         }
         return component;
@@ -118,12 +117,12 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     @SuppressWarnings({ "unchecked", "squid:S3655" })
     public List<FacesEvent> extractEventsFromViewRoot() {
         final List<FacesEvent> found = new ArrayList<>();
-        final UIViewRoot uiViewRoot = getFacesContext().getViewRoot();
+        final var uiViewRoot = getFacesContext().getViewRoot();
         // Hacky: Private field of myfaces
-        Optional<Field> eventField = accessField(UIViewRoot.class, "_events");
+        var eventField = accessField(UIViewRoot.class, "_events");
         if (eventField.isPresent()) {
             try {
-                List<FacesEvent> events = (List<FacesEvent>) eventField.get().get(uiViewRoot);
+                var events = (List<FacesEvent>) eventField.get().get(uiViewRoot);
                 if (null != events) {
                     found.addAll(events);
                 }
@@ -139,7 +138,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
             fail("javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
         try {
-            List<List<FacesEvent>> events = (List<List<FacesEvent>>) eventField.get().get(uiViewRoot);
+            var events = (List<List<FacesEvent>>) eventField.get().get(uiViewRoot);
             if (null != events) {
                 events.forEach(found::addAll);
             }
@@ -153,7 +152,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     private static Optional<Field> accessField(final Class<?> clazz, final String fieldName) {
         // Lets hack
         try {
-            Field eventField = clazz.getDeclaredField(fieldName);
+            var eventField = clazz.getDeclaredField(fieldName);
             eventField.setAccessible(true);
             return Optional.of(eventField);
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException e1) {

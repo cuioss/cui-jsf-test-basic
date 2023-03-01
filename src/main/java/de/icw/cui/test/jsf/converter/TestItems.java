@@ -194,7 +194,7 @@ public class TestItems<T> {
             final String converterResult,
             final Severity level,
             final String message) {
-        final ConverterTestItem<T> item = new ConverterTestItem<>();
+        final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
         item.setValid(true);
@@ -221,7 +221,7 @@ public class TestItems<T> {
             final String converterResult,
             final Severity level,
             final String message) {
-        final ConverterTestItem<T> item = new ConverterTestItem<>();
+        final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
         item.setValid(false);
@@ -248,7 +248,7 @@ public class TestItems<T> {
             final String converterResult,
             final Severity level,
             final String message) {
-        final ConverterTestItem<T> item = new ConverterTestItem<>();
+        final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
         item.setValid(valid);

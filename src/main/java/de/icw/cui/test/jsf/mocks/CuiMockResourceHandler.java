@@ -91,8 +91,8 @@ public class CuiMockResourceHandler extends ResourceHandler {
      * @return the concatenated String, see {@link #LIBRARY_RESOURCE_DELIMITER}
      */
     public static final String createResourceMapKey(final String resourceName, final String libraryName) {
-        String resource = resourceName;
-        String library = libraryName;
+        var resource = resourceName;
+        var library = libraryName;
         if (null == library || library.isEmpty()) {
             library = "notThere";
         }

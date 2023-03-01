@@ -9,7 +9,7 @@ import javax.faces.component.UIViewRoot;
 
 public class CuiMockUIViewRoot extends UIViewRoot {
 
-    private Map<String, UIComponent> componentMap = mutableMap();
+    private final Map<String, UIComponent> componentMap = mutableMap();
 
     public void addUiComponent(String expr, UIComponent component) {
         componentMap.put(expr, component);

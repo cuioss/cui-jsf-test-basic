@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.jdom2.Document;
 import org.junit.jupiter.api.Test;
 
 class DomUtilsTest {
@@ -28,7 +27,7 @@ class DomUtilsTest {
 
     @Test
     void shouldCreateDomFromHml() {
-        Document doc = htmlStringToDocument(NESTED_DIV);
+        var doc = htmlStringToDocument(NESTED_DIV);
         assertNotNull(doc);
         assertEquals("root", doc.getRootElement().getName());
         assertEquals(1, doc.getRootElement().getChildren().size());

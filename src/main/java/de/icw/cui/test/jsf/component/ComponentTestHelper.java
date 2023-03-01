@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
 
 import javax.faces.component.UIComponent;
 
@@ -48,13 +46,13 @@ public final class ComponentTestHelper {
         requireNonNull(annotated);
         requireNonNull(instance);
 
-        Set<PropertyMetadata> propertyConfigs =
+        var propertyConfigs =
                 PropertyHelper.handlePropertyConfigAnnotations(annotated);
 
-        ArrayList<String> of = new ArrayList<>();
-        ArrayList<String> defaultValued = new ArrayList<>();
-        ArrayList<String> noVE = new ArrayList<>();
-        ArrayList<String> unorderedCollection = new ArrayList<>();
+        var of = new ArrayList<String>();
+        var defaultValued = new ArrayList<String>();
+        var noVE = new ArrayList<String>();
+        var unorderedCollection = new ArrayList<String>();
         for (VerifyComponentProperties property : MoreReflection.extractAllAnnotations(annotated,
                 VerifyComponentProperties.class)) {
             of.addAll(Arrays.asList(property.of()));
@@ -69,7 +67,7 @@ public final class ComponentTestHelper {
             map.put(configuredName, resolvePropertyForConfiguredName(instance, configuredName));
         }
 
-        Map<String, PropertyMetadata> filtered = AnnotationHelper.modifyPropertyMetadata(map,
+        var filtered = AnnotationHelper.modifyPropertyMetadata(map,
                 defaultValued, Collections.emptyList(),
                 Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
                 unorderedCollection);
@@ -92,13 +90,13 @@ public final class ComponentTestHelper {
     public static PropertyMetadata resolvePropertyForConfiguredName(final UIComponent instance,
             final String configuredName) {
         Class<?> propertyType = null;
-        CollectionType collectionType = CollectionType.NO_ITERABLE;
+        var collectionType = CollectionType.NO_ITERABLE;
         propertyType = PropertyHolder.from(instance.getClass(), configuredName)
                 .orElseThrow(
                         () -> new IllegalStateException("Unable to determine property type for " + configuredName
                                 + ", use @PropertyConfig to define this property"))
                 .getType();
-        final Optional<CollectionType> collectionTypeOption =
+        final var collectionTypeOption =
                 CollectionType.findResponsibleCollectionType(propertyType);
         if (collectionTypeOption.isPresent()) {
             throw new IllegalStateException(

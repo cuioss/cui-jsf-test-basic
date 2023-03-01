@@ -105,7 +105,7 @@ public class RequestConfigDecorator {
      *         usage
      */
     public RequestConfigDecorator addRequestCookie(final Cookie... cookie) {
-        MockHttpServletRequest request = (MockHttpServletRequest) externalContext.getRequest();
+        var request = (MockHttpServletRequest) externalContext.getRequest();
         for (Cookie aCookie : cookie) {
             request.addCookie(aCookie);
         }
@@ -125,7 +125,7 @@ public class RequestConfigDecorator {
      *         usage
      */
     public RequestConfigDecorator setRequestLocale(final Locale... requestLocale) {
-        CuiMockHttpServletRequest request = (CuiMockHttpServletRequest) externalContext.getRequest();
+        var request = (CuiMockHttpServletRequest) externalContext.getRequest();
         List<Locale> localeList = Arrays.asList(requestLocale);
         Locale locale = null;
         if (!localeList.isEmpty()) {
@@ -138,11 +138,11 @@ public class RequestConfigDecorator {
 
     /**
      * Explicitly sets a given queryString as path-element of the request
-     * 
+     *
      * @param parameterString
      */
     public void setQueryString(String parameterString) {
-        CuiMockHttpServletRequest request = (CuiMockHttpServletRequest) externalContext.getRequest();
+        var request = (CuiMockHttpServletRequest) externalContext.getRequest();
         request.setPathElements(request.getContextPath(), request.getServletPath(), request.getPathInfo(),
                 parameterString);
     }

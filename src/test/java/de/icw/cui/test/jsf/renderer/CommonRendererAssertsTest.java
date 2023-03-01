@@ -56,7 +56,7 @@ class CommonRendererAssertsTest {
 
     @Test
     void shouldHandlePassthroughAttribute() {
-        HtmlInputText component = new HtmlInputText();
+        var component = new HtmlInputText();
         CommonRendererAsserts.PASSTHROUGH.applyAttribute(component);
         assertEquals(CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue(),
                 component.getPassThroughAttributes().get(CommonRendererAsserts.PASSTHROUGH.getAttributeName()));
@@ -74,7 +74,7 @@ class CommonRendererAssertsTest {
 
     private static void verifyContract(final RendererAttributeAssert attributeAssert, final String positiveHtml,
             final Serializable traceAttributeValue) {
-        HtmlInputText component = new HtmlInputText();
+        var component = new HtmlInputText();
         attributeAssert.applyAttribute(component);
         assertEquals(traceAttributeValue, PropertyUtil.readProperty(component, attributeAssert.getAttributeName()));
         // Should detect missing attribute

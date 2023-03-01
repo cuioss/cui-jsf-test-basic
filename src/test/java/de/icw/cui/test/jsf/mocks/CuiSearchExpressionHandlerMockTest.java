@@ -27,10 +27,10 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 
     @Test
     public void shouldIgnoreHint() {
-        CuiMockSearchExpressionContext context =
+        var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), mutableSet(SearchExpressionHint.IGNORE_NO_RESULT));
-        CuiMockContextCallback callback = new CuiMockContextCallback();
+        var callback = new CuiMockContextCallback();
 
         assertNull(new CuiMockSearchExpressionHandler().resolveClientId(context, EXPRESSION));
         assertTrue(new CuiMockSearchExpressionHandler().resolveClientIds(context, EXPRESSION).isEmpty());
@@ -44,7 +44,7 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 
     @Test(expected = ComponentNotFoundException.class)
     public void shouldFailOnMissingHint() {
-        CuiMockSearchExpressionContext context =
+        var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
         new CuiMockSearchExpressionHandler().resolveComponent(context, EXPRESSION, new CuiMockContextCallback());
@@ -52,7 +52,7 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 
     @Test(expected = ComponentNotFoundException.class)
     public void shouldFailOnMissingHint2() {
-        CuiMockSearchExpressionContext context =
+        var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
         new CuiMockSearchExpressionHandler().resolveComponents(context, EXPRESSION, new CuiMockContextCallback());
@@ -60,14 +60,14 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 
     @Test
     public void shouldCallBack() {
-        CuiMockSearchExpressionContext context =
+        var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
-        CuiMockContextCallback callback = new CuiMockContextCallback();
+        var callback = new CuiMockContextCallback();
 
-        CuiMockComponent component = new CuiMockComponent();
+        var component = new CuiMockComponent();
 
-        CuiMockSearchExpressionHandler handler = new CuiMockSearchExpressionHandler();
+        var handler = new CuiMockSearchExpressionHandler();
         handler.setResolvedComponent(component);
 
         handler.resolveComponent(context, EXPRESSION, callback);

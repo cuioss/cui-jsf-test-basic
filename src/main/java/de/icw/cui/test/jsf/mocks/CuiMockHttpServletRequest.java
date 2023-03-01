@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.Part;
 
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
-import org.apache.myfaces.test.mock.MockWebContainer;
 
 import lombok.Setter;
 
@@ -114,7 +113,7 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
         if (!create) {
             return super.getSession(false);
         }
-        HttpSession session = super.getSession(true);
+        var session = super.getSession(true);
         try {
             session.getAttribute("test"); // test if the session was invalidated
         } catch (IllegalStateException e) {
@@ -123,9 +122,9 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
         }
         if (!(session instanceof CuiMockHttpSession)) {
             session = new CuiMockHttpSession(getServletContext());
-            MockWebContainer container = getWebContainer();
+            var container = getWebContainer();
             if (container != null) {
-                HttpSessionEvent se = new HttpSessionEvent(session);
+                var se = new HttpSessionEvent(session);
                 container.sessionCreated(se);
             }
         }

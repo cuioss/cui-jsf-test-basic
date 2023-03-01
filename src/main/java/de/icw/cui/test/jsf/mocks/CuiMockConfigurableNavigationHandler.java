@@ -62,34 +62,31 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     public void handleNavigation(final FacesContext context, final String fromAction,
             final String outcome) {
 
-        if (context.getExternalContext() instanceof MockExternalContext) {
-
-            final NavigationCase navigationCase = getNavigationCase(context, fromAction, outcome);
-
-            final MockExternalContext externalContext = (MockExternalContext) context
-                    .getExternalContext();
-
-            String newViewId = outcome;
-            try {
-
-                if (null == navigationCase) {
-                    externalContext.redirect(outcome);
-                } else {
-                    newViewId = navigationCase.getToViewId(context);
-                    externalContext.redirect(newViewId);
-                }
-
-            } catch (IOException e) {
-                throw new IllegalStateException(e);
-            }
-            context.getViewRoot().setViewId(newViewId);
-
-        } else {
+        if (!(context.getExternalContext() instanceof MockExternalContext)) {
 
             throw new UnsupportedOperationException(
                     "handleNavigation is working only with MockExternalContext");
 
         }
+        final var navigationCase = getNavigationCase(context, fromAction, outcome);
+
+        final var externalContext = (MockExternalContext) context
+                .getExternalContext();
+
+        var newViewId = outcome;
+        try {
+
+            if (null == navigationCase) {
+                externalContext.redirect(outcome);
+            } else {
+                newViewId = navigationCase.getToViewId(context);
+                externalContext.redirect(newViewId);
+            }
+
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+        context.getViewRoot().setViewId(newViewId);
         calledOutcome = outcome;
         handleNavigationCalled = true;
     }
@@ -121,7 +118,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
             final String outcome,
             final NavigationCase navigationCase) {
 
-        final String key = calculateKey(fromAction, outcome);
+        final var key = calculateKey(fromAction, outcome);
 
         navigationCases.remove(key);
 
@@ -132,7 +129,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
 
     private NavigationCase getFirstFittingNavigationCase(final String fromAction,
             final String outcome) {
-        final String key = calculateKey(fromAction, outcome);
+        final var key = calculateKey(fromAction, outcome);
         if (navigationCases.containsKey(key)) {
             final List<NavigationCase> list = mutableList(navigationCases.get(key));
             return list.get(0);

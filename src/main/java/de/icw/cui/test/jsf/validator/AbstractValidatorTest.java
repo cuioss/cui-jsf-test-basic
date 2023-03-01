@@ -137,7 +137,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      */
     @Test
     public void shouldHandleValidTestdata() {
-        final TestItems<T> items = new TestItems<>();
+        final var items = new TestItems<T>();
         populate(items);
         items.allValid().forEach(
                 item -> validator.validate(getFacesContext(), getComponent(), item.getTestValue()));
@@ -150,7 +150,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      */
     @Test
     public void shouldFailOnInvalidTestdata() {
-        final TestItems<T> items = new TestItems<>();
+        final var items = new TestItems<T>();
         populate(items);
         for (final TestItem<T> item : items.allInvalid()) {
             try {

@@ -2,8 +2,6 @@ package de.icw.cui.test.jsf.component;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import de.icw.cui.test.jsf.junit5.AbstractPropertyAwareFacesTest;
@@ -18,12 +16,12 @@ class ValueExpressionPropertyContractTestInvalid
 
     @Test
     void shouldTestGoodCase() {
-        List<ComponentPropertyMetadata> properties =
+        var properties =
             ComponentTestHelper.filterPropertyMetadata(
                     MultiValuedComponentWithInvalidELHandling.class,
                     new MultiValuedComponentWithInvalidELHandling());
 
-        CallbackAwareInstantiator<MultiValuedComponentWithInvalidELHandling> instantiator =
+        var instantiator =
             new CallbackAwareInstantiator<>(
                     new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
                             new RuntimeProperties(properties)),

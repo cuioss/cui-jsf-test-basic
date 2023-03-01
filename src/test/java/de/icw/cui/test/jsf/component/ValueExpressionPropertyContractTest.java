@@ -1,7 +1,5 @@
 package de.icw.cui.test.jsf.component;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 
 import de.icw.cui.test.jsf.support.componentproperty.MultiValuedComponent;
@@ -15,11 +13,11 @@ class ValueExpressionPropertyContractTest
 
     @Test
     void shouldTestGoodCase() {
-        List<ComponentPropertyMetadata> properties =
+        var properties =
             ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
                     new MultiValuedComponent());
 
-        CallbackAwareInstantiator<MultiValuedComponent> instantiator =
+        var instantiator =
             new CallbackAwareInstantiator<>(
                     new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponent.class),
                             new RuntimeProperties(properties)),

@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.faces.component.UIComponent;
 
-import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import de.icw.cui.test.jsf.renderer.util.DomUtils;
@@ -51,7 +49,7 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
 
         @Override
         public void assertAttributeSet(final Element element) {
-            List<Attribute> found =
+            var found =
                     DomUtils.filterForAttributeContainingValue(element, "class", getAttributeTraceValue().toString());
             assertFalse(found.isEmpty(), "The expected attribute with name='class' and traceValue="
                     + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
@@ -81,7 +79,7 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
 
     @Override
     public void assertAttributeSet(final Element element) {
-        List<Attribute> found = DomUtils.filterForAttributeContainingValue(element, getAttributeName(),
+        var found = DomUtils.filterForAttributeContainingValue(element, getAttributeName(),
                 getAttributeTraceValue().toString());
         assertFalse(found.isEmpty(), "The expected attribute with name=" + getAttributeName() + " and traceValue="
                 + getAttributeTraceValue() + " was not found in the resulting dom-tree.");

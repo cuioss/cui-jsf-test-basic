@@ -4,7 +4,6 @@ import static io.cui.tools.string.MoreStrings.emptyToNull;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +40,8 @@ public class DomUtils {
      */
     public static Document htmlStringToDocument(final String htmlString) {
         requireNonNull(htmlString);
-        final String wrappedInput = String.format(ROOT_TEMPLATE, htmlString);
-        try (InputStream input = IOStreams.toInputStream(wrappedInput)) {
+        final var wrappedInput = String.format(ROOT_TEMPLATE, htmlString);
+        try (var input = IOStreams.toInputStream(wrappedInput)) {
             return new SAXBuilder().build(input);
         } catch (JDOMException | IOException e) {
             throw new IllegalArgumentException("Unable to parse given String, due to ", e);
@@ -62,7 +61,7 @@ public class DomUtils {
         requireNonNull(element);
         requireNonNull(emptyToNull(attributeName));
         List<Attribute> found = new ArrayList<>();
-        Attribute current = element.getAttribute(attributeName);
+        var current = element.getAttribute(attributeName);
         if (null != current) {
             found.add(current);
         }

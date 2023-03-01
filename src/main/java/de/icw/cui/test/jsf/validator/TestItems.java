@@ -62,7 +62,7 @@ public class TestItems<T> {
      */
     private TestItems<T> addItem(final boolean valid, final T value, final Severity level,
             final String message) {
-        final TestItem<T> item = new TestItem<>();
+        final var item = new TestItem<T>();
         item.setTestValue(value);
         item.setValid(valid);
         item.setErrorMessage(message);

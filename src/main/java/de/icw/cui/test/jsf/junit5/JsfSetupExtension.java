@@ -44,11 +44,11 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
     @Override
     @SuppressWarnings("squid:S3655")
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
-        JsfRuntimeSetup setup = new JsfRuntimeSetup();
+        var setup = new JsfRuntimeSetup();
         setup.setUp();
         put(setup, context);
 
-        boolean useIdentityResourceBundle = false;
+        var useIdentityResourceBundle = false;
         List<EnableJsfEnvironment> environments = new ArrayList<>();
         retrieveEnableJSFAnnotations(testInstance.getClass(), environments);
         if (!environments.isEmpty()) {
@@ -56,7 +56,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
             useIdentityResourceBundle = environments.get(0).useIdentityResourceBundle();
         }
 
-        JsfEnvironmentHolder environment = new JsfEnvironmentHolder(
+        var environment = new JsfEnvironmentHolder(
                 setup);
         ConfigurableApplication.createWrapAndRegister((MockFacesContext) environment.getFacesContext())
         .setUseIdentityResouceBundle(useIdentityResourceBundle);

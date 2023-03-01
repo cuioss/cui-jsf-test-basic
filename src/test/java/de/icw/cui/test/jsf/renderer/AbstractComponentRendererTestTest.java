@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.event.FacesEvent;
@@ -36,7 +37,7 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
     void shouldHandleConfigAnnotation() {
         assertFalse(super.isWrapComponentInForm());
         assertEquals(HtmlInputText.class, getWrappedComponent().getClass());
-        assertNull(getFacesContext().getRenderKit().getRenderer(HtmlForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
+        assertNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
     }
 
     @Test
@@ -47,7 +48,7 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
     @Test
     void shouldHandleExtractEventsFromViewRoot() {
         assertTrue(extractEventsFromViewRoot().isEmpty());
-        HtmlInputText component = new HtmlInputText();
+        var component = new HtmlInputText();
         component.setParent(getFacesContext().getViewRoot());
         assertTrue(extractEventsFromViewRoot().isEmpty());
         component.queueEvent(new FacesEvent(component) {

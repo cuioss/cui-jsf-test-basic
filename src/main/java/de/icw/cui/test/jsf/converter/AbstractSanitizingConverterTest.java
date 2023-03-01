@@ -25,8 +25,8 @@ public abstract class AbstractSanitizingConverterTest<C extends Converter, T> ex
 
     @Test
     void shouldSanitizeJavaScript() {
-        T toConvert = createTestObjectWithMaliciousContent("<script>");
-        String result = getConverter().getAsString(getFacesContext(), getComponent(), toConvert);
+        var toConvert = createTestObjectWithMaliciousContent("<script>");
+        var result = getConverter().getAsString(getFacesContext(), getComponent(), toConvert);
         assertFalse(result.contains("<script"));
     }
 

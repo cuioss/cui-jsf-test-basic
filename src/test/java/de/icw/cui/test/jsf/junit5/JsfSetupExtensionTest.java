@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 import org.apache.myfaces.test.config.ResourceBundleVarNames;
 import org.junit.jupiter.api.Test;
@@ -85,7 +84,7 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     @Test
     void shouldDefaultToMirrorResourceBundle() {
         ResourceBundleVarNames.addVarName("msg", "msg");
-        ResourceBundle resourceBundle = getApplication().getResourceBundle(getFacesContext(), "msg");
+        var resourceBundle = getApplication().getResourceBundle(getFacesContext(), "msg");
         assertNotNull(resourceBundle);
         assertEquals("some.key", resourceBundle.getString("some.key"));
     }

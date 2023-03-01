@@ -24,7 +24,7 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     public void shouldHandleNamedBean() {
-        NamedSimpleBean bean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
+        var bean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
                 NamedSimpleBean.class);
         assertNull(bean);
 
@@ -38,7 +38,7 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     public void shouldHandleNamedBeanWOValue() {
-        NamedSimpleBeanWOName bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
+        var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
                 NamedSimpleBeanWOName.class);
         assertNull(bean);
 
@@ -59,11 +59,11 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
     @Test
     public void shouldHandleMultipleBeans() {
         decorator.register(new NamedSimpleBeanWOName(), NamedSimpleBeanWOName.BEAN_NAME);
-        final NamedSimpleBeanWOName bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
+        final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
                 NamedSimpleBeanWOName.class);
         assertNotNull(bean);
         decorator.register(new NamedSimpleBean(), NamedSimpleBean.BEAN_NAME);
-        final NamedSimpleBean secondBean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
+        final var secondBean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
                 NamedSimpleBean.class);
         assertNotNull(secondBean);
     }

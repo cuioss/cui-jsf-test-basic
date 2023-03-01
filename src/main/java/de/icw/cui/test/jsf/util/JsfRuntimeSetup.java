@@ -290,7 +290,7 @@ public class JsfRuntimeSetup {
      *
      */
     private void setUpApplication() {
-        ApplicationFactory applicationFactory = (ApplicationFactory) FactoryFinder
+        var applicationFactory = (ApplicationFactory) FactoryFinder
                 .getFactory(FactoryFinder.APPLICATION_FACTORY);
         application = applicationFactory.getApplication();
         facesContext.setApplication(application);
@@ -303,7 +303,7 @@ public class JsfRuntimeSetup {
      *
      */
     private void setUpRenderKit() {
-        RenderKitFactory renderKitFactory = (RenderKitFactory) FactoryFinder
+        var renderKitFactory = (RenderKitFactory) FactoryFinder
                 .getFactory(FactoryFinder.RENDER_KIT_FACTORY);
         renderKit = new MockRenderKit();
         renderKitFactory.addRenderKit(RenderKitFactory.HTML_BASIC_RENDER_KIT,

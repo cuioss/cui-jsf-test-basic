@@ -75,10 +75,10 @@ public class ConfigurableApplication extends ApplicationWrapper {
     public static final ConfigurableApplication createWrapAndRegister(
             final MockFacesContext facesContext) {
         requireNonNull(facesContext);
-        final ApplicationFactory factory =
+        final var factory =
                 (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-        final Application old = factory.getApplication();
-        final ConfigurableApplication application = new ConfigurableApplication(old);
+        final var old = factory.getApplication();
+        final var application = new ConfigurableApplication(old);
         factory.setApplication(application);
         facesContext.setApplication(application);
         return application;

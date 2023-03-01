@@ -6,7 +6,7 @@ import org.jdom2.Element;
 
 /**
  * This interface defines the testing of implicit single attribute contracts.
- * 
+ *
  * @author Oliver Wolff
  */
 public interface RendererAttributeAssert {
@@ -18,14 +18,14 @@ public interface RendererAttributeAssert {
 
     /**
      * Sets the attribute to be tested into the given component
-     * 
+     *
      * @param component where the attribute is to be applied to,
      */
     void applyAttribute(UIComponent component);
 
     /**
      * Asserts in the given render-result that the attribute was set properly
-     * 
+     *
      * @param element to be checked
      */
     void assertAttributeSet(Element element);

@@ -4,7 +4,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.component.ContextCallback;
 import javax.faces.component.UIComponent;
@@ -95,7 +94,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
     }
 
     private boolean shouldIgnoreNoResult(SearchExpressionContext searchExpressionContext) {
-        Set<SearchExpressionHint> expressionHints = searchExpressionContext.getExpressionHints();
+        var expressionHints = searchExpressionContext.getExpressionHints();
         return null != expressionHints && expressionHints.contains(SearchExpressionHint.IGNORE_NO_RESULT);
     }
 

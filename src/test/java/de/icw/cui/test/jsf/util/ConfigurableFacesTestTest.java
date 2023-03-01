@@ -46,7 +46,7 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
 
     @Test
     public void shouldDefaultToIdentityResourceBundle() {
-        final String text = Generators.nonEmptyStrings().next();
+        final var text = Generators.nonEmptyStrings().next();
         getApplicationConfigDecorator().registerResourceBundle("anyBundle", "anyBundle");
         assertEquals(text,
                 getApplication().getResourceBundle(getFacesContext(), "anyBundle").getString(text));

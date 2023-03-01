@@ -7,7 +7,7 @@ import org.jdom2.Attribute;
 
 /**
  * Compares two {@link Attribute} elements by name
- * 
+ *
  * @author Oliver Wolff
  */
 public class AttributeComparator implements Comparator<Attribute>, Serializable {

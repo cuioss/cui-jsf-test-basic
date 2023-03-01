@@ -20,7 +20,6 @@ import de.icw.cui.test.jsf.config.decorator.BeanConfigDecorator;
 import de.icw.cui.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.icw.cui.test.jsf.config.decorator.RequestConfigDecorator;
 import de.icw.cui.test.jsf.junit5.JsfSetupExtension;
-import de.icw.cui.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
 
 /**
  * Simple interface to be used in context of {@link JsfSetupExtension}. It provides an interface for
@@ -154,7 +153,7 @@ public interface JsfEnvironmentConsumer {
     default void assertNavigatedWithOutcome(final String outcome) {
         assertNotNull(emptyToNull(outcome), "Outcome must not be null");
         assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
-        CuiMockConfigurableNavigationHandler handler = getApplicationConfigDecorator().getMockNavigationHandler();
+        var handler = getApplicationConfigDecorator().getMockNavigationHandler();
         assertTrue(handler.isHandleNavigationCalled(), "handleNavigation is not called");
         assertEquals(outcome, handler.getCalledOutcome());
     }
@@ -168,7 +167,7 @@ public interface JsfEnvironmentConsumer {
     default void assertRedirect(final String redirectUrl) {
         assertNotNull(emptyToNull(redirectUrl), "redirectUrl must not be null");
         assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
-        HttpServletResponse tempResponse = (HttpServletResponse) getExternalContext().getResponse();
+        var tempResponse = (HttpServletResponse) getExternalContext().getResponse();
         assertTrue(
                 tempResponse.containsHeader("Location"),
                 "Response must provide a header with the name 'Location'");

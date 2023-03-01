@@ -217,9 +217,9 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @Test
     public void shouldRoundTripValidData() {
         for (final String value : getTestItems().getRoundtripValues()) {
-            final T converted =
+            final var converted =
                 (T) getConverter().getAsObject(getFacesContext(), getComponent(), value);
-            final String roundTripped =
+            final var roundTripped =
                 getConverter().getAsString(getFacesContext(), getComponent(), converted);
             assertEquals(value, roundTripped);
         }
@@ -257,7 +257,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @Test
     public void shouldPassOnValidObjects() {
         for (final ConverterTestItem<T> item : getTestItems().getValidObjectTestItems()) {
-            final String result =
+            final var result =
                 getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
             if (null != item.getStringValue()) {
                 assertEquals(item.getStringValue(), result, item.toString());
@@ -290,7 +290,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @Test
     public void shouldPassOnValidStrings() {
         for (final ConverterTestItem<T> item : getTestItems().getValidStringTestItems()) {
-            final T result = (T) getConverter().getAsObject(getFacesContext(), getComponent(),
+            final var result = (T) getConverter().getAsObject(getFacesContext(), getComponent(),
                     item.getStringValue());
             if (null != item.getTestValue()) {
                 assertEquals(item.getTestValue(), result, item.toString());

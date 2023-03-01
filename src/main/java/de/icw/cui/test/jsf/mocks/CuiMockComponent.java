@@ -5,7 +5,7 @@ import javax.faces.component.UIComponentBase;
 
 /**
  * Simple Mock component to be used for cases where you need an "any-component"
- * 
+ *
  * @author Oliver Wolff
  *
  */

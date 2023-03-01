@@ -6,8 +6,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.Locale;
-
 import javax.faces.application.ProjectStage;
 
 import org.apache.myfaces.test.base.junit4.AbstractJsfTestCase;
@@ -54,7 +52,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     public void shouldRegisterSupportedLocales() {
         assertFalse(application.getSupportedLocales().hasNext());
 
-        final Locale locale = Generators.locales().next();
+        final var locale = Generators.locales().next();
         decorator.registerSupportedLocales(immutableSet(locale));
 
         assertEquals(locale, application.getSupportedLocales().next());
@@ -64,7 +62,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     public void shouldRegisterDefaultLocale() {
         assertNotNull(application.getDefaultLocale());
 
-        final Locale locale = Generators.locales().next();
+        final var locale = Generators.locales().next();
         decorator.registerDefaultLocale(locale);
 
         assertEquals(locale, application.getDefaultLocale());
@@ -94,8 +92,8 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     public void shouldSetInitParameter() {
-        final String key = "initKey";
-        final String value = "initValue";
+        final var key = "initKey";
+        final var value = "initValue";
         assertNull(facesContext.getExternalContext().getInitParameter(key));
 
         decorator.addInitParameter(key, value);

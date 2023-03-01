@@ -49,7 +49,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     public void assertContract() {
         List<String> names =
             filteredMetadata.stream().map(ComponentPropertyMetadata::getName).collect(Collectors.toList());
-        final StringBuilder builder = new StringBuilder("Verifying ");
+        final var builder = new StringBuilder("Verifying ");
         builder.append(getClass().getName()).append("\nWith properties: ")
                 .append(String.join(" ", names));
         log.info(builder.toString());
@@ -64,7 +64,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
         final UIComponent target = getInstantiator().newInstanceMinimal();
 
         for (final PropertySupport support : supportList) {
-            MockValueExpression expression =
+            var expression =
                 new MockValueExpression(BeanConfigDecorator.checkManagedBeanKey(support.getName()),
                         support.getPropertyMetadata().resolveActualClass());
             target.setValueExpression(support.getName(), expression);
