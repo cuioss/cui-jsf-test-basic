@@ -4,24 +4,25 @@
     <parent>
         <groupId>io.github.cuioss</groupId>
         <artifactId>cui-java-parent</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.3</version>
         <relativePath />
     </parent>
-    <artifactId>cui-java-module-template</artifactId>
-    <name>cui java module template</name>
+    <groupId>io.github.cuioss.test</groupId>
+    <artifactId>cui-jsf-test-basic</artifactId>
+    <name>cui jsf test basic</name>
     <version>1.0.0-SNAPSHOT</version>
-    <description>Template module for cuioss open source projects.
+    <description> Provides classes and structures for testing of jsf components / structures.
     </description>
     <packaging>jar</packaging>
-    <url>https://github.com/cuioss/cui-java-module-template/</url>
+    <url>https://github.com/cuioss/cui-jsf-test-basic/</url>
     <scm>
-        <url>https://github.com/cuioss/cui-java-module-template/</url>
-        <connection>scm:git:https://github.com/cuioss/cui-java-module-template.git</connection>
-        <developerConnection>scm:git:https://github.com/cuioss/cui-java-module-template/</developerConnection>
+        <url>https://github.com/cuioss/cui-jsf-test-basic/</url>
+        <connection>scm:git:https://github.com/cuioss/cui-jsf-test-basic.git</connection>
+        <developerConnection>scm:git:https://github.com/cuioss/cui-jsf-test-basic/</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <issueManagement>
-        <url>https://github.com/cuioss/cui-java-module-template/issues</url>
+        <url>https://github.com/cuioss/cui-jsf-test-basic/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
     <dependencies>
