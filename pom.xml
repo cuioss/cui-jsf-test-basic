@@ -25,12 +25,96 @@
         <url>https://github.com/cuioss/cui-jsf-test-basic/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
+    <properties>
+        <version.jakarta.jakartaee-web-api>8.0.0</version.jakarta.jakartaee-web-api>
+        <version.myfaces-test>1.0.8</version.myfaces-test>
+        <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
+        <version.jcl.logging>1.2</version.jcl.logging>
+        <jsf.mojarra.version>2.3.19</jsf.mojarra.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-web-api -->
+            <dependency>
+                <groupId>jakarta.platform</groupId>
+                <artifactId>jakarta.jakartaee-web-api</artifactId>
+                <version>${version.jakarta.jakartaee-web-api}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.myfaces.test/myfaces-test23 -->
+            <dependency>
+                <groupId>org.apache.myfaces.test</groupId>
+                <artifactId>myfaces-test23</artifactId>
+                <version>${version.myfaces-test}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.jcl.logging}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>jakarta.faces</artifactId>
+                <version>${jsf.mojarra.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
+        <!-- Provided -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!-- Unit testing -->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.faces</artifactId>
+        </dependency>
+        <!-- Compile -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.myfaces.test</groupId>
+            <artifactId>myfaces-test23</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <!-- JCL is sadly needed by myfaces-test. Defining it in this module should isolate it -->
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cuioss.test</groupId>
+            <artifactId>cui-test-value-objects</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cuioss.test</groupId>
+            <artifactId>cui-test-juli-logger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cuioss.test</groupId>
+            <artifactId>cui-test-generator</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
