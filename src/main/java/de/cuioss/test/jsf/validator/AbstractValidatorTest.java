@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
-import de.cuioss.test.valueobjects.objects.impl.ExceptionHelper;
+import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
@@ -93,14 +93,9 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * Instantiates and initially configures a concrete {@link Validator}
      */
     @BeforeEach
-    public void initValidator() {
+    void initValidator() {
         final Class<V> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        try {
-            validator = klazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            fail("Unable to instantiate validator, due to "
-                    + ExceptionHelper.extractCauseMessageFromThrowable(e));
-        }
+        validator = new DefaultInstantiator<>(klazz).newInstance();
         configure(validator);
     }
 
@@ -109,7 +104,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldFailOnNullComponent() {
+    void shouldFailOnNullComponent() {
         assertThrows(NullPointerException.class, () -> getValidator().validate(getFacesContext(), null, null));
     }
 
@@ -118,7 +113,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldFailOnNullFacesContext() {
+    void shouldFailOnNullFacesContext() {
         assertThrows(NullPointerException.class, () -> getValidator().validate(null, getComponent(), null));
     }
 
@@ -127,7 +122,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldHandleNullValue() {
+    void shouldHandleNullValue() {
         getValidator().validate(getFacesContext(), getComponent(), null);
     }
 
@@ -136,7 +131,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link ValidatorException}
      */
     @Test
-    public void shouldHandleValidTestdata() {
+    void shouldHandleValidTestdata() {
         final var items = new TestItems<T>();
         populate(items);
         items.allValid().forEach(
@@ -149,7 +144,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * it will be compared as well.
      */
     @Test
-    public void shouldFailOnInvalidTestdata() {
+    void shouldFailOnInvalidTestdata() {
         final var items = new TestItems<T>();
         populate(items);
         for (final TestItem<T> item : items.allInvalid()) {

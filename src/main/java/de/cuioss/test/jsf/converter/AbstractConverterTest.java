@@ -18,7 +18,7 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
-import de.cuioss.test.valueobjects.objects.impl.ExceptionHelper;
+import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -119,12 +119,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @BeforeEach
     public void initConverter() {
         final Class<C> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        try {
-            converter = klazz.newInstance();
-        } catch (final InstantiationException | IllegalAccessException e) {
-            fail("Unable to instantiate converter, due to "
-                    + ExceptionHelper.extractCauseMessageFromThrowable(e));
-        }
+        converter = new DefaultInstantiator<>(klazz).newInstance();
         configure(converter);
         testItems = new TestItems<>();
         populate(testItems);
@@ -246,7 +241,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
         // Check message
         if (null != item.getErrorMessage()) {
             assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
-                "Wrong error message detected. TestItem was : " + item.toString());
+                    "Wrong error message detected. TestItem was : " + item.toString());
         }
     }
 

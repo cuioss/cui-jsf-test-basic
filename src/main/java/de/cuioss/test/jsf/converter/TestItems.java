@@ -19,7 +19,6 @@ import lombok.Getter;
  * {@link AbstractConverterTest}<br/>
  * Class is prepared to be used as Fluent Interface
  *
- * @author i000576
  * @param <T> type of Test Item value
  */
 public class TestItems<T> {

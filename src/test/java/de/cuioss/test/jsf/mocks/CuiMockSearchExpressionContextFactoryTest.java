@@ -9,16 +9,15 @@ import org.junit.Test;
 
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 
-@SuppressWarnings("javadoc")
 class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
 
     @Test
-    public void shouldBeProvidedBySetup() {
+    void shouldBeProvidedBySetup() {
         assertNotNull(CuiMockSearchExpressionContextFactory.retrieve());
     }
 
     @Test
-    public void shouldHandleSearchExpressionContext() {
+    void shouldHandleSearchExpressionContext() {
         var factory = CuiMockSearchExpressionContextFactory.retrieve();
 
         var inlineCreated = factory.getSearchExpressionContext(getFacesContext(),

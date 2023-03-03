@@ -23,7 +23,6 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 
-@SuppressWarnings("javadoc")
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
 class ConfigurableFacesTestTest extends ConfigurableFacesTest
         implements BeanConfigurator, ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
@@ -37,7 +36,7 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     private boolean requestCallbackCalled = false;
 
     @Test
-    public void shouldCallCallbackDecorator() {
+    void shouldCallCallbackDecorator() {
         assertTrue(componentsCallbackCalled);
         assertTrue(applicationCallbackCalled);
         assertTrue(beanCallbackCalled);
@@ -45,7 +44,7 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     }
 
     @Test
-    public void shouldDefaultToIdentityResourceBundle() {
+    void shouldDefaultToIdentityResourceBundle() {
         final var text = Generators.nonEmptyStrings().next();
         getApplicationConfigDecorator().registerResourceBundle("anyBundle", "anyBundle");
         assertEquals(text,
@@ -53,7 +52,7 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     }
 
     @Test
-    public void shouldHavePickedUpBasicConfiguration() {
+    void shouldHavePickedUpBasicConfiguration() {
         assertEquals(SUPPORTED_LOCALES.iterator().next(), getApplication().getSupportedLocales().next());
         assertEquals(DEFAULT_LOCALE, getApplication().getDefaultLocale());
         assertEquals(FIREFOX, getExternalContext().getRequestHeaderMap().get(USER_AGENT));
@@ -80,25 +79,25 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     }
 
     @Test
-    public void shouldHandleNavigationOutcome() {
+    void shouldHandleNavigationOutcome() {
         getApplicationConfigDecorator().registerNavigationCase(OUTCOME, TO_VIEW_JSF);
         getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, OUTCOME);
         assertNavigatedWithOutcome(OUTCOME);
     }
 
     @Test(expected = AssertionError.class)
-    public void shouldFailHandleNavigationOutcome() {
+    void shouldFailHandleNavigationOutcome() {
         assertNavigatedWithOutcome(OUTCOME);
     }
 
     @Test
-    public void shouldHandleRedirect() throws IOException {
+    void shouldHandleRedirect() throws IOException {
         getExternalContext().redirect(TO_VIEW_JSF);
         assertRedirect(TO_VIEW_JSF);
     }
 
     @Test(expected = AssertionError.class)
-    public void shouldFailHandleRedirect() {
+    void shouldFailHandleRedirect() {
         assertRedirect(TO_VIEW_JSF);
     }
 }

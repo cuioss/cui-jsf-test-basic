@@ -16,7 +16,6 @@ import org.junit.Test;
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
 
-@SuppressWarnings("javadoc")
 class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
 
     private static final String BUNDLE_PATH = "de.cuioss.test.jsf.testbundle";
@@ -28,13 +27,13 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     private ApplicationConfigDecorator decorator;
 
     @Before
-    public void before() {
+    void before() {
         decorator = new ApplicationConfigDecorator(
                 application, facesContext);
     }
 
     @Test
-    public void shouldRegisterResourceBundle() {
+    void shouldRegisterResourceBundle() {
         assertNull(application.getResourceBundle(facesContext, BUNDLE_NAME));
 
         decorator.registerResourceBundle(BUNDLE_NAME, BUNDLE_PATH);
@@ -49,7 +48,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterSupportedLocales() {
+    void shouldRegisterSupportedLocales() {
         assertFalse(application.getSupportedLocales().hasNext());
 
         final var locale = Generators.locales().next();
@@ -59,7 +58,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterDefaultLocale() {
+    void shouldRegisterDefaultLocale() {
         assertNotNull(application.getDefaultLocale());
 
         final var locale = Generators.locales().next();
@@ -69,20 +68,20 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterNavigationCase() {
+    void shouldRegisterNavigationCase() {
         decorator.registerNavigationCase("outcome", "/toViewId");
         application.getNavigationHandler().handleNavigation(facesContext, null, "outcome");
         assertEquals("/toViewId", facesContext.getViewRoot().getViewId());
     }
 
     @Test
-    public void shouldRegisterContextPath() {
+    void shouldRegisterContextPath() {
         decorator.setContextPath("hello");
         assertEquals("hello", request.getContextPath());
     }
 
     @Test
-    public void shouldSetProjectStage() {
+    void shouldSetProjectStage() {
         decorator.setProjectStage(ProjectStage.Development);
         assertEquals(ProjectStage.Development, application.getProjectStage());
 
@@ -91,7 +90,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldSetInitParameter() {
+    void shouldSetInitParameter() {
         final var key = "initKey";
         final var value = "initValue";
         assertNull(facesContext.getExternalContext().getInitParameter(key));
@@ -101,7 +100,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldSetProjectStageThroughWrapper() {
+    void shouldSetProjectStageThroughWrapper() {
         decorator =
             new ApplicationConfigDecorator(new ConfigurableApplication(application), facesContext);
         decorator.setProjectStage(ProjectStage.Development);
@@ -112,7 +111,7 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void shouldFailToSetProjectWithInvalidApplication() {
+    void shouldFailToSetProjectWithInvalidApplication() {
         decorator =
             new ApplicationConfigDecorator(new ConfigurableApplication(new MockApplication12()),
                     facesContext);

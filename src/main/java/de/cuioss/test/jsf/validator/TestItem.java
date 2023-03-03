@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * Object which represents one Test Item which will be checked by
  *
- * @author i000576
  * @param <T> is the Type of value which will be checked
  */
 @Data

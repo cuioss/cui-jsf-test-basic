@@ -24,7 +24,6 @@ import lombok.Getter;
 /**
  * Simulate {@link ConfigurableNavigationHandler}
  *
- * @author i000576
  */
 public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigationHandler {
 

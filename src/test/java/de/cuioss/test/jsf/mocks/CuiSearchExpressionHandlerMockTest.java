@@ -15,18 +15,17 @@ import org.junit.Test;
 
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 
-@SuppressWarnings("javadoc")
 class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 
     private static final String EXPRESSION = "expression";
 
     @Test
-    public void shouldBeProvided() {
+    void shouldBeProvided() {
         assertNotNull(CuiMockSearchExpressionHandler.retrieve(getFacesContext()));
     }
 
     @Test
-    public void shouldIgnoreHint() {
+    void shouldIgnoreHint() {
         var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), mutableSet(SearchExpressionHint.IGNORE_NO_RESULT));
@@ -43,7 +42,7 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
     }
 
     @Test(expected = ComponentNotFoundException.class)
-    public void shouldFailOnMissingHint() {
+    void shouldFailOnMissingHint() {
         var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
@@ -51,7 +50,7 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
     }
 
     @Test(expected = ComponentNotFoundException.class)
-    public void shouldFailOnMissingHint2() {
+    void shouldFailOnMissingHint2() {
         var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
@@ -59,7 +58,7 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
     }
 
     @Test
-    public void shouldCallBack() {
+    void shouldCallBack() {
         var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());

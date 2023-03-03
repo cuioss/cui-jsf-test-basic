@@ -36,19 +36,18 @@ import de.cuioss.test.jsf.support.components.RendererWithAnnotation;
 import de.cuioss.test.jsf.support.components.UiComponentWithAnnotation;
 import de.cuioss.test.jsf.support.components.ValidatorWithAnnotation;
 
-@SuppressWarnings("javadoc")
 class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     private ComponentConfigDecorator decorator;
 
     @Before
-    public void before() {
+    void before() {
         decorator = new ComponentConfigDecorator(application, facesContext);
     }
 
     // UIComponent related methods
     @Test
-    public void shouldRegisterUIComponentWithId() {
+    void shouldRegisterUIComponentWithId() {
         assertUIComponentIsNotRegistered(HtmlInputText.COMPONENT_TYPE);
         decorator.registerUIComponent(HtmlInputText.COMPONENT_TYPE, HtmlInputText.class);
         assertNotNull(application.createComponent(HtmlInputText.COMPONENT_TYPE));
@@ -57,7 +56,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterUIComponentWithAnnotation() {
+    void shouldRegisterUIComponentWithAnnotation() {
         assertUIComponentIsNotRegistered(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE);
         decorator.registerUIComponent(UiComponentWithAnnotation.class);
         assertNotNull(
@@ -69,7 +68,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     // Renderer related methods
     @Test
-    public void shouldRegisterRendererByFamilyAndId() {
+    void shouldRegisterRendererByFamilyAndId() {
         assertRendererIsNotRegistered(RendererWithAnnotation.COMPONENT_FAMILY,
                 RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
@@ -83,7 +82,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterRendererByAnnotation() {
+    void shouldRegisterRendererByAnnotation() {
         assertRendererIsNotRegistered(RendererWithAnnotation.COMPONENT_FAMILY,
                 RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.class);
@@ -96,7 +95,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRenderer() {
+    void shouldRegisterMockRenderer() {
         assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE);
         decorator.registerMockRenderer(UIForm.COMPONENT_FAMILY,
@@ -106,7 +105,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterCuiMockComponent() {
+    void shouldRegisterCuiMockComponent() {
         assertUIComponentIsNotRegistered(CuiMockComponent.COMPONENT_TYPE);
 
         assertRendererIsNotRegistered(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
@@ -118,7 +117,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRendererForHtmlOutput() {
+    void shouldRegisterMockRendererForHtmlOutput() {
         assertRendererIsNotRegistered(UIOutput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlOutputText();
@@ -127,7 +126,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRendererForHtmlInput() {
+    void shouldRegisterMockRendererForHtmlInput() {
         assertRendererIsNotRegistered(UIInput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlInputText();
@@ -136,7 +135,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRendererForHtmlForm() {
+    void shouldRegisterMockRendererForHtmlForm() {
         assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY,
                 FORM_RENDERER_ID);
         decorator.registerMockRendererForHtmlForm();
@@ -145,7 +144,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
+    void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
         assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
@@ -154,7 +153,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterMockRendererForHtmlSelectOneRadio() {
+    void shouldRegisterMockRendererForHtmlSelectOneRadio() {
         assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
@@ -164,7 +163,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     // Converter related methods
     @Test
-    public void shouldRegisterConverterWithId() {
+    void shouldRegisterConverterWithId() {
         assertConverterForIdIsNotRegistered(IntegerConverter.CONVERTER_ID);
         decorator.registerConverter(IntegerConverter.class, IntegerConverter.CONVERTER_ID);
         assertNotNull(application.createConverter(IntegerConverter.CONVERTER_ID));
@@ -173,7 +172,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterConverterWithType() {
+    void shouldRegisterConverterWithType() {
         assertConverterForTypeIsNotRegistered(Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class, Serializable.class);
         assertNotNull(application.createConverter(Serializable.class));
@@ -182,7 +181,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterConverterWithAnnotatetdType() {
+    void shouldRegisterConverterWithAnnotatetdType() {
         assertConverterForTypeIsNotRegistered(Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class);
         assertNotNull(application.createConverter(Serializable.class));
@@ -191,7 +190,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterConverterWithAnnotatedId() {
+    void shouldRegisterConverterWithAnnotatedId() {
         assertConverterForIdIsNotRegistered(ConverterWithConverterIdAnnotation.CONVERTER_ID);
         decorator.registerConverter(ConverterWithConverterIdAnnotation.class);
         assertNotNull(application.createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
@@ -202,7 +201,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
     // Validator related methods
     @Test
-    public void shouldRegisterValidatorWithId() {
+    void shouldRegisterValidatorWithId() {
         assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
         decorator.registerValidator(LengthValidator.VALIDATOR_ID, LengthValidator.class);
         assertNotNull(application.createValidator(LengthValidator.VALIDATOR_ID));
@@ -211,7 +210,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterValidatorWithValidatorAnnotation() {
+    void shouldRegisterValidatorWithValidatorAnnotation() {
         assertValidatorIsNotRegistered(ValidatorWithAnnotation.VALIDATOR_ID);
         decorator.registerValidator(ValidatorWithAnnotation.class);
         assertNotNull(application.createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
@@ -220,14 +219,14 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldFailToRegisterValidatorWithMissingAnnotation() {
+    void shouldFailToRegisterValidatorWithMissingAnnotation() {
         assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
         decorator.registerValidator(LengthValidator.class);
     }
 
     // Client Behavior related
     @Test
-    public void shouldRegisterBehaviorWithId() {
+    void shouldRegisterBehaviorWithId() {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.BEHAVIOR_ID,
                 BehaviorWithAnnotation.class);
@@ -237,7 +236,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldRegisterBehaviorWithAnnotation() {
+    void shouldRegisterBehaviorWithAnnotation() {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.class);
         final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
@@ -246,13 +245,13 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldFailToRegisterBehaviorWithMissingAnnotation() {
+    void shouldFailToRegisterBehaviorWithMissingAnnotation() {
         assertBehaviorIsNotRegistered(BehaviorWithoutAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithoutAnnotation.class);
     }
 
     @Test
-    public void testAddComponent() {
+    void testAddComponent() {
         final UIComponent input = new HtmlInputText();
         decorator.addUiComponent("test:id", input);
         assertEquals(input, FacesContext.getCurrentInstance().getViewRoot().findComponent("test:id"));

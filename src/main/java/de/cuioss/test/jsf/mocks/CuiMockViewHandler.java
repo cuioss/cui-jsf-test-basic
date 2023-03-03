@@ -7,6 +7,15 @@ import javax.faces.view.ViewDeclarationLanguage;
 import org.apache.myfaces.test.mock.MockViewHandler20;
 import org.easymock.EasyMock;
 
+/**
+ * In addition ti {@link MockViewHandler20} this extension provides a mocked
+ * {@link #getViewDeclarationLanguage(FacesContext, String)} using {@link EasyMock} and a method for
+ * dynamically adding Composite-Component:
+ * {@link #registerCompositeComponent(String, String, UIComponent)}
+ * 
+ * @author Oliver Wolff
+ *
+ */
 public class CuiMockViewHandler extends MockViewHandler20 {
 
     final ViewDeclarationLanguage mock = EasyMock.niceMock(ViewDeclarationLanguage.class);
@@ -16,6 +25,11 @@ public class CuiMockViewHandler extends MockViewHandler20 {
         return mock;
     }
 
+    /**
+     * @param libraryName must not be null
+     * @param tagName must not be null
+     * @param uiComponent must not be null
+     */
     public void registerCompositeComponent(String libraryName, String tagName, UIComponent uiComponent) {
         EasyMock.expect(mock.createComponent(EasyMock.anyObject(), EasyMock.eq(libraryName), EasyMock.eq(tagName),
                 EasyMock.anyObject()))

@@ -2,10 +2,10 @@ package de.cuioss.test.jsf.renderer;
 
 import static de.cuioss.tools.string.MoreStrings.emptyToNull;
 import static java.util.Objects.requireNonNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.faces.component.UIComponent;
@@ -23,7 +23,7 @@ import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
 import de.cuioss.test.jsf.renderer.util.HtmlTreeAsserts;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
-import de.cuioss.test.valueobjects.objects.impl.ExceptionHelper;
+import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
@@ -81,13 +81,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * Instantiates and initially configures a concrete {@link Renderer}
      */
     @BeforeEach
-    public void initRenderer() {
+    void initRenderer() {
         final Class<R> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        try {
-            renderer = klazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            fail("Unable to instantiate renderer, due to " + ExceptionHelper.extractCauseMessageFromThrowable(e));
-        }
+        renderer = new DefaultInstantiator<>(klazz).newInstance();
         configure(renderer);
         if (klazz.isAnnotationPresent(FacesRenderer.class)) {
             getComponentConfigDecorator().registerRenderer(klazz);
@@ -106,19 +102,16 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @param toBeRendered the component to be passed to the renderer, must not be null
      * @return the String-result of the rendering
      */
-    @SuppressWarnings("resource")
     public String renderToString(final UIComponent toBeRendered) {
         requireNonNull(toBeRendered);
         var output = new StringWriter();
         getFacesContext().setResponseWriter(new MockResponseWriter(output));
         final Renderer testRenderer = getRenderer();
-        try {
+        assertDoesNotThrow(() -> {
             testRenderer.encodeBegin(getFacesContext(), toBeRendered);
             testRenderer.encodeChildren(getFacesContext(), toBeRendered);
             testRenderer.encodeEnd(getFacesContext(), toBeRendered);
-        } catch (IOException e) {
-            fail("Unable to render du to IOException " + e.getMessage());
-        }
+        });
         return output.toString();
     }
 
@@ -130,7 +123,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      */
     public void assertRenderResult(final UIComponent toBeRendered, final Document expected) {
         var rendered = renderToString(toBeRendered);
-        assertNotNull("Render Result must not be empty.", emptyToNull(rendered));
+        assertNotNull(emptyToNull(rendered), "Render Result must not be empty.");
         HtmlTreeAsserts.assertHtmlTreeEquals(expected, DomUtils.htmlStringToDocument(rendered));
     }
 
@@ -142,113 +135,47 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @param expected must not be null
      */
     public void assertRenderResult(final UIComponent toBeRendered, final String expected) {
-        assertNotNull("Render Result must not be empty.", emptyToNull(expected));
+        assertNotNull(emptyToNull(expected), "Render Result must not be empty.");
         assertRenderResult(toBeRendered, DomUtils.htmlStringToDocument(expected));
     }
 
     // API tests
     @Test
-    // There is no need for exception handling here:
-    @SuppressWarnings({ "squid:S1166" })
-    public // see comment: expected
     void shouldThrowNPEOnMissingParameterForDecode() {
-        try {
-            renderer.decode(null, getComponent());
-            fail(NPE_ON_MSSING_FC_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-        try {
-            renderer.decode(getFacesContext(), null);
-            fail(NPE_ON_MISSING_PARAMETER_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-    }
-
-    /**
-     * @throws IOException
-     */
-    @Test
-    // There is no need for exception handling here:
-    @SuppressWarnings({ "squid:S1166" })
-    public // see comment: expected
-    void shouldThrowNPEOnMissingParameterForEncodeBegin() throws IOException {
-        try {
-            renderer.encodeBegin(null, getComponent());
-            fail(NPE_ON_MSSING_FC_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-        try {
-            renderer.encodeBegin(getFacesContext(), null);
-            fail(NPE_ON_MISSING_PARAMETER_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-    }
-
-    /**
-     * @throws IOException
-     */
-    @Test
-    // There is no need for exception handling here:
-    @SuppressWarnings({ "squid:S1166" })
-    public // see comment: expected
-    void shouldThrowNPEOnMissingParameterForEncodeChildren() throws IOException {
-        try {
-            renderer.encodeChildren(null, getComponent());
-            fail(NPE_ON_MSSING_FC_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-        try {
-            renderer.encodeChildren(getFacesContext(), null);
-            fail(NPE_ON_MISSING_PARAMETER_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
+        assertThrows(NullPointerException.class, () -> renderer.decode(null, getComponent()),
+                NPE_ON_MSSING_FC_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.decode(getFacesContext(), null),
+                NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
     @Test
-    // There is no need for exception handling here:
-    @SuppressWarnings({ "squid:S1166" })
-    public // see comment: expected
+    void shouldThrowNPEOnMissingParameterForEncodeBegin() {
+        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(null, getComponent()),
+                NPE_ON_MSSING_FC_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(getFacesContext(), null));
+    }
+
+    @Test
+    void shouldThrowNPEOnMissingParameterForEncodeChildren() {
+        assertThrows(NullPointerException.class, () -> renderer.encodeChildren(null, getComponent()),
+                NPE_ON_MSSING_FC_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeChildren(getFacesContext(), null),
+                NPE_ON_MISSING_PARAMETER_EXPECTED);
+    }
+
+    @Test
     void shouldThrowNPEOnMissingParameterForConvertClientId() {
-        final var someId = "SomeId";
-        try {
-            renderer.convertClientId(null, someId);
-            fail(NPE_ON_MSSING_FC_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-        try {
-            renderer.convertClientId(getFacesContext(), null);
-            fail(NPE_ON_MISSING_CLIENT_ID_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
+        assertThrows(NullPointerException.class, () -> renderer.convertClientId(null, "SomeId"),
+                NPE_ON_MSSING_FC_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.convertClientId(getFacesContext(), null),
+                NPE_ON_MISSING_CLIENT_ID_EXPECTED);
     }
 
-    /**
-     * @throws IOException
-     */
     @Test
-    // There is no need for exception handling here:
-    @SuppressWarnings({ "squid:S1166" })
-    public // see comment: expected
-    void shouldThrowNPEOnMissingParameterForEncodeEnd() throws IOException {
-        try {
-            renderer.encodeEnd(null, getComponent());
-            fail(NPE_ON_MSSING_FC_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
-        try {
-            renderer.encodeEnd(getFacesContext(), null);
-            fail(NPE_ON_MISSING_PARAMETER_EXPECTED);
-        } catch (final NullPointerException e) {
-            // expected
-        }
+    void shouldThrowNPEOnMissingParameterForEncodeEnd() {
+        assertThrows(NullPointerException.class, () -> renderer.encodeEnd(null, getComponent()),
+                NPE_ON_MSSING_FC_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeEnd(getFacesContext(), null),
+                NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 }

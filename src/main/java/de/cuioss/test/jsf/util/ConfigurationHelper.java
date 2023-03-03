@@ -17,6 +17,7 @@ import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.BeanConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
+import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.collect.CollectionBuilder;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.AccessLevel;
@@ -30,8 +31,6 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("squid:S1118") // owolff: lombok generated
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ConfigurationHelper {
-
-    private static final String UNABLE_TO_INSTANTIATE = "Unable to instantiate ";
 
     /**
      * Checks the given type for the annotation {@link JsfTestConfiguration} and and puts all found
@@ -171,11 +170,7 @@ public final class ConfigurationHelper {
         for (final JsfTestConfiguration config : configurations) {
             for (final Class<? extends JsfTestContextConfigurator> type : config.value()) {
                 if (configurator.isAssignableFrom(type)) {
-                    try {
-                        instances.add((T) type.newInstance());
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        throw new IllegalStateException(UNABLE_TO_INSTANTIATE + type, e);
-                    }
+                    instances.add((T) new DefaultInstantiator<>(type).newInstance());
                 }
             }
         }

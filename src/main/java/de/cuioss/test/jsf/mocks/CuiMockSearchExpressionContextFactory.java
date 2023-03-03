@@ -30,7 +30,10 @@ public class CuiMockSearchExpressionContextFactory extends SearchExpressionConte
     @Setter
     private SearchExpressionContext searchExpressionContext;
 
-    public CuiMockSearchExpressionContextFactory(){
+    /**
+     * Default Constructor.
+     */
+    public CuiMockSearchExpressionContextFactory() {
         super(null);
     }
 

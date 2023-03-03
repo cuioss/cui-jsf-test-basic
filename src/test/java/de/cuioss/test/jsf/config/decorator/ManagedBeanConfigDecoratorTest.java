@@ -4,6 +4,7 @@ import static de.cuioss.test.jsf.config.decorator.BeanConfigDecorator.getBean;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.apache.myfaces.test.base.junit4.AbstractJsfTestCase;
 import org.junit.Before;
@@ -12,18 +13,17 @@ import org.junit.Test;
 import de.cuioss.test.jsf.support.beans.NamedSimpleBean;
 import de.cuioss.test.jsf.support.beans.NamedSimpleBeanWOName;
 
-@SuppressWarnings("javadoc")
 class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
 
     private BeanConfigDecorator decorator;
 
     @Before
-    public void before() {
+    void before() {
         decorator = new BeanConfigDecorator(facesContext);
     }
 
     @Test
-    public void shouldHandleNamedBean() {
+    void shouldHandleNamedBean() {
         var bean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
                 NamedSimpleBean.class);
         assertNull(bean);
@@ -37,7 +37,7 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
     }
 
     @Test
-    public void shouldHandleNamedBeanWOValue() {
+    void shouldHandleNamedBeanWOValue() {
         var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
                 NamedSimpleBeanWOName.class);
         assertNull(bean);
@@ -50,14 +50,13 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
         assertEquals(NamedSimpleBeanWOName.class, bean.getClass());
     }
 
-    @SuppressWarnings("unused")
-    @Test(expected = NullPointerException.class)
-    public void shouldFailWithNullAsFacesContext() {
-        new BeanConfigDecorator(null);
+    @Test
+    void shouldFailWithNullAsFacesContext() {
+        assertThrows(NullPointerException.class, () -> new BeanConfigDecorator(null));
     }
 
     @Test
-    public void shouldHandleMultipleBeans() {
+    void shouldHandleMultipleBeans() {
         decorator.register(new NamedSimpleBeanWOName(), NamedSimpleBeanWOName.BEAN_NAME);
         final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
                 NamedSimpleBeanWOName.class);

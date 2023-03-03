@@ -1,7 +1,5 @@
 package de.cuioss.test.jsf.component;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.util.List;
 
 import javax.el.ValueExpression;
@@ -21,7 +19,6 @@ import de.cuioss.test.valueobjects.objects.RuntimeProperties;
 import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
-import de.cuioss.test.valueobjects.objects.impl.ExceptionHelper;
 import de.cuioss.test.valueobjects.util.GeneratorRegistry;
 import de.cuioss.test.valueobjects.util.PropertyHelper;
 import de.cuioss.tools.reflect.MoreReflection;
@@ -77,13 +74,9 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
     public void initializeBaseClass() {
         this.targetClass = MoreReflection.extractFirstGenericTypeArgument(getClass());
 
-        try {
-            filteredMetadata =
-                ComponentTestHelper.filterPropertyMetadata(getClass(), targetClass.newInstance());
-        } catch (InstantiationException | IllegalAccessException e) {
-            fail("Unable to instantiate component, due to "
-                    + ExceptionHelper.extractCauseMessageFromThrowable(e));
-        }
+        filteredMetadata =
+            ComponentTestHelper.filterPropertyMetadata(getClass(),
+                    new DefaultInstantiator<>(targetClass).newInstance());
 
         PropertyHelper.logMessageForPropertyMetadata(filteredMetadata);
         instantiator =
@@ -95,7 +88,7 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
      * Tests the individual properties directly, saying not {@link ValueExpression}s
      */
     @Test
-    public void shouldHandleDirectProperties() {
+    void shouldHandleDirectProperties() {
         new BeanPropertyContractImpl<>(getInstantiator()).assertContract();
     }
 
@@ -103,7 +96,7 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
      * Tests the individual properties accessed using {@link ValueExpression}s
      */
     @Test
-    public void shouldHandleValueExpressions() {
+    void shouldHandleValueExpressions() {
         new ValueExpressionPropertyContract<>(instantiator, filteredMetadata, getFacesContext())
                 .assertContract();
     }

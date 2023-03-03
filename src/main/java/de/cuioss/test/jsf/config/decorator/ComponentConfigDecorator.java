@@ -32,6 +32,7 @@ import de.cuioss.test.jsf.mocks.CuiMockComponent;
 import de.cuioss.test.jsf.mocks.CuiMockRenderer;
 import de.cuioss.test.jsf.mocks.CuiMockUIViewRoot;
 import de.cuioss.test.jsf.mocks.CuiMockViewHandler;
+import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -319,11 +320,7 @@ public class ComponentConfigDecorator {
                 "In order to work this method needs a Renderer annotated with 'javax.faces.render.FacesRenderer', renderer:"
                         + renderer.getName());
         final Renderer instance;
-        try {
-            instance = renderer.newInstance();
-        } catch (final InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException("Unable to instantiate given renderer due to ", e);
-        }
+        instance = new DefaultInstantiator<>(renderer).newInstance();
         final var config = renderer.getAnnotation(FacesRenderer.class);
         return registerRenderer(config.componentFamily(), config.rendererType(), instance);
     }
@@ -387,7 +384,8 @@ public class ComponentConfigDecorator {
     }
 
     /**
-     * Add a component to the view root to be found when searching via {@link UIViewRoot#findComponent(String)}.
+     * Add a component to the view root to be found when searching via
+     * {@link UIViewRoot#findComponent(String)}.
      *
      * @param expr the expression the component should be found with
      * @param component the component
@@ -398,7 +396,7 @@ public class ComponentConfigDecorator {
         if (!(facesContext.getViewRoot() instanceof CuiMockUIViewRoot)) {
             facesContext.setViewRoot(new CuiMockUIViewRoot());
         }
-        ((CuiMockUIViewRoot)facesContext.getViewRoot()).addUiComponent(expr, component);
+        ((CuiMockUIViewRoot) facesContext.getViewRoot()).addUiComponent(expr, component);
         return this;
     }
 
