@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.github.cuioss</groupId>
+        <groupId>de.cuioss</groupId>
         <artifactId>cui-java-parent</artifactId>
-        <version>0.1.3</version>
+        <version>0.2.0</version>
         <relativePath />
     </parent>
-    <groupId>io.github.cuioss.test</groupId>
+    <groupId>de.cuioss.test</groupId>
     <artifactId>cui-jsf-test-basic</artifactId>
     <name>cui jsf test basic</name>
     <version>1.0.0-SNAPSHOT</version>
@@ -30,7 +30,7 @@
         <version.myfaces-test>1.0.8</version.myfaces-test>
         <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
         <version.jcl.logging>1.2</version.jcl.logging>
-        <jsf.mojarra.version>2.3.19</jsf.mojarra.version>
+        <version.jsf.mojarra>2.3.19</version.jsf.mojarra>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -57,7 +57,7 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.faces</artifactId>
-                <version>${jsf.mojarra.version}</version>
+                <version>${version.jsf.mojarra}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
@@ -102,16 +102,16 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.cuioss.test</groupId>
+            <groupId>de.cuioss.test</groupId>
             <artifactId>cui-test-value-objects</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.cuioss.test</groupId>
+            <groupId>de.cuioss.test</groupId>
             <artifactId>cui-test-juli-logger</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.github.cuioss.test</groupId>
+            <groupId>de.cuioss.test</groupId>
             <artifactId>cui-test-generator</artifactId>
             <scope>compile</scope>
         </dependency>
