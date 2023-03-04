@@ -3,7 +3,7 @@
 Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses the mock-based infrastructure and adds certain aspects in order to simplify its usage in the portal-context:
 
 * Convenient programmatic configuration of JSF-context
-* Specific base-classes for conveniently testing specific aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
+* Specific base-classes for conveniently testing aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
 * Lots of tooling for generating (partial-) HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into ValueObject framework
@@ -25,7 +25,7 @@ The corresponding extension takes care for handling the JSF-Setup including rese
 
 === Add Configuration
 
-As a next step you maybe want to add additional configuration. This can be done either by type
+As a next step you can add additional configuration. This can be done either by type
 
 [source,java]
 ----
@@ -52,24 +52,24 @@ The framework takes care of calling the callback methods at the correct time pri
 
 Available Extension-Types:
 
-* de.cuioss.test.jsf.config.ApplicationConfigurator
-* de.cuioss.test.jsf.config.BeanConfigurator
-* de.cuioss.test.jsf.config.ComponentConfigurator
-* de.cuioss.test.jsf.config.RequestConfigurator
+* `de.cuioss.test.jsf.config.ApplicationConfigurator`
+* `de.cuioss.test.jsf.config.BeanConfigurator`
+* `de.cuioss.test.jsf.config.ComponentConfigurator`
+* `de.cuioss.test.jsf.config.RequestConfigurator`
 
 Corresponding Configurator-Types:
 
-* de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator
-* de.cuioss.test.jsf.config.decorator.BeanConfigDecorator
-* de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator
-* de.cuioss.test.jsf.config.decorator.RequestConfigDecorator
+* `de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator`
+* `de.cuioss.test.jsf.config.decorator.BeanConfigDecorator`
+* `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
+* `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
 See the javadoc-documentation for the actual usage
 
 
 === Fine grained control
 
-For cases you want to modify the tests more fine grained or want to have access on FacesContext, ExternalContext and Co. you can use de.cuioss.test.jsf.util.JsfEnvironmentConsumer
+For cases you want to modify the tests more fine grained or want to have access on `FacesContext`, `ExternalContext` and Co. you can use `de.cuioss.test.jsf.util.JsfEnvironmentConsumer`
 
 [source,java]
 ----
@@ -94,7 +94,6 @@ class FacesTestEnabledTest implements JsfEnvironmentConsumer {
     }
 ----
 
-JsfEnvironmentHolder provides programmatic access to FacesContext, ExternalContext and Co. as well as the variants for programmatically configuring the environment.
 In addition, it provides two navigation related assertions:
 
 [source,java]
