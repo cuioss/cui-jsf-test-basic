@@ -140,9 +140,10 @@ class AbstractValidatorTestTest extends AbstractValidatorTest<LengthValidator, S
    }
 ----
 
-Take a closer look at the parameter addInvalidWithMessage. It passes and checks the key not a resolved message, see de.cuioss.test.jsf.junit5.EnableJsfEnvironment#useIdentityResouceBundle for an explanation of the resource-bundle handling.
+Take a closer look at the parameter addInvalidWithMessage. It passes and checks the key not a resolved message, see `de.cuioss.test.jsf.junit5.EnableJsfEnvironment#useIdentityResouceBundle` for an explanation of the resource-bundle handling.
 
-## Testing a Converter
+=== Testing a Converter
+
 Testing a converter is straight-forward. You focus on the actual data to be checked, by using the fluent-api on TestItems. The api-tests are implicitly run. Additional configuration can be done using the mechanisms described previously.
 The callback method for configuring the converter is again optional.
 
@@ -171,23 +172,23 @@ class AbstractConverterTestTest extends AbstractConverterTest&lt;IntegerConverte
 
 ----
 
-## Testing a Managed / Named Bean
+=== Testing a Managed / Named Bean
+
 Testing the attributes and canonical Object-Methods of a given Managed / Named Bean
 
 [source,java]
 ----
 
-@PropertyReflectionConfig(
- defaultValued = { MediumComplexityBean.STRING_WITH_DEFAULT_VALUE })
-@ObjectTestConfig(
- equalsAndHashCodeExclude = MediumComplexityBean.ATTRIBUTE_NO_OBJECT_IDENTITY_STRING)
+@PropertyReflectionConfig(defaultValued = { MediumComplexityBean.STRING_WITH_DEFAULT_VALUE })
+@ObjectTestConfig(equalsAndHashCodeExclude = MediumComplexityBean.ATTRIBUTE_NO_OBJECT_IDENTITY_STRING)
 class AbstractBeanTestTest extends AbstractBeanTest<MediumComplexityBean> {
 
 }
 
 ----
 
-## Testing a Component
+=== Testing a Component
+
 Testing a component-class usually consists of testing the api-contract, the attribute handling (incl. Value-Expressions), and custom tests. Api and attributes are tested declarative.
 
 [source,java]
@@ -210,7 +211,9 @@ class SwitchComponentTest extends AbstractComponentTest<SwitchComponent> {
 }
 
 ----
-## Testing a Component with Renderer
+
+=== Testing a Component with Renderer
+
 This is a complex real-world-example bringing together many aspects of the test-framework
 
 [source,java]
