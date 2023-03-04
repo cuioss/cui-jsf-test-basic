@@ -70,7 +70,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
         }
         if (null != resolvedComponent) {
             callback.invokeContextCallback(searchExpressionContext.getFacesContext(), resolvedComponent);
-        } else if (!shouldIgnoreNoResult(searchExpressionContext)) {
+        } else if (shouldIgnoreNoResult(searchExpressionContext)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expression);
         }
 
@@ -84,7 +84,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);
         }
         if (resolvedComponents.isEmpty()
-                && !shouldIgnoreNoResult(searchExpressionContext)) {
+                && shouldIgnoreNoResult(searchExpressionContext)) {
             throw new ComponentNotFoundException("Unable to find components with expression = " + expressions);
         }
 
@@ -94,7 +94,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     private boolean shouldIgnoreNoResult(SearchExpressionContext searchExpressionContext) {
         var expressionHints = searchExpressionContext.getExpressionHints();
-        return null != expressionHints && expressionHints.contains(SearchExpressionHint.IGNORE_NO_RESULT);
+        return null == expressionHints || !expressionHints.contains(SearchExpressionHint.IGNORE_NO_RESULT);
     }
 
     @Override

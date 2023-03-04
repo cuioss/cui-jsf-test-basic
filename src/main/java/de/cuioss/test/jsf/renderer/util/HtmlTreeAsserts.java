@@ -73,7 +73,7 @@ public final class HtmlTreeAsserts {
         }
         if (expectedChildren.size() != actualChildren.size()) {
             fail(String.format("%s: The number of children is not equal, expected=%s, actual=%s", currentPointer,
-                    expectedChildren.toString(), actualChildren.toString()));
+                expectedChildren, actualChildren));
         }
         for (var i = 0; i < expectedChildren.size(); i++) {
             assertElementWithChildrenEquals(expectedChildren.get(i), actualChildren.get(i), currentPointer);
@@ -94,8 +94,8 @@ public final class HtmlTreeAsserts {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         assertEquals(expected.getName(), actual.getName(),
-                String.format("%s: The names are not equal, expected=%s, actual=%s", pointer, expected.toString(),
-                        actual.toString()));
+                String.format("%s: The names are not equal, expected=%s, actual=%s", pointer, expected,
+                    actual));
         var expectedAttributes = expected.getAttributes();
         var actualAttributes = actual.getAttributes();
         if (expectedAttributes.isEmpty() && actualAttributes.isEmpty()) {
@@ -105,7 +105,7 @@ public final class HtmlTreeAsserts {
         actualAttributes.sort(ATTRIBUTE_COMPARATOR);
         if (expectedAttributes.size() != actualAttributes.size()) {
             fail(String.format("%s: The number of the attributes are not equal, expected=%s, actual=%s", pointer,
-                    expectedAttributes.toString(), actualAttributes.toString()));
+                expectedAttributes, actualAttributes));
         }
         for (var i = 0; i < expectedAttributes.size(); i++) {
             assertAttributeEquals(expectedAttributes.get(i), actualAttributes.get(i), pointer);

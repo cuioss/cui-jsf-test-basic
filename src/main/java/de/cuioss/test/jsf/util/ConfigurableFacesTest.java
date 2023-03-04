@@ -96,7 +96,7 @@ public class ConfigurableFacesTest {
     protected void setupAdditionalConfiguration() {
         runtimeSetup.setUp();
         configurableApplication = ConfigurableApplication.createWrapAndRegister((MockFacesContext) getFacesContext());
-        configurableApplication.setUseIdentityResouceBundle(isUseIdentityResouceBundle());
+        configurableApplication.setUseIdentityResouceBundle(isUseIdentityResourceBundle());
 
         componentConfigDecorator = new ComponentConfigDecorator(getApplication(), getFacesContext());
         beanConfigDecorator = new BeanConfigDecorator(getFacesContext());
@@ -144,7 +144,7 @@ public class ConfigurableFacesTest {
         return runtimeSetup.getResponse();
     }
 
-    protected boolean isUseIdentityResouceBundle() {
+    protected boolean isUseIdentityResourceBundle() {
         return true;
     }
 

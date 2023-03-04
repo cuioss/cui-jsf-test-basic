@@ -118,9 +118,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         var eventField = FieldWrapper.from(UIViewRoot.class, "_events");
         if (eventField.isPresent()) {
             var events = eventField.get().readValue(uiViewRoot);
-            if (events.isPresent()) {
-                found.addAll((Collection<? extends FacesEvent>) events.get());
-            }
+            events.ifPresent(o -> found.addAll((Collection<? extends FacesEvent>) o));
             return found;
         }
         // Hacky: Private field of mojarra

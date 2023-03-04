@@ -223,7 +223,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
         for (final ConverterTestItem<T> item : getTestItems().getInvalidObjectTestItems()) {
             try {
                 getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
-                fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item.toString());
+                fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item);
             } catch (final ConverterException e) {
                 verifyExpectedErrorMessage(item, e);
             }
@@ -234,7 +234,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
         // Check message
         if (null != item.getErrorMessage()) {
             assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
-                    "Wrong error message detected. TestItem was : " + item.toString());
+                    "Wrong error message detected. TestItem was : " + item);
         }
     }
 
@@ -263,7 +263,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
         for (final ConverterTestItem<T> item : getTestItems().getInvalidStringTestItems()) {
             try {
                 getConverter().getAsObject(getFacesContext(), getComponent(), item.getStringValue());
-                fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item.toString());
+                fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item);
             } catch (final ConverterException e) {
                 verifyExpectedErrorMessage(item, e);
             }
