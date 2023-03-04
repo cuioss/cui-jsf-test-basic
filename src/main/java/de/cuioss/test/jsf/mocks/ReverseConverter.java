@@ -20,7 +20,7 @@ public class ReverseConverter implements Converter<String> {
      * The standard converter id for this converter.
      * </p>
      */
-    public static final String CONVERTER_ID = "com.icw.ehf.cui.test.utils.ReserveConverter";
+    public static final String CONVERTER_ID = "de.cuioss.test.jsf.mocks.ReserveConverter";
 
     @Override
     public String getAsObject(final FacesContext context, final UIComponent component,
