@@ -13,7 +13,7 @@ import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 
 @EnableJsfEnvironment
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
-class JsfSetupExtensionTestWOEnvironmentConsumer {
+class JsfSetupExtensionTestWOEnvironmentConsumerTest {
 
     @Test
     void shouldBootstrapJsf() {

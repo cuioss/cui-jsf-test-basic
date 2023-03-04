@@ -3,7 +3,6 @@ package de.cuioss.test.jsf.renderer;
 import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,8 +23,6 @@ import org.junit.jupiter.api.Test;
 import de.cuioss.test.jsf.config.renderer.VerifyComponentRendererConfig;
 import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
-import de.cuioss.test.valueobjects.objects.impl.ExceptionHelper;
-import de.cuioss.tools.logging.CuiLogger;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
@@ -43,8 +40,6 @@ import lombok.Getter;
  * @param <R> The renderer being tested
  */
 public abstract class AbstractComponentRendererTest<R extends Renderer> extends AbstractRendererTestBase<R> {
-
-    private static final CuiLogger log = new CuiLogger(AbstractComponentRendererTest.class);
 
     @Getter
     private Set<RendererAttributeAssert> activeAsserts;
@@ -64,16 +59,16 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
 
     private void handleConfigAnnotation() {
         Optional<VerifyComponentRendererConfig> configOption =
-                MoreReflection.extractAnnotation(getClass(), VerifyComponentRendererConfig.class);
+            MoreReflection.extractAnnotation(getClass(), VerifyComponentRendererConfig.class);
         configOption.ifPresent(verifyComponentRendererConfig -> wrapComponentInForm =
-                verifyComponentRendererConfig.wrapComponentInForm());
+            verifyComponentRendererConfig.wrapComponentInForm());
     }
 
     private void handleRenderAttributeAsserts() {
         activeAsserts = new HashSet<>(Arrays.asList(CommonRendererAsserts.values()));
         final Set<CommonRendererAsserts> vetoes = new HashSet<>();
         MoreReflection.extractAllAnnotations(this.getClass(), VetoRenderAttributeAssert.class)
-        .forEach(veto -> vetoes.addAll(mutableList(veto.value())));
+                .forEach(veto -> vetoes.addAll(mutableList(veto.value())));
         activeAsserts.removeAll(vetoes);
     }
 
@@ -119,7 +114,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         final List<FacesEvent> found = new ArrayList<>();
         final var uiViewRoot = getFacesContext().getViewRoot();
         // Hacky: Private field of myfaces
-        var eventField = accessField(UIViewRoot.class, "_events");
+        var eventField = MoreReflection.accessField(UIViewRoot.class, "_events");
         if (eventField.isPresent()) {
             try {
                 var events = (List<FacesEvent>) eventField.get().get(uiViewRoot);
@@ -133,7 +128,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
             }
         }
         // Hacky: Private field of mojarra
-        eventField = accessField(UIViewRoot.class, "events");
+        eventField = MoreReflection.accessField(UIViewRoot.class, "events");
         if (!eventField.isPresent()) {
             fail("javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
@@ -149,16 +144,4 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         }
     }
 
-    private static Optional<Field> accessField(final Class<?> clazz, final String fieldName) {
-        // Lets hack
-        try {
-            var eventField = clazz.getDeclaredField(fieldName);
-            eventField.setAccessible(true);
-            return Optional.of(eventField);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException e1) {
-            log.debug("Unable to access private fields '{}' onf type {}, reason {}", fieldName, clazz,
-                    ExceptionHelper.extractCauseMessageFromThrowable(e1));
-            return Optional.empty();
-        }
-    }
 }

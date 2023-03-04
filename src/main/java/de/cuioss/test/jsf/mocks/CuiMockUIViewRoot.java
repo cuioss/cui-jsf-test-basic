@@ -9,7 +9,7 @@ import javax.faces.component.UIViewRoot;
 
 /**
  * Mock variant of {@link UIViewRoot} providing a heloer for adding a {@link UIComponent} at runtime
- * 
+ *
  * @author Oliver Wolff
  *
  */

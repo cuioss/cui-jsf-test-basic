@@ -32,8 +32,9 @@ class ComponentTestHelperTest {
 
     @Test
     void shouldFailOnCollectionType() {
+        var component = new ComponentWithCollection();
         assertThrows(IllegalStateException.class, () -> {
-            ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, new ComponentWithCollection());
+            ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, component);
 
         });
     }

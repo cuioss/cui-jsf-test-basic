@@ -11,7 +11,7 @@ import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 
-class ValueExpressionPropertyContractTestInvalid
+class ValueExpressionPropertyContractTestInvalidTest
         extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {
 
     @Test

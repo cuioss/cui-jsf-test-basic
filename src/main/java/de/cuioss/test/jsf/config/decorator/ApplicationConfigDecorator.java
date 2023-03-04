@@ -19,6 +19,7 @@ import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.apache.myfaces.test.mock.MockServletContext;
 
 import de.cuioss.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
+import de.cuioss.tools.reflect.FieldWrapper;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -106,15 +107,12 @@ public class ApplicationConfigDecorator {
      *         usage
      */
     public ApplicationConfigDecorator setProjectStage(final ProjectStage projectStage) {
-        try {
-            var projectStageField = MockApplication20.class.getDeclaredField("_projectStage");
-            projectStageField.setAccessible(true);
-            projectStageField.set(getMockApplicationInstance(application), projectStage);
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-                | IllegalAccessException e) {
+        var projectStageField = FieldWrapper.from(MockApplication20.class, "_projectStage");
+        if (projectStageField.isEmpty()) {
             throw new IllegalStateException(
-                    "Unable to set projectStage, due to underlying Exception", e);
+                    "Unable to set projectStage, due to underlying Exception");
         }
+        projectStageField.get().writeValue(getMockApplicationInstance(application), projectStage);
         return this;
     }
 

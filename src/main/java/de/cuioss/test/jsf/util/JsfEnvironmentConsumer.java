@@ -38,7 +38,7 @@ import de.cuioss.test.jsf.junit5.JsfSetupExtension;
  * </code>
  *
  * </pre>
- * 
+ *
  * The actual delegation is implemented using default implementations within this interface, see the
  * unit-test:
  *

@@ -1,7 +1,7 @@
 package de.cuioss.test.jsf.renderer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.Serializable;
 
@@ -17,13 +17,13 @@ class CommonRendererAssertsTest {
     public static final String NESTED_DIV = "<div><div /></div>";
 
     public static final String NESTED_DIV_WITH_ID_ATTRIBUTE =
-            "<div id=\"" + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
+        "<div id=\"" + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_STYLE_ATTRIBUTE =
-            "<div style=\"" + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
+        "<div style=\"" + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_STYLE_CLASS_ATTRIBUTE =
-            "<div class=\"" + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
+        "<div class=\"" + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_PT_ATTRIBUTE = "<div data-passthrough-test=\""
             + CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue() + "\"><div /></div>";
@@ -61,15 +61,11 @@ class CommonRendererAssertsTest {
         assertEquals(CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue(),
                 component.getPassThroughAttributes().get(CommonRendererAsserts.PASSTHROUGH.getAttributeName()));
         // Should detect missing attribute
-        try {
-            CommonRendererAsserts.PASSTHROUGH
-            .assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement());
-            fail("Should have thrown error");
-        } catch (AssertionError e) {
-            // NOOP, expected
-        }
+        var result = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
+        assertThrows(AssertionError.class, () -> CommonRendererAsserts.PASSTHROUGH
+                .assertAttributeSet(result));
         CommonRendererAsserts.PASSTHROUGH
-        .assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV_WITH_PT_ATTRIBUTE).getRootElement());
+                .assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV_WITH_PT_ATTRIBUTE).getRootElement());
     }
 
     private static void verifyContract(final RendererAttributeAssert attributeAssert, final String positiveHtml,
@@ -78,12 +74,8 @@ class CommonRendererAssertsTest {
         attributeAssert.applyAttribute(component);
         assertEquals(traceAttributeValue, PropertyUtil.readProperty(component, attributeAssert.getAttributeName()));
         // Should detect missing attribute
-        try {
-            attributeAssert.assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement());
-            fail("Should have thrown error");
-        } catch (AssertionError e) {
-            // NOOP, expected
-        }
+        var result = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
+        assertThrows(AssertionError.class, () -> attributeAssert.assertAttributeSet(result));
         attributeAssert.assertAttributeSet(DomUtils.htmlStringToDocument(positiveHtml).getRootElement());
     }
 }

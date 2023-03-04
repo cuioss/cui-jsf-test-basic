@@ -12,7 +12,7 @@ import org.easymock.EasyMock;
  * {@link #getViewDeclarationLanguage(FacesContext, String)} using {@link EasyMock} and a method for
  * dynamically adding Composite-Component:
  * {@link #registerCompositeComponent(String, String, UIComponent)}
- * 
+ *
  * @author Oliver Wolff
  *
  */
