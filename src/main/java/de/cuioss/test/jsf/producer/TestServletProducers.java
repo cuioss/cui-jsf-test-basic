@@ -14,21 +14,21 @@ import org.apache.myfaces.test.mock.MockHttpServletResponse;
  * This class has no bean annotation. Use it as opt-in using AddBeanClasses or create your own
  * producer with EasyMock.
  *
- * @author Sven Haag, Sven Haag
+ * @author Sven Haag
  */
 public class TestServletProducers {
 
     @Produces
     @Typed({ HttpServletRequest.class })
     @RequestScoped
-    private HttpServletRequest getServletRequest() {
+    HttpServletRequest getServletRequest() {
         return (MockHttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     }
 
     @Produces
     @Typed({ HttpServletResponse.class })
     @RequestScoped
-    private HttpServletResponse getServletResponse() {
+    HttpServletResponse getServletResponse() {
         return (MockHttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
     }
 }

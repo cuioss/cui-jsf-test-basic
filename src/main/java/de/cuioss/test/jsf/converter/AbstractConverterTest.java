@@ -45,7 +45,6 @@ import lombok.Setter;
  * overwrite {@link #getComponent()}
  * </p>
  * <h3>Test-Methods</h3>
- * <p>
  * The core test-methods are:
  * <ul>
  * <li>{@link #shouldFailOnInvalidObjects()}</li>
@@ -56,9 +55,7 @@ import lombok.Setter;
  * </ul>
  * They call {@link #populate(TestItems)} in oder to create corresponding test-data. The
  * implementation is in the actual test-class.
- * </p>
  * <h3>API-Test</h3>
- * <p>
  * The api as defined within {@link Converter} is tested with the methods
  * <ul>
  * <li>{@link #shouldFailOnNullComponentOnGetAsObject()}</li>
@@ -67,7 +64,6 @@ import lombok.Setter;
  * <li>{@link #shouldFailOnNullFacesContextOnGetAsString()}</li>
  * <li>{@link #shouldReturnEmptyStringOnNullValue()}</li>
  * </ul>
- * </p>
  * <h3>Example</h3>
  * Shows all variants of dealing with {@link TestItems}
  *
@@ -88,7 +84,6 @@ import lombok.Setter;
  * }
  * </code>
  * </pre>
- * <p>
  *
  * @param <C> identifying the concrete {@link Converter} to be tested.
  * @param <T> identifying the type of elements to be used for values to be given to the
@@ -117,7 +112,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * Instantiates and initially configures a concrete {@link Converter}
      */
     @BeforeEach
-    public void initConverter() {
+    void initConverter() {
         final Class<C> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
         converter = new DefaultInstantiator<>(klazz).newInstance();
         configure(converter);
@@ -160,7 +155,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
-    public void shouldFailOnNullComponentOnGetAsObject() {
+    void shouldFailOnNullComponentOnGetAsObject() {
         assertThrows(NullPointerException.class, () -> getConverter().getAsObject(getFacesContext(), null, null));
     }
 
@@ -169,7 +164,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
-    public void shouldFailOnNullFacesContextOnGetAsObject() {
+    void shouldFailOnNullFacesContextOnGetAsObject() {
         assertThrows(NullPointerException.class, () -> getConverter().getAsObject(null, getComponent(), null));
     }
 
@@ -178,7 +173,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldFailOnNullComponentOnGetAsString() {
+    void shouldFailOnNullComponentOnGetAsString() {
         assertThrows(NullPointerException.class, () -> getConverter().getAsString(getFacesContext(), null, null));
     }
 
@@ -187,7 +182,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldFailOnNullFacesContextOnGetAsString() {
+    void shouldFailOnNullFacesContextOnGetAsString() {
         assertThrows(NullPointerException.class, () -> getConverter().getAsString(null, getComponent(), null));
     }
 
@@ -196,7 +191,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
-    public void shouldReturnEmptyStringOnNullValue() {
+    void shouldReturnEmptyStringOnNullValue() {
         assertEquals("", getConverter().getAsString(getFacesContext(), getComponent(), null));
     }
 
@@ -210,7 +205,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with the result being checked against the initial value.
      */
     @Test
-    public void shouldRoundTripValidData() {
+    void shouldRoundTripValidData() {
         for (final String value : getTestItems().getRoundtripValues()) {
             final var converted =
                 (T) getConverter().getAsObject(getFacesContext(), getComponent(), value);
@@ -226,7 +221,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
-    public void shouldFailOnInvalidObjects() {
+    void shouldFailOnInvalidObjects() {
         for (final ConverterTestItem<T> item : getTestItems().getInvalidObjectTestItems()) {
             try {
                 getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
@@ -250,7 +245,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * javax.faces.component.UIComponent, Object)} with valid objects, derived by {@link TestItems}
      */
     @Test
-    public void shouldPassOnValidObjects() {
+    void shouldPassOnValidObjects() {
         for (final ConverterTestItem<T> item : getTestItems().getValidObjectTestItems()) {
             final var result =
                 getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
@@ -266,7 +261,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
-    public void shouldFailOnInvalidStrings() {
+    void shouldFailOnInvalidStrings() {
         for (final ConverterTestItem<T> item : getTestItems().getInvalidStringTestItems()) {
             try {
                 getConverter().getAsObject(getFacesContext(), getComponent(), item.getStringValue());
@@ -283,7 +278,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with valid String, derived by {@link TestItems}
      */
     @Test
-    public void shouldPassOnValidStrings() {
+    void shouldPassOnValidStrings() {
         for (final ConverterTestItem<T> item : getTestItems().getValidStringTestItems()) {
             final var result = (T) getConverter().getAsObject(getFacesContext(), getComponent(),
                     item.getStringValue());

@@ -23,7 +23,8 @@ import de.cuioss.test.jsf.junit5.JsfSetupExtension;
 
 /**
  * Simple interface to be used in context of {@link JsfSetupExtension}. It provides an interface for
- * injecting the configured {@link JsfEnvironmentHolder}. It is needed, when the test needs to access
+ * injecting the configured {@link JsfEnvironmentHolder}. It is needed, when the test needs to
+ * access
  * either an {@link JsfTestContextConfigurator} like {@link ComponentConfigDecorator} or
  * {@link RequestConfigDecorator} or a JSF-Object like {@link FacesContext} or {@link Application}
  * programmatically.
@@ -37,7 +38,7 @@ import de.cuioss.test.jsf.junit5.JsfSetupExtension;
  * </code>
  *
  * </pre>
- * <p>
+ * 
  * The actual delegation is implemented using default implementations within this interface, see the
  * unit-test:
  *
@@ -70,7 +71,7 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
                 getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
     }
  * </code>
- * </p>
+ * </pre>
  *
  * @author Oliver Wolff
  *

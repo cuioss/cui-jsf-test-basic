@@ -22,7 +22,7 @@ public class TestItems<T> {
      * Add to TestData Store a Test item which must fail with {@link ValidatorException}
      *
      * @param value T invalid value which should cause a {@link ValidatorException}
-     * @return TestItems<T> reference to this object
+     * @return TestItems reference to this object
      */
     public TestItems<T> addInvalid(final T value) {
         return this.addItem(false, value, FacesMessage.SEVERITY_ERROR, null);
@@ -33,7 +33,7 @@ public class TestItems<T> {
      *
      * @param value T invalid value which should cause a {@link ValidatorException}
      * @param message which should be set within the {@link ValidatorException}
-     * @return TestItems<T> reference to this object
+     * @return TestItems reference to this object
      */
     public TestItems<T> addInvalidWithMessage(final T value, final String message) {
         return this.addItem(false, value, FacesMessage.SEVERITY_ERROR, message);
@@ -43,7 +43,7 @@ public class TestItems<T> {
      * Add to TestData Store a Test item which must fail with {@link ValidatorException}
      *
      * @param value T invalid value which should cause a {@link ValidatorException}
-     * @return TestItems<T> reference to this object
+     * @return TestItems reference to this object
      */
     public TestItems<T> addValid(final T value) {
         return this.addItem(true, value, null, null);
@@ -57,7 +57,7 @@ public class TestItems<T> {
      * @param level {@link Severity} represent message severity, usually
      *            {@link FacesMessage#SEVERITY_ERROR}
      * @param message which should be set within the {@link ValidatorException}
-     * @return TestItems<T> reference to this object
+     * @return TestItems reference to this object
      */
     private TestItems<T> addItem(final boolean valid, final T value, final Severity level,
             final String message) {

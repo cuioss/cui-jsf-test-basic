@@ -57,7 +57,7 @@ import lombok.Getter;
  * <li>{@link #assertRenderResult(UIComponent, Document)} and
  * {@link #assertRenderResult(UIComponent, String)} are the main
  * 'business' methods for explicit testing</li>
- * <ul>
+ * </ul>
  *
  * @author Oliver Wolff
  * @param <R> The renderer being tested

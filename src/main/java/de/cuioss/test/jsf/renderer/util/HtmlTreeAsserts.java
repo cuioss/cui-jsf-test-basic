@@ -83,7 +83,7 @@ public final class HtmlTreeAsserts {
     /**
      * Compares two instances of {@link Element} for equality. Attribute order
      * is not relevant. It checks the name of the elements and the attributes,
-     * <em>not<em> the children
+     * <em>not</em> the children
      *
      * @param expected expected value
      * @param actual actual

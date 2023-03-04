@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.xml.XMLConstants;
+
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -42,7 +44,10 @@ public class DomUtils {
         requireNonNull(htmlString);
         final var wrappedInput = String.format(ROOT_TEMPLATE, htmlString);
         try (var input = IOStreams.toInputStream(wrappedInput)) {
-            return new SAXBuilder().build(input);
+            var saxBuilder = new SAXBuilder();
+            saxBuilder.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            saxBuilder.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            return saxBuilder.build(input);
         } catch (JDOMException | IOException e) {
             throw new IllegalArgumentException("Unable to parse given String, due to ", e);
         }

@@ -70,7 +70,7 @@ public abstract class AbstractBeanTest<T> extends AbstractPropertyAwareFacesTest
      * Initializes the object-test-contracts and the corresponding {@link ParameterizedInstantiator}
      */
     @BeforeEach
-    public void before() {
+    void before() {
         this.activeObjectContracts = ObjectContractHelper.handleVetoedContracts(getClass());
         Optional<VerifyBeanProperty> annotation =
             MoreReflection.extractAnnotation(getClass(), VerifyBeanProperty.class);
@@ -104,7 +104,7 @@ public abstract class AbstractBeanTest<T> extends AbstractPropertyAwareFacesTest
      * Tests the individually found properties, see {@link VerifyBeanProperty}
      */
     @Test
-    public void shouldImplementBeanContract() {
+    void shouldImplementBeanContract() {
         new BeanPropertyContractImpl<>(getInstantiator()).assertContract();
     }
 
