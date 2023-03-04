@@ -1,7 +1,6 @@
 package de.cuioss.test.jsf.renderer;
 
 import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +110,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      *         time.
      */
     // owolff: Sonar false-positive
-    @SuppressWarnings({ "unchecked", "squid:S3655" })
+    @SuppressWarnings({ "unchecked" })
     public List<FacesEvent> extractEventsFromViewRoot() {
         final List<FacesEvent> found = new ArrayList<>();
         final var uiViewRoot = getFacesContext().getViewRoot();
@@ -126,8 +125,9 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         }
         // Hacky: Private field of mojarra
         eventField = FieldWrapper.from(UIViewRoot.class, "events");
-        if (!eventField.isPresent()) {
-            fail("javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
+        if (eventField.isEmpty()) {
+            throw new AssertionError(
+                    "javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
         var events = eventField.get().readValue(uiViewRoot);
         if (events.isPresent()) {

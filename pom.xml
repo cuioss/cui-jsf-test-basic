@@ -85,6 +85,12 @@
             <groupId>org.apache.myfaces.test</groupId>
             <artifactId>myfaces-test23</artifactId>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JCL is sadly needed by myfaces-test. Defining it in this module should isolate it -->
         <dependency>

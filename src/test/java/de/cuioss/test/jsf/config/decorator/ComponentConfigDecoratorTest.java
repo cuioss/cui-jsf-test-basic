@@ -2,13 +2,14 @@ package de.cuioss.test.jsf.config.decorator;
 
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.FORM_RENDERER_ID;
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.TEXT_RENDERER_ID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.Serializable;
 
+import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
@@ -17,17 +18,15 @@ import javax.faces.component.UISelectBoolean;
 import javax.faces.component.UISelectOne;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
-import javax.faces.convert.IntegerConverter;
 import javax.faces.render.Renderer;
 import javax.faces.validator.LengthValidator;
 
-import org.apache.myfaces.test.base.junit4.AbstractJsfTestCase;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.jsf.mocks.CuiMockComponent;
+import de.cuioss.test.jsf.mocks.ReverseConverter;
 import de.cuioss.test.jsf.support.components.BehaviorWithAnnotation;
 import de.cuioss.test.jsf.support.components.BehaviorWithoutAnnotation;
 import de.cuioss.test.jsf.support.components.ConverterWithConverterIdAnnotation;
@@ -35,14 +34,15 @@ import de.cuioss.test.jsf.support.components.ConverterWithTypeAnnotation;
 import de.cuioss.test.jsf.support.components.RendererWithAnnotation;
 import de.cuioss.test.jsf.support.components.UiComponentWithAnnotation;
 import de.cuioss.test.jsf.support.components.ValidatorWithAnnotation;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 
-class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
+class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
 
     private ComponentConfigDecorator decorator;
 
-    @Before
+    @BeforeEach
     void before() {
-        decorator = new ComponentConfigDecorator(application, facesContext);
+        decorator = new ComponentConfigDecorator(getApplication(), getFacesContext());
     }
 
     // UIComponent related methods
@@ -50,9 +50,9 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     void shouldRegisterUIComponentWithId() {
         assertUIComponentIsNotRegistered(HtmlInputText.COMPONENT_TYPE);
         decorator.registerUIComponent(HtmlInputText.COMPONENT_TYPE, HtmlInputText.class);
-        assertNotNull(application.createComponent(HtmlInputText.COMPONENT_TYPE));
+        assertNotNull(getApplication().createComponent(HtmlInputText.COMPONENT_TYPE));
         assertEquals(HtmlInputText.class,
-                application.createComponent(HtmlInputText.COMPONENT_TYPE).getClass());
+                getApplication().createComponent(HtmlInputText.COMPONENT_TYPE).getClass());
     }
 
     @Test
@@ -60,9 +60,9 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertUIComponentIsNotRegistered(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE);
         decorator.registerUIComponent(UiComponentWithAnnotation.class);
         assertNotNull(
-                application.createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE));
+                getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE));
         assertEquals(UiComponentWithAnnotation.class,
-                application.createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE)
+                getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE)
                         .getClass());
     }
 
@@ -75,7 +75,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
                 RendererWithAnnotation.RENDERER_TYPE, new RendererWithAnnotation());
 
         final var renderer =
-            facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
+            getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
                     RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
@@ -88,7 +88,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         decorator.registerRenderer(RendererWithAnnotation.class);
 
         final var renderer =
-            facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
+            getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
                     RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
@@ -100,7 +100,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
                 HtmlForm.COMPONENT_TYPE);
         decorator.registerMockRenderer(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE);
-        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
                 HtmlForm.COMPONENT_TYPE));
     }
 
@@ -110,10 +110,11 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
 
         assertRendererIsNotRegistered(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
         decorator.registerCuiMockComponentWithRenderer();
-        assertNotNull(facesContext.getRenderKit().getRenderer(CuiMockComponent.FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(CuiMockComponent.FAMILY,
                 CuiMockComponent.RENDERER_TYPE));
-        assertNotNull(application.createComponent(CuiMockComponent.COMPONENT_TYPE));
-        assertEquals(CuiMockComponent.class, application.createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
+        assertNotNull(getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE));
+        assertEquals(CuiMockComponent.class,
+                getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
     }
 
     @Test
@@ -121,7 +122,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertRendererIsNotRegistered(UIOutput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlOutputText();
-        assertNotNull(facesContext.getRenderKit().getRenderer(UIOutput.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIOutput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID));
     }
 
@@ -130,7 +131,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertRendererIsNotRegistered(UIInput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlInputText();
-        assertNotNull(facesContext.getRenderKit().getRenderer(UIInput.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIInput.COMPONENT_FAMILY,
                 TEXT_RENDERER_ID));
     }
 
@@ -139,7 +140,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY,
                 FORM_RENDERER_ID);
         decorator.registerMockRendererForHtmlForm();
-        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY,
                 FORM_RENDERER_ID));
     }
 
@@ -148,7 +149,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
-        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID));
     }
 
@@ -157,45 +158,45 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
-        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
+        assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
                 ComponentConfigDecorator.SELECTONE_RENDERER_ID));
     }
 
     // Converter related methods
     @Test
     void shouldRegisterConverterWithId() {
-        assertConverterForIdIsNotRegistered(IntegerConverter.CONVERTER_ID);
-        decorator.registerConverter(IntegerConverter.class, IntegerConverter.CONVERTER_ID);
-        assertNotNull(application.createConverter(IntegerConverter.CONVERTER_ID));
-        assertEquals(IntegerConverter.class,
-                application.createConverter(IntegerConverter.CONVERTER_ID).getClass());
+        assertConverterForIdIsNotRegistered(ReverseConverter.CONVERTER_ID);
+        decorator.registerConverter(ReverseConverter.class, ReverseConverter.CONVERTER_ID);
+        assertNotNull(getApplication().createConverter(ReverseConverter.CONVERTER_ID));
+        assertEquals(ReverseConverter.class,
+                getApplication().createConverter(ReverseConverter.CONVERTER_ID).getClass());
     }
 
     @Test
     void shouldRegisterConverterWithType() {
         assertConverterForTypeIsNotRegistered(Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class, Serializable.class);
-        assertNotNull(application.createConverter(Serializable.class));
+        assertNotNull(getApplication().createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-                application.createConverter(Serializable.class).getClass());
+                getApplication().createConverter(Serializable.class).getClass());
     }
 
     @Test
     void shouldRegisterConverterWithAnnotatetdType() {
         assertConverterForTypeIsNotRegistered(Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class);
-        assertNotNull(application.createConverter(Serializable.class));
+        assertNotNull(getApplication().createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-                application.createConverter(Serializable.class).getClass());
+                getApplication().createConverter(Serializable.class).getClass());
     }
 
     @Test
     void shouldRegisterConverterWithAnnotatedId() {
         assertConverterForIdIsNotRegistered(ConverterWithConverterIdAnnotation.CONVERTER_ID);
         decorator.registerConverter(ConverterWithConverterIdAnnotation.class);
-        assertNotNull(application.createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
+        assertNotNull(getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
         assertEquals(ConverterWithConverterIdAnnotation.class,
-                application.createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
+                getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
                         .getClass());
     }
 
@@ -204,24 +205,24 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     void shouldRegisterValidatorWithId() {
         assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
         decorator.registerValidator(LengthValidator.VALIDATOR_ID, LengthValidator.class);
-        assertNotNull(application.createValidator(LengthValidator.VALIDATOR_ID));
+        assertNotNull(getApplication().createValidator(LengthValidator.VALIDATOR_ID));
         assertEquals(LengthValidator.class,
-                application.createValidator(LengthValidator.VALIDATOR_ID).getClass());
+                getApplication().createValidator(LengthValidator.VALIDATOR_ID).getClass());
     }
 
     @Test
     void shouldRegisterValidatorWithValidatorAnnotation() {
         assertValidatorIsNotRegistered(ValidatorWithAnnotation.VALIDATOR_ID);
         decorator.registerValidator(ValidatorWithAnnotation.class);
-        assertNotNull(application.createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
+        assertNotNull(getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
         assertEquals(ValidatorWithAnnotation.class,
-                application.createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
+                getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void shouldFailToRegisterValidatorWithMissingAnnotation() {
         assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
-        decorator.registerValidator(LengthValidator.class);
+        assertThrows(IllegalArgumentException.class, () -> decorator.registerValidator(LengthValidator.class));
     }
 
     // Client Behavior related
@@ -230,7 +231,7 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.BEHAVIOR_ID,
                 BehaviorWithAnnotation.class);
-        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = getApplication().createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(behavior.getClass(), BehaviorWithAnnotation.class);
     }
@@ -239,73 +240,54 @@ class ComponentConfigDecoratorTest extends AbstractJsfTestCase {
     void shouldRegisterBehaviorWithAnnotation() {
         assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.class);
-        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = getApplication().createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(behavior.getClass(), BehaviorWithAnnotation.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     void shouldFailToRegisterBehaviorWithMissingAnnotation() {
         assertBehaviorIsNotRegistered(BehaviorWithoutAnnotation.BEHAVIOR_ID);
-        decorator.registerBehavior(BehaviorWithoutAnnotation.class);
+        assertThrows(IllegalArgumentException.class, () -> decorator.registerBehavior(BehaviorWithoutAnnotation.class));
     }
 
     @Test
     void testAddComponent() {
         final UIComponent input = new HtmlInputText();
         decorator.addUiComponent("test:id", input);
-        assertEquals(input, FacesContext.getCurrentInstance().getViewRoot().findComponent("test:id"));
+        assertEquals(input, getFacesContext().getViewRoot().findComponent("test:id"));
     }
 
     private void assertValidatorIsNotRegistered(final String validatorId) {
-        try {
-            application.createValidator(validatorId);
-            fail("Validator is registered " + validatorId);
-        } catch (final RuntimeException e) {
-            // expected
-        }
+        var application = getApplication();
+        assertThrows(FacesException.class, () -> application.createValidator(validatorId));
     }
 
     private void assertBehaviorIsNotRegistered(final String behaviorId) {
-        try {
-            application.createBehavior(behaviorId);
-            fail("Validator is registered " + behaviorId);
-        } catch (final RuntimeException e) {
-            // expected
-        }
+        var application = getApplication();
+        assertThrows(FacesException.class, () -> application.createBehavior(behaviorId));
     }
 
     private void assertConverterForIdIsNotRegistered(final String converterId) {
-        try {
-            final Converter<?> converter = application.createConverter(converterId);
-            assertNull("Converter is registered " + converterId, converter);
-        } catch (final RuntimeException e) {
-            // expected
-        }
+        var application = getApplication();
+        assertNull(application.createConverter(converterId));
     }
 
     private void assertConverterForTypeIsNotRegistered(final Class<?> target) {
-        final Converter<?> converter = application.createConverter(target);
-        assertNull("Converter is registered " + target, converter);
+        final Converter<?> converter = getApplication().createConverter(target);
+        assertNull(converter, "Converter is registered " + target);
     }
 
     private void assertUIComponentIsNotRegistered(final String componentType) {
-        UIComponent component;
-        try {
-            component = application.createComponent(componentType);
-            assertNull("UIComponent is registered " + componentType, component);
-        } catch (final Exception e) {
-            // expected
-        }
+        var application = getApplication();
+        assertThrows(FacesException.class, () -> application.createComponent(componentType));
+
     }
 
     private void assertRendererIsNotRegistered(final String family, final String rendererType) {
         Renderer renderer;
-        try {
-            renderer = facesContext.getRenderKit().getRenderer(family, rendererType);
-            assertNull("Renderer is registered " + rendererType + ", " + family, renderer);
-        } catch (final Exception e) {
-            // expected
-        }
+
+        renderer = getFacesContext().getRenderKit().getRenderer(family, rendererType);
+        assertNull(renderer, "Renderer is registered " + rendererType + ", " + family);
     }
 }

@@ -25,7 +25,6 @@ import lombok.Setter;
  */
 public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
-    /** . */
     private static final String UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION =
         "Unable to find component with expression = ";
 

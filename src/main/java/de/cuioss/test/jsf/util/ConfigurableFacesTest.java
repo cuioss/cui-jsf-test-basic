@@ -6,9 +6,9 @@ import static de.cuioss.test.jsf.util.ConfigurationHelper.configureManagedBeans;
 import static de.cuioss.test.jsf.util.ConfigurationHelper.configureRequestConfig;
 import static de.cuioss.test.jsf.util.ConfigurationHelper.extractJsfTestConfiguration;
 import static de.cuioss.tools.string.MoreStrings.emptyToNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.faces.application.Application;
 import javax.faces.application.NavigationHandler;
@@ -22,7 +22,8 @@ import org.apache.myfaces.test.mock.MockExternalContext22;
 import org.apache.myfaces.test.mock.MockFacesContext;
 import org.apache.myfaces.test.mock.MockFacesContext22;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import de.cuioss.test.jsf.config.ApplicationConfigurator;
 import de.cuioss.test.jsf.config.BeanConfigurator;
@@ -91,8 +92,8 @@ public class ConfigurableFacesTest {
     /**
      * See class documentation of {@link ConfigurableFacesTest} for details.
      */
-    @Before
-    public void setupAdditionalConfiguration() {
+    @BeforeEach
+    protected void setupAdditionalConfiguration() {
         runtimeSetup.setUp();
         configurableApplication = ConfigurableApplication.createWrapAndRegister((MockFacesContext) getFacesContext());
         configurableApplication.setUseIdentityResouceBundle(isUseIdentityResouceBundle());
@@ -122,6 +123,11 @@ public class ConfigurableFacesTest {
         getApplicationConfigDecorator().getMockNavigationHandler();
     }
 
+    @AfterEach
+    protected void tearDownRuntimeSetup() {
+        runtimeSetup.tearDown();
+    }
+
     protected FacesContext getFacesContext() {
         return runtimeSetup.getFacesContext();
     }
@@ -149,10 +155,10 @@ public class ConfigurableFacesTest {
      * @param outcome must not be null
      */
     public void assertNavigatedWithOutcome(final String outcome) {
-        assertNotNull("Outcome must not be null", emptyToNull(outcome));
-        assertTrue("Response is not committed", getFacesContext().getExternalContext().isResponseCommitted());
+        assertNotNull(emptyToNull(outcome), "Outcome must not be null");
+        assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
         var handler = getApplicationConfigDecorator().getMockNavigationHandler();
-        assertTrue("handleNavigation is not called", handler.isHandleNavigationCalled());
+        assertTrue(handler.isHandleNavigationCalled(), "handleNavigation is not called");
         assertEquals(outcome, handler.getCalledOutcome());
     }
 
@@ -164,10 +170,10 @@ public class ConfigurableFacesTest {
      */
     public void assertRedirect(final String redirectUrl) {
         assertNotNull("redirectUrl must not be null", emptyToNull(redirectUrl));
-        assertTrue("Response is not committed", getFacesContext().getExternalContext().isResponseCommitted());
+        assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
         var tempResponse = (HttpServletResponse) getExternalContext().getResponse();
-        assertTrue("Response must provide a header with the name " + LOCATION_HEADER,
-                tempResponse.containsHeader(LOCATION_HEADER));
+        assertTrue(tempResponse.containsHeader(LOCATION_HEADER),
+                "Response must provide a header with the name " + LOCATION_HEADER);
         assertEquals(redirectUrl, tempResponse.getHeader(LOCATION_HEADER));
 
     }

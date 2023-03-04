@@ -1,11 +1,11 @@
 package de.cuioss.test.jsf.mocks;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 

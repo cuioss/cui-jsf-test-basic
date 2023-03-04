@@ -1,36 +1,36 @@
 package de.cuioss.test.jsf.config.decorator;
 
 import static de.cuioss.test.jsf.config.decorator.BeanConfigDecorator.getBean;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.apache.myfaces.test.base.junit4.AbstractJsfTestCase;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.jsf.support.beans.NamedSimpleBean;
 import de.cuioss.test.jsf.support.beans.NamedSimpleBeanWOName;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 
-class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
+class ManagedBeanConfigDecoratorTest extends ConfigurableFacesTest {
 
     private BeanConfigDecorator decorator;
 
-    @Before
+    @BeforeEach
     void before() {
-        decorator = new BeanConfigDecorator(facesContext);
+        decorator = new BeanConfigDecorator(getFacesContext());
     }
 
     @Test
     void shouldHandleNamedBean() {
-        var bean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
+        var bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
                 NamedSimpleBean.class);
         assertNull(bean);
 
         decorator.register(new NamedSimpleBean());
 
-        bean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
+        bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
                 NamedSimpleBean.class);
         assertNotNull(bean);
         assertEquals(NamedSimpleBean.class, bean.getClass());
@@ -38,13 +38,13 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
 
     @Test
     void shouldHandleNamedBeanWOValue() {
-        var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
+        var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
                 NamedSimpleBeanWOName.class);
         assertNull(bean);
 
         decorator.register(new NamedSimpleBeanWOName());
 
-        bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
+        bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
                 NamedSimpleBeanWOName.class);
         assertNotNull(bean);
         assertEquals(NamedSimpleBeanWOName.class, bean.getClass());
@@ -58,11 +58,11 @@ class ManagedBeanConfigDecoratorTest extends AbstractJsfTestCase {
     @Test
     void shouldHandleMultipleBeans() {
         decorator.register(new NamedSimpleBeanWOName(), NamedSimpleBeanWOName.BEAN_NAME);
-        final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, facesContext,
+        final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
                 NamedSimpleBeanWOName.class);
         assertNotNull(bean);
         decorator.register(new NamedSimpleBean(), NamedSimpleBean.BEAN_NAME);
-        final var secondBean = getBean(NamedSimpleBean.BEAN_NAME, facesContext,
+        final var secondBean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
                 NamedSimpleBean.class);
         assertNotNull(secondBean);
     }

@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.myfaces.test.mock.MockExternalContext22;
 import org.apache.myfaces.test.mock.MockFacesContext22;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
@@ -25,7 +25,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
     private RequestConfigDecorator decorator;
 
-    @Before
+    @BeforeEach
     public void before() {
         decorator =
             new RequestConfigDecorator((MockFacesContext22) getFacesContext(),

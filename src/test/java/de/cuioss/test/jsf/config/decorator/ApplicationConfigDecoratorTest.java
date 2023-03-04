@@ -1,22 +1,26 @@
 package de.cuioss.test.jsf.config.decorator;
 
 import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.faces.application.ProjectStage;
 
-import org.apache.myfaces.test.base.junit4.AbstractJsfTestCase;
 import org.apache.myfaces.test.mock.MockApplication12;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.myfaces.test.mock.MockHttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
 
-class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
+class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
 
     private static final String BUNDLE_PATH = "de.cuioss.test.jsf.testbundle";
     private static final String BUNDLE_NAME = "testbundle";
@@ -26,95 +30,96 @@ class ApplicationConfigDecoratorTest extends AbstractJsfTestCase {
 
     private ApplicationConfigDecorator decorator;
 
-    @Before
+    @BeforeEach
     void before() {
         decorator = new ApplicationConfigDecorator(
-                application, facesContext);
+                getApplication(), getFacesContext());
     }
 
     @Test
     void shouldRegisterResourceBundle() {
-        assertNull(application.getResourceBundle(facesContext, BUNDLE_NAME));
+        assertNull(getApplication().getResourceBundle(getFacesContext(), BUNDLE_NAME));
 
         decorator.registerResourceBundle(BUNDLE_NAME, BUNDLE_PATH);
 
-        assertNotNull(application.getResourceBundle(facesContext, BUNDLE_NAME));
+        assertNotNull(getApplication().getResourceBundle(getFacesContext(), BUNDLE_NAME));
 
-        assertNull(application.getResourceBundle(facesContext, INVALID_BUNDLE_NAME));
+        assertNull(getApplication().getResourceBundle(getFacesContext(), INVALID_BUNDLE_NAME));
 
         decorator.registerResourceBundle(INVALID_BUNDLE_NAME, INVALID_BUNDLE_PATH);
 
-        assertNull(application.getResourceBundle(facesContext, INVALID_BUNDLE_NAME));
+        assertInstanceOf(IdentityResourceBundle.class,
+                getApplication().getResourceBundle(getFacesContext(), INVALID_BUNDLE_NAME));
     }
 
     @Test
     void shouldRegisterSupportedLocales() {
-        assertFalse(application.getSupportedLocales().hasNext());
+        assertFalse(getApplication().getSupportedLocales().hasNext());
 
         final var locale = Generators.locales().next();
         decorator.registerSupportedLocales(immutableSet(locale));
 
-        assertEquals(locale, application.getSupportedLocales().next());
+        assertEquals(locale, getApplication().getSupportedLocales().next());
     }
 
     @Test
     void shouldRegisterDefaultLocale() {
-        assertNotNull(application.getDefaultLocale());
+        assertNotNull(getApplication().getDefaultLocale());
 
         final var locale = Generators.locales().next();
         decorator.registerDefaultLocale(locale);
 
-        assertEquals(locale, application.getDefaultLocale());
+        assertEquals(locale, getApplication().getDefaultLocale());
     }
 
     @Test
     void shouldRegisterNavigationCase() {
         decorator.registerNavigationCase("outcome", "/toViewId");
-        application.getNavigationHandler().handleNavigation(facesContext, null, "outcome");
-        assertEquals("/toViewId", facesContext.getViewRoot().getViewId());
+        getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, "outcome");
+        assertEquals("/toViewId", getFacesContext().getViewRoot().getViewId());
     }
 
     @Test
     void shouldRegisterContextPath() {
         decorator.setContextPath("hello");
-        assertEquals("hello", request.getContextPath());
+        assertEquals("hello", ((MockHttpServletRequest) getExternalContext().getRequest()).getContextPath());
     }
 
     @Test
     void shouldSetProjectStage() {
         decorator.setProjectStage(ProjectStage.Development);
-        assertEquals(ProjectStage.Development, application.getProjectStage());
+        assertEquals(ProjectStage.Development, getApplication().getProjectStage());
 
         decorator.setProjectStage(ProjectStage.Production);
-        assertEquals(ProjectStage.Production, application.getProjectStage());
+        assertEquals(ProjectStage.Production, getApplication().getProjectStage());
     }
 
     @Test
     void shouldSetInitParameter() {
         final var key = "initKey";
         final var value = "initValue";
-        assertNull(facesContext.getExternalContext().getInitParameter(key));
+        assertNull(getFacesContext().getExternalContext().getInitParameter(key));
 
         decorator.addInitParameter(key, value);
-        assertEquals(value, facesContext.getExternalContext().getInitParameter(key));
+        assertEquals(value, getFacesContext().getExternalContext().getInitParameter(key));
     }
 
     @Test
     void shouldSetProjectStageThroughWrapper() {
         decorator =
-            new ApplicationConfigDecorator(new ConfigurableApplication(application), facesContext);
+            new ApplicationConfigDecorator(new ConfigurableApplication(getApplication()), getFacesContext());
         decorator.setProjectStage(ProjectStage.Development);
-        assertEquals(ProjectStage.Development, application.getProjectStage());
+        assertEquals(ProjectStage.Development, getApplication().getProjectStage());
 
         decorator.setProjectStage(ProjectStage.Production);
-        assertEquals(ProjectStage.Production, application.getProjectStage());
+        assertEquals(ProjectStage.Production, getApplication().getProjectStage());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     void shouldFailToSetProjectWithInvalidApplication() {
         decorator =
             new ApplicationConfigDecorator(new ConfigurableApplication(new MockApplication12()),
-                    facesContext);
-        decorator.setProjectStage(ProjectStage.Development);
+                    getFacesContext());
+        assertThrows(IllegalArgumentException.class, () -> decorator.setProjectStage(ProjectStage.Development));
     }
 }

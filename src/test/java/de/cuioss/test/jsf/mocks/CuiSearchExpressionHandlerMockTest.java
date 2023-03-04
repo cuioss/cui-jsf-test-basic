@@ -2,16 +2,17 @@ package de.cuioss.test.jsf.mocks;
 
 import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
 import static de.cuioss.tools.collect.CollectionLiterals.mutableSet;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 
 import javax.faces.component.search.ComponentNotFoundException;
 import javax.faces.component.search.SearchExpressionHint;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 
@@ -41,20 +42,14 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
         callback.assertNotCalledAtAll();
     }
 
-    @Test(expected = ComponentNotFoundException.class)
+    @Test
     void shouldFailOnMissingHint() {
         var context =
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
                     Collections.emptySet(), Collections.emptySet());
-        new CuiMockSearchExpressionHandler().resolveComponent(context, EXPRESSION, new CuiMockContextCallback());
-    }
-
-    @Test(expected = ComponentNotFoundException.class)
-    void shouldFailOnMissingHint2() {
-        var context =
-            new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
-                    Collections.emptySet(), Collections.emptySet());
-        new CuiMockSearchExpressionHandler().resolveComponents(context, EXPRESSION, new CuiMockContextCallback());
+        var handler = new CuiMockSearchExpressionHandler();
+        var callback = new CuiMockContextCallback();
+        assertThrows(ComponentNotFoundException.class, () -> handler.resolveComponents(context, EXPRESSION, callback));
     }
 
     @Test

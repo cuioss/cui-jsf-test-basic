@@ -4,12 +4,13 @@ import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.DEFAULT_
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.SUPPORTED_LOCALES;
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.config.ApplicationConfigurator;
@@ -85,9 +86,9 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
         assertNavigatedWithOutcome(OUTCOME);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     void shouldFailHandleNavigationOutcome() {
-        assertNavigatedWithOutcome(OUTCOME);
+        assertThrows(AssertionError.class, () -> assertNavigatedWithOutcome(OUTCOME));
     }
 
     @Test
@@ -96,8 +97,8 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
         assertRedirect(TO_VIEW_JSF);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     void shouldFailHandleRedirect() {
-        assertRedirect(TO_VIEW_JSF);
+        assertThrows(AssertionError.class, () -> assertRedirect(TO_VIEW_JSF));
     }
 }
