@@ -132,7 +132,6 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * time.<br>
      * This method provide <b>extension point</b> to prepare needed test environment for your
      * converter test.
-     * <p>
      * For example :
      *
      * <pre>
@@ -141,7 +140,6 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      *    // register UIComponent
      *      ...
      * </pre>
-     * </p>
      *
      * @param decorator {@link ComponentConfigDecorator} is never null
      */
