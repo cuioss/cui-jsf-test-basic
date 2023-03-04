@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import de.cuioss.test.jsf.config.renderer.VerifyComponentRendererConfig;
 import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
+import de.cuioss.tools.reflect.FieldWrapper;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
@@ -114,34 +116,26 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         final List<FacesEvent> found = new ArrayList<>();
         final var uiViewRoot = getFacesContext().getViewRoot();
         // Hacky: Private field of myfaces
-        var eventField = MoreReflection.accessField(UIViewRoot.class, "_events");
+        var eventField = FieldWrapper.from(UIViewRoot.class, "_events");
         if (eventField.isPresent()) {
-            try {
-                var events = (List<FacesEvent>) eventField.get().get(uiViewRoot);
-                if (null != events) {
-                    found.addAll(events);
-                }
-                return found;
-            } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
-                throw new AssertionError(
-                        "Unable to access content fo field '_events' on type javax.faces.component.UIViewRoot", e);
+            var events = eventField.get().readValue(uiViewRoot);
+            if (events.isPresent()) {
+                found.addAll((Collection<? extends FacesEvent>) events.get());
             }
+            return found;
         }
         // Hacky: Private field of mojarra
-        eventField = MoreReflection.accessField(UIViewRoot.class, "events");
+        eventField = FieldWrapper.from(UIViewRoot.class, "events");
         if (!eventField.isPresent()) {
             fail("javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
-        try {
-            var events = (List<List<FacesEvent>>) eventField.get().get(uiViewRoot);
-            if (null != events) {
-                events.forEach(found::addAll);
-            }
-            return found;
-        } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            throw new AssertionError(
-                    "Unable to access content fo field '_events' on type javax.faces.component.UIViewRoot", e);
+        var events = eventField.get().readValue(uiViewRoot);
+        if (events.isPresent()) {
+            var eventLists = (List<List<FacesEvent>>) events.get();
+            eventLists.forEach(found::addAll);
         }
+        return found;
+
     }
 
 }
