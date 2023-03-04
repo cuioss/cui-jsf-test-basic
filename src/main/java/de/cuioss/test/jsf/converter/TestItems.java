@@ -16,7 +16,7 @@ import lombok.Getter;
 
 /**
  * TestData Store for Test Items which will be used by
- * {@link AbstractConverterTest}<br/>
+ * {@link AbstractConverterTest}<br>
  * Class is prepared to be used as Fluent Interface
  *
  * @param <T> type of Test Item value

@@ -9,7 +9,7 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.validator.ValidatorException;
 
 /**
- * TestData Store for Test Items which will be used by {@link AbstractValidatorTest}-<br/>
+ * TestData Store for Test Items which will be used by {@link AbstractValidatorTest}-<br>
  * Class is prepared to be used as Fluent Interface
  *
  * @param <T> type of Test Item value

@@ -129,7 +129,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
     /**
      * Callback method for interacting with the {@link ComponentConfigDecorator} at the correct
-     * time.<br/>
+     * time.<br>
      * This method provide <b>extension point</b> to prepare needed test environment for your
      * converter test.
      * <p>
