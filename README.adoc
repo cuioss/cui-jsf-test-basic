@@ -41,4 +41,4 @@ link:src/site/asciidoc/about.adoc[Documentation]
 
 == Roadmap
 
--> Switch to jakarta-ee-10
+-> Switch to jakarta-ee-10: Precondition: myfaces-test for jsf 4 is available
