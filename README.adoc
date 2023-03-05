@@ -22,7 +22,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 * Specific base-classes for conveniently testing aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
 * Lots of tooling for generating (partial-) HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
-* Integration into <<https://github.com/cuioss/cui-test-value-objects,ValueObject>> framework
+* Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
 * Baseline is JSF 2.3
 
 === Maven Coordinates
@@ -37,4 +37,8 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 
 == Documentation
 
-* link:src/site/asciidoc/about.adoc[Documentation]
+link:src/site/asciidoc/about.adoc[Documentation]
+
+== Roadmap
+
+-> Switch to jakarta-ee-10
