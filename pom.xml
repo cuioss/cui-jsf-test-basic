@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.cuioss</groupId>
         <artifactId>cui-java-parent</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
         <relativePath />
     </parent>
     <groupId>de.cuioss.test</groupId>
@@ -26,39 +26,23 @@
         <system>GitHub Issues</system>
     </issueManagement>
     <properties>
-        <version.jakarta.jakartaee-web-api>8.0.0</version.jakarta.jakartaee-web-api>
-        <version.myfaces-test>1.0.8</version.myfaces-test>
         <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
         <version.jcl.logging>1.2</version.jcl.logging>
-        <version.jsf.mojarra>2.3.19</version.jsf.mojarra>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-web-api -->
             <dependency>
-                <groupId>jakarta.platform</groupId>
-                <artifactId>jakarta.jakartaee-web-api</artifactId>
-                <version>${version.jakarta.jakartaee-web-api}</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.myfaces.test/myfaces-test23 -->
-            <dependency>
-                <groupId>org.apache.myfaces.test</groupId>
-                <artifactId>myfaces-test23</artifactId>
-                <version>${version.myfaces-test}</version>
-                <scope>compile</scope>
+                <groupId>de.cuioss</groupId>
+                <artifactId>java-ee-8-bom</artifactId>
+                <version>0.2.1</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>${version.jcl.logging}</version>
                 <scope>runtime</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.glassfish</groupId>
-                <artifactId>jakarta.faces</artifactId>
-                <version>${version.jsf.mojarra}</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
