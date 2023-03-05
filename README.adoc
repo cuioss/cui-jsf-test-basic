@@ -12,14 +12,20 @@ image:https://sonarcloud.io/api/project_badges/measure?project=cuioss_cui-jsf-te
 image:https://sonarcloud.io/api/project_badges/measure?project=cuioss_cui-jsf-test-basic&metric=coverage[Coverage,link=https://sonarcloud.io/summary/new_code?id=cuioss_cui-jsf-test-basic]
 
 
-https://cuioss.github.io/cui-jsf-test-basic/index.html[Generated Documentation on github-pages]
+https://cuioss.github.io/cui-jsf-test-basic/about.html[Generated Documentation on github-pages]
 
 == What is it?
 
 Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses the mock-based infrastructure and adds certain aspects in order to simplify its usage in the portal-context:
 
 * Convenient programmatic configuration of JSF-context
-* Specific base-classes for conveniently testing aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
+* Specific base-classes for conveniently testing aspects like 
+** `AbstractBeanTest`
+** `AbstractValidatorTest`
+** `AbstractConverterTest`
+** `AbstractComponentTest`
+** `AbstractUiComponentTest`
+** `AbstractComponentRendererTest`
 * Lots of tooling for generating (partial-) HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework

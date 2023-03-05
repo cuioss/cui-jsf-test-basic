@@ -3,7 +3,13 @@
 Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses the mock-based infrastructure and adds certain aspects in order to simplify its usage in the portal-context:
 
 * Convenient programmatic configuration of JSF-context
-* Specific base-classes for conveniently testing aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
+* Specific base-classes for conveniently testing aspects like 
+** `AbstractBeanTest`
+** `AbstractValidatorTest`
+** `AbstractConverterTest`
+** `AbstractComponentTest`
+** `AbstractUiComponentTest`
+** `AbstractComponentRendererTest`
 * Lots of tooling for generating (partial-) HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework

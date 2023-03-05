@@ -20,7 +20,7 @@
                 href="https://github.com/cuioss/cui-jsf-test-basic" />
         </links>
         <menu name="Overview">
-        <item name="About" href="about.html"></item>
+            <item name="About" href="about.html" />
             <item name="JavaDoc" href="apidocs/index.html" />
         </menu>
         <menu ref="reports" />
