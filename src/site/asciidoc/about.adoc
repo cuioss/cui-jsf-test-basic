@@ -6,7 +6,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 * Specific base-classes for conveniently testing aspects like AbstractBeanTest, AbstractValidatorTest, AbstractConverterTest, AbstractComponentTest, AbstractUiComponentTest, AbstractComponentRendererTest
 * Lots of tooling for generating (partial-) HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
-* Integration into ValueObject framework
+* Integration into <<https://github.com/cuioss/cui-test-value-objects,ValueObject>> framework
 * Baseline is JSF 2.3
 
 == How To use it
@@ -53,14 +53,14 @@ The framework takes care of calling the callback methods at the correct time pri
 Available Extension-Types:
 
 * `de.cuioss.test.jsf.config.ApplicationConfigurator`
-* `de.cuioss.test.jsf.config.BeanConfigurator`
+* `de.cuioss.test.jsf.config.BeanConfigurator` -> ManagedBean -> Will be removed 
 * `de.cuioss.test.jsf.config.ComponentConfigurator`
 * `de.cuioss.test.jsf.config.RequestConfigurator`
 
 Corresponding Configurator-Types:
 
 * `de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator`
-* `de.cuioss.test.jsf.config.decorator.BeanConfigDecorator`
+* `de.cuioss.test.jsf.config.decorator.BeanConfigDecorator` -> ManagedBean -> Will be removed
 * `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
@@ -150,7 +150,7 @@ The callback method for configuring the converter is again optional.
 [source,java]
 ----
 
-class AbstractConverterTestTest extends AbstractConverterTest&lt;IntegerConverter, Integer&gt; {
+class AbstractConverterTestTest extends AbstractConverterTest<IntegerConverter, Integer> {
 
    @Override
    public void populate(final TestItems<Integer> testItems) {

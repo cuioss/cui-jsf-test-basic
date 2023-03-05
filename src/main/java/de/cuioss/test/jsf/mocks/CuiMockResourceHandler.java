@@ -10,6 +10,7 @@ import javax.faces.application.ResourceHandler;
 import javax.faces.application.ViewResource;
 import javax.faces.context.FacesContext;
 
+import de.cuioss.tools.string.MoreStrings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -93,10 +94,10 @@ public class CuiMockResourceHandler extends ResourceHandler {
     public static final String createResourceMapKey(final String resourceName, final String libraryName) {
         var resource = resourceName;
         var library = libraryName;
-        if (null == library || library.isEmpty()) {
+        if (MoreStrings.isEmpty(library)) {
             library = "notThere";
         }
-        if (null == resource || resource.isEmpty()) {
+        if (MoreStrings.isEmpty(resource)) {
             resource = "notThere";
         }
         return library + LIBRARY_RESOURCE_DELIMITER + resource;
