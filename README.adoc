@@ -37,7 +37,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 ----
     <dependency>
         <groupId>de.cuioss.test</groupId>
-        <name>cui-jsf-test-basic</name>
+        <artifactId>cui-jsf-test-basic</artifactId>
     </dependency>
 ----
 
