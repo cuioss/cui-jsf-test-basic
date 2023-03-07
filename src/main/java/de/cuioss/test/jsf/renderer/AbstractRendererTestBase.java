@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
 import java.io.StringWriter;
 
 import javax.faces.component.UIComponent;
@@ -101,17 +102,16 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      *
      * @param toBeRendered the component to be passed to the renderer, must not be null
      * @return the String-result of the rendering
+     * @throws IOException
      */
-    public String renderToString(final UIComponent toBeRendered) {
+    public String renderToString(final UIComponent toBeRendered) throws IOException {
         requireNonNull(toBeRendered);
         var output = new StringWriter();
         getFacesContext().setResponseWriter(new MockResponseWriter(output));
         final Renderer testRenderer = getRenderer();
-        assertDoesNotThrow(() -> {
-            testRenderer.encodeBegin(getFacesContext(), toBeRendered);
-            testRenderer.encodeChildren(getFacesContext(), toBeRendered);
-            testRenderer.encodeEnd(getFacesContext(), toBeRendered);
-        });
+        testRenderer.encodeBegin(getFacesContext(), toBeRendered);
+        testRenderer.encodeChildren(getFacesContext(), toBeRendered);
+        testRenderer.encodeEnd(getFacesContext(), toBeRendered);
         return output.toString();
     }
 
@@ -122,7 +122,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @param expected must not be null
      */
     public void assertRenderResult(final UIComponent toBeRendered, final Document expected) {
-        var rendered = renderToString(toBeRendered);
+        var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered));
         assertNotNull(emptyToNull(rendered), "Render Result must not be empty.");
         HtmlTreeAsserts.assertHtmlTreeEquals(expected, DomUtils.htmlStringToDocument(rendered));
     }

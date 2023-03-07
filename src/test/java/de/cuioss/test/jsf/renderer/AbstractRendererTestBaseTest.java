@@ -1,5 +1,6 @@
 package de.cuioss.test.jsf.renderer;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.faces.component.html.HtmlInputText;
@@ -26,7 +27,7 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
 
     @Test
     void shouldRenderGoodCase() {
-        assertEquals(RENDER_RESULT, renderToString(component));
+        assertEquals(RENDER_RESULT, assertDoesNotThrow(() -> renderToString(component)));
         assertRenderResult(component, RENDER_RESULT);
         assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT));
     }

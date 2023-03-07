@@ -1,6 +1,7 @@
 package de.cuioss.test.jsf.renderer;
 
 import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,7 +83,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
             var component = getWrappedComponent();
             attributeAssert.applyAttribute(component);
             component.processEvent(new PostAddToViewEvent(component));
-            var document = DomUtils.htmlStringToDocument(super.renderToString(component));
+            var document = DomUtils.htmlStringToDocument(assertDoesNotThrow(() -> super.renderToString(component)));
             attributeAssert.assertAttributeSet(document.getRootElement());
         }
     }
