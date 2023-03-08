@@ -18,6 +18,8 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
@@ -35,6 +37,8 @@ import de.cuioss.test.jsf.util.JsfRuntimeSetup;
  */
 public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCallback {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsfSetupExtension.class);
+
     /**
      * Identifies the {@link Namespace} under which the concrete instance of {@link JsfRuntimeSetup}
      * is stored .
@@ -45,6 +49,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
     @SuppressWarnings("squid:S3655")
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
         var setup = new JsfRuntimeSetup();
+        LOGGER.info(() -> "Starting JSF-Environment");
         setup.setUp();
         put(setup, context);
 
@@ -63,6 +68,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
         // Ensure that the ConfigurableApplication is set for JsfRuntimeSetup#getApplication
         setup.setApplication(environment.getFacesContext().getApplication());
 
+        LOGGER.info(() -> "Registering Decorators");
         Set<JsfTestConfiguration> decoratorAnnotations = new LinkedHashSet<>(16);
 
         retrieveDecoratorAnnotations(testInstance.getClass(), decoratorAnnotations);
@@ -96,6 +102,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
 
     @Override
     public void afterEach(ExtensionContext context) {
+        LOGGER.info(() -> "Tear-Down JSF-Environment");
         get(context).ifPresent(JsfRuntimeSetup::tearDown);
     }
 

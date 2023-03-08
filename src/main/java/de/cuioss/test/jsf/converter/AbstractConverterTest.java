@@ -112,7 +112,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * Instantiates and initially configures a concrete {@link Converter}
      */
     @BeforeEach
-    void initConverter() {
+    protected void initConverter() {
         final Class<C> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
         converter = new DefaultInstantiator<>(klazz).newInstance();
         configure(converter);
