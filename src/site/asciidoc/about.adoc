@@ -17,6 +17,11 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 
 == How To use it
 
+=== Caution
+
+Due to an implementation-issue of the underlying `myfaces-test` this library must use the `myfaces-api` to compile / run against. 
+Otherwise there may popup some strange class-loader-issues, especially on parallel execution.
+
 === Simple Usage
 
 If you want to add a complete JSF-runtime-setup to a certain test just add the annotation
