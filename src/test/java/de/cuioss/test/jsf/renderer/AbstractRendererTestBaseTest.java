@@ -2,6 +2,7 @@ package de.cuioss.test.jsf.renderer;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.faces.component.html.HtmlInputText;
 
@@ -37,5 +38,11 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
         component.setRendered(false);
 
         assertEmptyRenderResult(component);
+    }
+
+    @Test
+    void assertFailOnNonEmptyResult() {
+        component.setRendered(true);
+        assertThrows(AssertionError.class, () -> assertEmptyRenderResult(component));
     }
 }
