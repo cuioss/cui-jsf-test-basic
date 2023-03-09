@@ -22,7 +22,6 @@ import org.apache.myfaces.test.mock.MockExternalContext22;
 import org.apache.myfaces.test.mock.MockFacesContext;
 import org.apache.myfaces.test.mock.MockFacesContext22;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import de.cuioss.test.jsf.config.ApplicationConfigurator;
@@ -121,11 +120,6 @@ public class ConfigurableFacesTest {
 
         // Enable CuiMockConfigurableNavigationHandler to be used
         getApplicationConfigDecorator().getMockNavigationHandler();
-    }
-
-    @AfterEach
-    protected void tearDownRuntimeSetup() {
-        runtimeSetup.tearDown();
     }
 
     protected FacesContext getFacesContext() {

@@ -68,7 +68,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
         // Ensure that the ConfigurableApplication is set for JsfRuntimeSetup#getApplication
         setup.setApplication(environment.getFacesContext().getApplication());
 
-        LOGGER.info(() -> "Registering Decorators");
+        LOGGER.debug(() -> "Registering Decorators");
         Set<JsfTestConfiguration> decoratorAnnotations = new LinkedHashSet<>(16);
 
         retrieveDecoratorAnnotations(testInstance.getClass(), decoratorAnnotations);
@@ -102,7 +102,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
 
     @Override
     public void afterEach(ExtensionContext context) {
-        LOGGER.info(() -> "Tear-Down JSF-Environment");
+        LOGGER.debug(() -> "Tear-Down JSF-Environment");
         get(context).ifPresent(JsfRuntimeSetup::tearDown);
     }
 
