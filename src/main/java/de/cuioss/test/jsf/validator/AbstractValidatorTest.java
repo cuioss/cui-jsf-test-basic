@@ -14,6 +14,7 @@ import javax.faces.validator.ValidatorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
@@ -80,6 +81,7 @@ import lombok.Getter;
  * @param <T> identifying the type of elements to be passed into the validator
  */
 @SuppressWarnings({ "rawtypes", "unchecked" }) // owolff we need to migrate this aspect later
+@EnableGeneratorController
 public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfEnabledTestEnvironment
         implements ConfigurationCallBackHandler<V> {
 

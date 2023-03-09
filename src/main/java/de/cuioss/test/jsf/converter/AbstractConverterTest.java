@@ -13,6 +13,7 @@ import javax.faces.convert.ConverterException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
@@ -92,6 +93,7 @@ import lombok.Setter;
  * @author Oliver Wolff
  */
 @SuppressWarnings({ "rawtypes", "unchecked" }) // owolff we need to migrate this aspect later
+@EnableGeneratorController
 public abstract class AbstractConverterTest<C extends Converter, T> extends JsfEnabledTestEnvironment
         implements ConfigurationCallBackHandler<C>, ComponentConfigurator {
 
