@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.cuioss</groupId>
         <artifactId>cui-java-parent</artifactId>
-        <version>0.2.1</version>
+        <version>0.2.2</version>
         <relativePath />
     </parent>
     <groupId>de.cuioss.test</groupId>
@@ -34,7 +34,7 @@
             <dependency>
                 <groupId>de.cuioss</groupId>
                 <artifactId>java-ee-8-bom</artifactId>
-                <version>0.2.1</version>
+                <version>0.2.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -53,12 +53,38 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.faces</artifactId>
+            <!-- replaces javax.servlet-api -->
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- replaces javax.websocket-api -->
+            <groupId>jakarta.websocket</groupId>
+            <artifactId>jakarta.websocket-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- replaces javax.validation:validation-api -->
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- replaces javax.el:javax.el-api -->
+            <groupId>jakarta.el</groupId>
+            <artifactId>jakarta.el-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- replaces javax.inject:javax.inject -->
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- replaces javax.enterprise:cdi-api -->
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
         </dependency>
         <!-- Compile -->
         <dependency>

@@ -10,7 +10,7 @@ class CuiMockViewHandlerTest {
     @Test
     void shouldReturnVDlForAnyParameter() {
         assertNotNull(new CuiMockViewHandler().getViewDeclarationLanguage(null, null));
-        ;
+
     }
 
     @Test

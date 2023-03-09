@@ -3,7 +3,6 @@ package de.cuioss.test.jsf.renderer;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlInputText;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,7 @@ import lombok.Getter;
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
 
     public static final String RENDER_RESULT =
-        String.format("<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>", "2", "2");
+        String.format("<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>", "__v_0", "__v_0");
 
     @Getter
     private HtmlInputText component;
@@ -34,7 +33,7 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
     }
 
     @Test
-    void assertEmptyRenderResult(){
+    void assertEmptyRenderResult() {
         component.setRendered(false);
 
         assertEmptyRenderResult(component);

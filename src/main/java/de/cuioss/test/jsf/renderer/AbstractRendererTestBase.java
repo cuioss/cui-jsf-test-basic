@@ -15,6 +15,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.render.FacesRenderer;
 import javax.faces.render.Renderer;
 
+import org.apache.myfaces.test.mock.MockResponseWriter;
+import org.jdom2.Document;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
@@ -24,10 +29,6 @@ import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
 import de.cuioss.tools.string.MoreStrings;
 import lombok.Getter;
-import org.apache.myfaces.test.mock.MockResponseWriter;
-import org.jdom2.Document;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 /**
  * Base class for testing implementations of {@link Renderer}. It focuses on conveniences and the

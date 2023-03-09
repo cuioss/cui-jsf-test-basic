@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
+ *
  * @author Oliver Wolff
  *
  */

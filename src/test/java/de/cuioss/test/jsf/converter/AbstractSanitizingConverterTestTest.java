@@ -26,13 +26,13 @@ class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTes
     @Test
     void shouldDetectInvalidEscaping() {
         super.getConverter().setFakeEscaping(false);
-        assertThrows(AssertionError.class, () -> super.shouldSanitizeJavaScript());
+        assertThrows(AssertionError.class, super::shouldSanitizeJavaScript);
     }
 
     @Test
     void shouldDetectValidEscaping() {
         super.getConverter().setFakeEscaping(true);
-        assertDoesNotThrow(() -> super.shouldSanitizeJavaScript());
+        assertDoesNotThrow(super::shouldSanitizeJavaScript);
     }
 
 }
