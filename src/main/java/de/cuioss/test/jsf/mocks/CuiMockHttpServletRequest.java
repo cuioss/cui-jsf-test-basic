@@ -110,10 +110,15 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
      */
     @Override
     public HttpSession getSession(final boolean create) {
+        HttpSession session = null;
         if (!create) {
-            return super.getSession(false);
+            session = super.getSession(false);
+            if (null == session) {
+                return null;
+            }
+        } else {
+            session = super.getSession(true);
         }
-        var session = super.getSession(true);
         try {
             session.getAttribute("test"); // test if the session was invalidated
         } catch (IllegalStateException e) {
@@ -122,6 +127,7 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
         }
         if (!(session instanceof CuiMockHttpSession)) {
             session = new CuiMockHttpSession(getServletContext());
+            super.setHttpSession(session);
             var container = getWebContainer();
             if (container != null) {
                 var se = new HttpSessionEvent(session);
