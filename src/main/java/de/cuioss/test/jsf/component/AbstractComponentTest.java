@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.cuioss.test.generator.junit.EnableGeneratorController;
-import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.contract.BeanPropertyContractImpl;
 import de.cuioss.test.valueobjects.junit5.EnableGeneratorRegistry;
@@ -27,11 +26,6 @@ import lombok.Getter;
 
 /**
  * Base class for testing {@link UIComponent}s.
- * <h3>Setup</h3>
- * <p>
- * The actual test must provide {@link EnableJsfEnvironment}, for the basic test-infrastructure. See
- * the class-documentation for details.
- * </p>
  * <h3>Supported Contracts / Configurations</h3>
  * <ul>
  * <li>Handling of Property Generators using annotations, see
@@ -72,7 +66,7 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
      */
     @BeforeEach
     public void initializeBaseClass() {
-        this.targetClass = MoreReflection.extractFirstGenericTypeArgument(getClass());
+        targetClass = MoreReflection.extractFirstGenericTypeArgument(getClass());
 
         filteredMetadata =
             ComponentTestHelper.filterPropertyMetadata(getClass(),
