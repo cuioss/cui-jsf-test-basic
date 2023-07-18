@@ -17,6 +17,7 @@ class CuiMockServletContextTest {
         assertEquals(StandardCharsets.UTF_8.name(), context.getResponseCharacterEncoding());
         assertEquals(200, context.getSessionTimeout());
         assertEquals("virtual", context.getVirtualServerName());
+        assertEquals("mock-context", context.getContextPath());
         assertThrows(UnsupportedOperationException.class, () -> context.addJspFile("aa", "bb"));
     }
 

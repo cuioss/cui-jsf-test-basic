@@ -32,4 +32,8 @@ public class CuiMockServletContext extends MockServletContext {
     @Setter
     private String virtualServerName = "virtual";
 
+    @Getter
+    @Setter
+    private String contextPath = "mock-context";
+
 }
