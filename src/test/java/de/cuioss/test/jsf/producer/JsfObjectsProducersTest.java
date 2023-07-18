@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 
 @EnableJsfEnvironment
-class TestJsfContextProducersTest {
+class JsfObjectsProducersTest {
 
     @Test
     void shouldProduceItems() {
-        var producer = new TestJsfContextProducers();
+        var producer = new JsfObjectsProducers();
         assertNotNull(producer.getApplicationMap());
         assertNotNull(producer.getExternalContext());
         assertNotNull(producer.getFacesContext());

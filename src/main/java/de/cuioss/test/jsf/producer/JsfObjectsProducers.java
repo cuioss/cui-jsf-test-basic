@@ -20,13 +20,15 @@ import javax.inject.Named;
 
 /**
  * Various JSF Producers for junit tests.
- * Reason: In the test context we don't have a JSF implementation, which would provide equivalent
- * producers. This type is designed as 'opt-in'.
+ * 
+ * Reason: In the test context we don't have a JSF implementation, which would
+ * provide equivalent producers.
+ * 
+ * This type is designed as 'opt-in'.
  *
  * @author Oliver Wolff
  */
-@ApplicationScoped
-public class TestJsfContextProducers {
+public class JsfObjectsProducers {
 
     @Produces
     @RequestScoped
