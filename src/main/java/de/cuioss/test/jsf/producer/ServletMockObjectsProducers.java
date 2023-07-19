@@ -1,5 +1,6 @@
 package de.cuioss.test.jsf.producer;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -26,30 +27,42 @@ import lombok.Setter;
  * In contrast to {@link ServletObjectsFromJSFContextProducers} the mocks are
  * instantiated directly
  * 
- * This class has no bean annotation. It is designed as 'opt-in'. Use with
- * {@code @AddBeanClasses}.
+ * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  */
+@ApplicationScoped
 public class ServletMockObjectsProducers {
 
-    @Produces
-    @Typed({ HttpServletRequest.class })
-    @RequestScoped
     @Getter
     @Setter
     private CuiMockHttpServletRequest servletRequest = new CuiMockHttpServletRequest();
 
-    @Produces
-    @Typed({ HttpServletRequest.class })
-    @RequestScoped
     @Getter
     @Setter
     private MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 
-    @Produces
-    @Typed({ ServletContext.class })
-    @Dependent
     @Getter
     @Setter
     private CuiMockServletContext servletContext = new CuiMockServletContext();
+
+    @Produces
+    @Typed({ HttpServletRequest.class })
+    @RequestScoped
+    HttpServletRequest produceServletRequest() {
+        return servletRequest;
+    }
+
+    @Produces
+    @Typed({ HttpServletResponse.class })
+    @RequestScoped
+    HttpServletResponse produceServletResponse() {
+        return servletResponse;
+    }
+
+    @Produces
+    @Typed({ ServletContext.class })
+    @Dependent
+    ServletContext produceServletContext() {
+        return servletContext;
+    }
 
 }

@@ -16,8 +16,8 @@ class ServletObjectsFromJSFContextProducersTest {
     @Test
     void shouldProduce() {
         var producer = new ServletObjectsFromJSFContextProducers();
-        assertInstanceOf(HttpServletRequest.class, producer.getServletRequest());
-        assertInstanceOf(HttpServletResponse.class, producer.getServletResponse());
+        assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest());
+        assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse());
         assertInstanceOf(ServletContext.class, producer.produceServletContext());
     }
 

@@ -24,10 +24,11 @@ import javax.inject.Named;
  * Reason: In the test context we don't have a JSF implementation, which would
  * provide equivalent producers.
  * 
- * This type is designed as 'opt-in'.
+ * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  *
  * @author Oliver Wolff
  */
+@ApplicationScoped
 public class JsfObjectsProducers {
 
     @Produces

@@ -13,8 +13,8 @@ class ServletMockObjectsProducersTest {
     @Test
     void shouldProduce() {
         var producer = new ServletMockObjectsProducers();
-        assertInstanceOf(HttpServletRequest.class, producer.getServletRequest());
-        assertInstanceOf(HttpServletResponse.class, producer.getServletResponse());
-        assertInstanceOf(ServletContext.class, producer.getServletContext());
+        assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest());
+        assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse());
+        assertInstanceOf(ServletContext.class, producer.produceServletContext());
     }
 }

@@ -1,5 +1,6 @@
 package de.cuioss.test.jsf.producer;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -20,28 +21,28 @@ import org.apache.myfaces.test.mock.MockExternalContext22;
  * </ul>
  * The objects are derived from the {@link FacesContext}
  * 
- * This class has no bean annotation. It is designed as 'opt-in'. Use with
- * {@code @AddBeanClasses}.
+ * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  * 
  */
+@ApplicationScoped
 public class ServletObjectsFromJSFContextProducers {
 
     @Produces
     @Typed({ HttpServletRequest.class })
     @RequestScoped
-    HttpServletRequest getServletRequest() {
+    HttpServletRequest produceServletRequest() {
         return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     }
 
     @Produces
     @Typed({ HttpServletResponse.class })
     @RequestScoped
-    HttpServletResponse getServletResponse() {
+    HttpServletResponse produceServletResponse() {
         return (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
     }
 
     @Produces
-    @Typed({ ServletContext.class })
+//    @Typed({ ServletContext.class })
     @Dependent
     ServletContext produceServletContext() {
         return (ServletContext) ((MockExternalContext22) FacesContext.getCurrentInstance().getExternalContext())
