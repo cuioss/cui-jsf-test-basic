@@ -1,6 +1,9 @@
 package de.cuioss.test.jsf.producer;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import javax.faces.application.Application;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +28,7 @@ class JsfObjectsProducersTest {
         assertNotNull(producer.getSessionMap());
         assertNotNull(producer.getViewMap());
         assertNotNull(producer.getViewRoot());
+        assertInstanceOf(Application.class, producer.produceApplication());
     }
 
 }

@@ -13,6 +13,7 @@ import javax.faces.annotation.RequestCookieMap;
 import javax.faces.annotation.RequestParameterMap;
 import javax.faces.annotation.SessionMap;
 import javax.faces.annotation.ViewMap;
+import javax.faces.application.Application;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -43,6 +44,12 @@ public class JsfObjectsProducers {
     @Named
     ExternalContext getExternalContext() {
         return getFacesContext().getExternalContext();
+    }
+
+    @Produces
+    @ApplicationScoped
+    Application produceApplication() {
+        return FacesContext.getCurrentInstance().getApplication();
     }
 
     @Produces
