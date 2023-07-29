@@ -5,15 +5,16 @@ import javax.inject.Named;
 import de.cuioss.test.jsf.config.decorator.BeanConfigDecorator;
 
 /**
- * Provides a callback method for registering {@link Named} beans for unit-testing
+ * Provides a callback method for registering {@link Named} beans for
+ * unit-testing
  *
  * @author Oliver Wolff
  */
 public interface BeanConfigurator extends JsfTestContextConfigurator {
 
     /**
-     * Callback method for interacting with the {@link BeanConfigDecorator} at the correct
-     * time.
+     * Callback method for interacting with the {@link BeanConfigDecorator} at the
+     * correct time.
      *
      * @param decorator is never null
      */

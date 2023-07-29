@@ -9,7 +9,8 @@ import javax.faces.application.FacesMessage.Severity;
 import javax.faces.validator.ValidatorException;
 
 /**
- * TestData Store for Test Items which will be used by {@link AbstractValidatorTest}-<br>
+ * TestData Store for Test Items which will be used by
+ * {@link AbstractValidatorTest}-<br>
  * Class is prepared to be used as Fluent Interface
  *
  * @param <T> type of Test Item value
@@ -19,7 +20,8 @@ public class TestItems<T> {
     private final List<TestItem<T>> localItems = new ArrayList<>();
 
     /**
-     * Add to TestData Store a Test item which must fail with {@link ValidatorException}
+     * Add to TestData Store a Test item which must fail with
+     * {@link ValidatorException}
      *
      * @param value T invalid value which should cause a {@link ValidatorException}
      * @return TestItems reference to this object
@@ -29,9 +31,11 @@ public class TestItems<T> {
     }
 
     /**
-     * Add to TestData Store a Test item which must fail with {@link ValidatorException}
+     * Add to TestData Store a Test item which must fail with
+     * {@link ValidatorException}
      *
-     * @param value T invalid value which should cause a {@link ValidatorException}
+     * @param value   T invalid value which should cause a
+     *                {@link ValidatorException}
      * @param message which should be set within the {@link ValidatorException}
      * @return TestItems reference to this object
      */
@@ -40,7 +44,8 @@ public class TestItems<T> {
     }
 
     /**
-     * Add to TestData Store a Test item which must fail with {@link ValidatorException}
+     * Add to TestData Store a Test item which must fail with
+     * {@link ValidatorException}
      *
      * @param value T invalid value which should cause a {@link ValidatorException}
      * @return TestItems reference to this object
@@ -52,15 +57,14 @@ public class TestItems<T> {
     /**
      * Add to TestData Store a Test item
      *
-     * @param valid indicating whether it is a valid or invalid item
-     * @param value T value to be validated
-     * @param level {@link Severity} represent message severity, usually
-     *            {@link FacesMessage#SEVERITY_ERROR}
+     * @param valid   indicating whether it is a valid or invalid item
+     * @param value   T value to be validated
+     * @param level   {@link Severity} represent message severity, usually
+     *                {@link FacesMessage#SEVERITY_ERROR}
      * @param message which should be set within the {@link ValidatorException}
      * @return TestItems reference to this object
      */
-    private TestItems<T> addItem(final boolean valid, final T value, final Severity level,
-            final String message) {
+    private TestItems<T> addItem(final boolean valid, final T value, final Severity level, final String message) {
         final var item = new TestItem<T>();
         item.setTestValue(value);
         item.setValid(valid);

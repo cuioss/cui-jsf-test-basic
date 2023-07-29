@@ -10,9 +10,9 @@ import de.cuioss.test.jsf.renderer.AbstractComponentRendererTest;
 import de.cuioss.test.jsf.renderer.CommonRendererAsserts;
 
 /**
- * A contract Veto is used for for suppressing certain test-contracts.
- * The default implementation of {@link AbstractComponentRendererTest} tests all contracts that are
- * not vetoed.
+ * A contract Veto is used for for suppressing certain test-contracts. The
+ * default implementation of {@link AbstractComponentRendererTest} tests all
+ * contracts that are not vetoed.
  *
  * @author Oliver Wolff
  */

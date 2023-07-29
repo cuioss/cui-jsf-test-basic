@@ -40,16 +40,14 @@ public class TestItems<T> {
 
     /**
      * Items that are used for testing
-     * {@link Converter#getAsObject(javax.faces.context.FacesContext,
-     * javax.faces.component.UIComponent, String)}
+     * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      */
     @Getter(AccessLevel.MODULE)
     private final List<ConverterTestItem<T>> validStringTestItems = new ArrayList<>();
 
     /**
      * Items that are used for testing
-     * {@link Converter#getAsObject(javax.faces.context.FacesContext,
-     * javax.faces.component.UIComponent, String)}
+     * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      */
     @Getter(AccessLevel.MODULE)
     private final List<ConverterTestItem<T>> invalidStringTestItems = new ArrayList<>();
@@ -86,13 +84,13 @@ public class TestItems<T> {
      * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
      * Test item must fail with {@link ConverterException}
      *
-     * @param value T invalid value which should cause a {@link ConverterException}
+     * @param value   T invalid value which should cause a
+     *                {@link ConverterException}
      * @param message which should be set within the {@link ConverterException}
      * @return TestItems reference to this object
      */
     public TestItems<T> addInvalidObjectWithMessage(final T value, final String message) {
-        return this.addinValidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR,
-                message);
+        return this.addinValidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR, message);
     }
 
     /**
@@ -110,16 +108,16 @@ public class TestItems<T> {
     /**
      * Adds testData to be used for testing
      * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
-     * Test item should pass without {@link ConverterException} and the result should be the same as
-     * the given converterResult
+     * Test item should pass without {@link ConverterException} and the result
+     * should be the same as the given converterResult
      *
-     * @param value valid value which should cause a {@link ConverterException}
+     * @param value           valid value which should cause a
+     *                        {@link ConverterException}
      * @param converterResult the String to be returned by
-     *            {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     *                        {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
      * @return TestItems reference to this object
      */
-    public TestItems<T> addValidObjectWithStringResult(final T value,
-            final String converterResult) {
+    public TestItems<T> addValidObjectWithStringResult(final T value, final String converterResult) {
         return this.addValidObjectTestItem(value, converterResult, null, null);
     }
 
@@ -128,7 +126,8 @@ public class TestItems<T> {
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      * Test item must fail with {@link ConverterException}
      *
-     * @param value invalid String-value which should cause a {@link ConverterException}
+     * @param value invalid String-value which should cause a
+     *              {@link ConverterException}
      * @return TestItems reference to this object
      */
     public TestItems<T> addInvalidString(final String value) {
@@ -140,7 +139,8 @@ public class TestItems<T> {
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      * Test item must fail with {@link ConverterException}
      *
-     * @param value invalid String-value which should cause a {@link ConverterException}
+     * @param value   invalid String-value which should cause a
+     *                {@link ConverterException}
      * @param message which should be set within the {@link ConverterException}
      * @return TestItems reference to this object
      */
@@ -153,7 +153,8 @@ public class TestItems<T> {
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      * Test item should pass without {@link ConverterException}
      *
-     * @param value valid String-value which should pass without {@link ConverterException}
+     * @param value valid String-value which should pass without
+     *              {@link ConverterException}
      * @return TestItems reference to this object
      */
     public TestItems<T> addValidString(final String value) {
@@ -163,16 +164,16 @@ public class TestItems<T> {
     /**
      * Adds testData to be used for testing
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
-     * Test item should pass without {@link ConverterException} and the result should be the same as
-     * the given converterResult
+     * Test item should pass without {@link ConverterException} and the result
+     * should be the same as the given converterResult
      *
-     * @param value valid String-value which should pass without {@link ConverterException}
+     * @param value           valid String-value which should pass without
+     *                        {@link ConverterException}
      * @param converterResult the String to be returned by
-     *            {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
+     *                        {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      * @return TestItems reference to this object
      */
-    public TestItems<T> addValidStringWithObjectResult(final String value,
-            final T converterResult) {
+    public TestItems<T> addValidStringWithObjectResult(final String value, final T converterResult) {
         return this.addStringTestItem(true, converterResult, value, null, null);
     }
 
@@ -181,17 +182,16 @@ public class TestItems<T> {
      * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
      * that defines a valid Object
      *
-     * @param value T value to be validated
+     * @param value           T value to be validated
      * @param converterResult the String to be returned by
-     *            {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
-     * @param level {@link Severity} represent message severity, usually
-     *            {@link FacesMessage#SEVERITY_ERROR}
-     * @param message which should be set within the {@link ConverterException}
+     *                        {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * @param level           {@link Severity} represent message severity, usually
+     *                        {@link FacesMessage#SEVERITY_ERROR}
+     * @param message         which should be set within the
+     *                        {@link ConverterException}
      * @return TestItems reference to this object
      */
-    private TestItems<T> addValidObjectTestItem(final T value,
-            final String converterResult,
-            final Severity level,
+    private TestItems<T> addValidObjectTestItem(final T value, final String converterResult, final Severity level,
             final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
@@ -208,17 +208,16 @@ public class TestItems<T> {
      * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
      * that defines an invalid Object
      *
-     * @param value T value to be validated
+     * @param value           T value to be validated
      * @param converterResult the String to be returned by
-     *            {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
-     * @param level {@link Severity} represent message severity, usually
-     *            {@link FacesMessage#SEVERITY_ERROR}
-     * @param message which should be set within the {@link ConverterException}
+     *                        {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * @param level           {@link Severity} represent message severity, usually
+     *                        {@link FacesMessage#SEVERITY_ERROR}
+     * @param message         which should be set within the
+     *                        {@link ConverterException}
      * @return TestItems reference to this object
      */
-    private TestItems<T> addinValidObjectTestItem(final T value,
-            final String converterResult,
-            final Severity level,
+    private TestItems<T> addinValidObjectTestItem(final T value, final String converterResult, final Severity level,
             final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
@@ -234,19 +233,18 @@ public class TestItems<T> {
      * Adds testData to be used for testing
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
      *
-     * @param valid indicating whether it is a valid or invalid item
-     * @param value T value to be validated
+     * @param valid           indicating whether it is a valid or invalid item
+     * @param value           T value to be validated
      * @param converterResult the String to be returned by
-     *            {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
-     * @param level {@link Severity} represent message severity, usually
-     *            {@link FacesMessage#SEVERITY_ERROR}
-     * @param message which should be set within the {@link ConverterException}
+     *                        {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * @param level           {@link Severity} represent message severity, usually
+     *                        {@link FacesMessage#SEVERITY_ERROR}
+     * @param message         which should be set within the
+     *                        {@link ConverterException}
      * @return TestItems reference to this object
      */
-    private TestItems<T> addStringTestItem(final boolean valid, final T value,
-            final String converterResult,
-            final Severity level,
-            final String message) {
+    private TestItems<T> addStringTestItem(final boolean valid, final T value, final String converterResult,
+            final Severity level, final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);

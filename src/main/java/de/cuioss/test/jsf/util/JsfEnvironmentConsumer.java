@@ -22,12 +22,12 @@ import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.junit5.JsfSetupExtension;
 
 /**
- * Simple interface to be used in context of {@link JsfSetupExtension}. It provides an interface for
- * injecting the configured {@link JsfEnvironmentHolder}. It is needed, when the test needs to
- * access
- * either an {@link JsfTestContextConfigurator} like {@link ComponentConfigDecorator} or
- * {@link RequestConfigDecorator} or a JSF-Object like {@link FacesContext} or {@link Application}
- * programmatically.
+ * Simple interface to be used in context of {@link JsfSetupExtension}. It
+ * provides an interface for injecting the configured
+ * {@link JsfEnvironmentHolder}. It is needed, when the test needs to access
+ * either an {@link JsfTestContextConfigurator} like
+ * {@link ComponentConfigDecorator} or {@link RequestConfigDecorator} or a
+ * JSF-Object like {@link FacesContext} or {@link Application} programmatically.
  * The typical usage:
  *
  * <pre>
@@ -39,8 +39,8 @@ import de.cuioss.test.jsf.junit5.JsfSetupExtension;
  *
  * </pre>
  *
- * The actual delegation is implemented using default implementations within this interface, see the
- * unit-test:
+ * The actual delegation is implemented using default implementations within
+ * this interface, see the unit-test:
  *
  * <pre>
  * <code>
@@ -80,7 +80,7 @@ public interface JsfEnvironmentConsumer {
 
     /**
      * @param holder to be set, is never null. Will be called from
-     *            {@link TestInstancePostProcessor#postProcessTestInstance(Object, org.junit.jupiter.api.extension.ExtensionContext)}
+     *               {@link TestInstancePostProcessor#postProcessTestInstance(Object, org.junit.jupiter.api.extension.ExtensionContext)}
      */
     void setEnvironmentHolder(JsfEnvironmentHolder holder);
 
@@ -90,35 +90,40 @@ public interface JsfEnvironmentConsumer {
     JsfEnvironmentHolder getEnvironmentHolder();
 
     /**
-     * @return an {@link ComponentConfigDecorator} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link ComponentConfigDecorator} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default ComponentConfigDecorator getComponentConfigDecorator() {
         return getEnvironmentHolder().getComponentConfigDecorator();
     }
 
     /**
-     * @return an {@link BeanConfigDecorator} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link BeanConfigDecorator} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default BeanConfigDecorator getBeanConfigDecorator() {
         return getEnvironmentHolder().getBeanConfigDecorator();
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link ApplicationConfigDecorator} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default ApplicationConfigDecorator getApplicationConfigDecorator() {
         return getEnvironmentHolder().getApplicationConfigDecorator();
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link ApplicationConfigDecorator} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default RequestConfigDecorator getRequestConfigDecorator() {
         return getEnvironmentHolder().getRequestConfigDecorator();
     }
 
     /**
-     * @return an {@link FacesContext} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link FacesContext} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default FacesContext getFacesContext() {
         return getEnvironmentHolder().getFacesContext();
@@ -132,14 +137,16 @@ public interface JsfEnvironmentConsumer {
     }
 
     /**
-     * @return an {@link ExternalContext} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link ExternalContext} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default ExternalContext getExternalContext() {
         return getEnvironmentHolder().getExternalContext();
     }
 
     /**
-     * @return an {@link MockHttpServletResponse} for the contained {@link JsfEnvironmentHolder}
+     * @return an {@link MockHttpServletResponse} for the contained
+     *         {@link JsfEnvironmentHolder}
      */
     default MockHttpServletResponse getResponse() {
         return getEnvironmentHolder().getResponse();
@@ -169,9 +176,7 @@ public interface JsfEnvironmentConsumer {
         assertNotNull(emptyToNull(redirectUrl), "redirectUrl must not be null");
         assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
         var tempResponse = (HttpServletResponse) getExternalContext().getResponse();
-        assertTrue(
-                tempResponse.containsHeader("Location"),
-                "Response must provide a header with the name 'Location'");
+        assertTrue(tempResponse.containsHeader("Location"), "Response must provide a header with the name 'Location'");
         assertEquals(redirectUrl, tempResponse.getHeader("Location"));
     }
 }

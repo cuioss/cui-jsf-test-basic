@@ -16,10 +16,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Mock for {@link SearchExpressionContextFactory}. It can be used by accessing the instance of the
- * mock by using {@link #retrieve()} and setting a concrete
- * {@link #setSearchExpressionContext(SearchExpressionContext)} that is used for the actual test. If
- * not an instance of {@link CuiMockSearchExpressionContext} will be returned.
+ * Mock for {@link SearchExpressionContextFactory}. It can be used by accessing
+ * the instance of the mock by using {@link #retrieve()} and setting a concrete
+ * {@link #setSearchExpressionContext(SearchExpressionContext)} that is used for
+ * the actual test. If not an instance of {@link CuiMockSearchExpressionContext}
+ * will be returned.
  *
  * @author Oliver Wolff
  *
@@ -52,12 +53,12 @@ public class CuiMockSearchExpressionContextFactory extends SearchExpressionConte
     }
 
     /**
-     * Shorthand for accessing the configured {@link CuiMockSearchExpressionContextFactory}
+     * Shorthand for accessing the configured
+     * {@link CuiMockSearchExpressionContextFactory}
      *
      * @return the currently active instance of SearchExpressionContextFactory
      */
     public static final CuiMockSearchExpressionContextFactory retrieve() {
-        return (CuiMockSearchExpressionContextFactory) FactoryFinder.getFactory(
-                SEARCH_EXPRESSION_CONTEXT_FACTORY);
+        return (CuiMockSearchExpressionContextFactory) FactoryFinder.getFactory(SEARCH_EXPRESSION_CONTEXT_FACTORY);
     }
 }

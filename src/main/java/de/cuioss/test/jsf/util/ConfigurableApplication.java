@@ -23,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
- * An {@link ApplicationWrapper} that is capable to do more programmatic configuration compared to
- * the ones provided by myfaces-test
+ * An {@link ApplicationWrapper} that is capable to do more programmatic
+ * configuration compared to the ones provided by myfaces-test
  *
  * @author Oliver Wolff
  */
@@ -33,8 +33,7 @@ public class ConfigurableApplication extends ApplicationWrapper {
 
     private static final String COMPONENT_CONTAINER_DEFAULT_RENDERER = "javax.faces.Text";
 
-    private static final String COMPONENT_RESOUCE_CONTAINER_COMPONENT =
-            "javax.faces.ComponentResourceContainer";
+    private static final String COMPONENT_RESOUCE_CONTAINER_COMPONENT = "javax.faces.ComponentResourceContainer";
 
     @Getter
     private final Application wrapped;
@@ -64,19 +63,17 @@ public class ConfigurableApplication extends ApplicationWrapper {
     }
 
     /**
-     * Creates a new {@link ConfigurableApplication} by loading the existing {@link Application}
-     * from the {@link ApplicationFactory} and registers itself again to the
-     * {@link ApplicationFactory} and {@link MockFacesContext}
+     * Creates a new {@link ConfigurableApplication} by loading the existing
+     * {@link Application} from the {@link ApplicationFactory} and registers itself
+     * again to the {@link ApplicationFactory} and {@link MockFacesContext}
      *
-     * @param facesContext to be used for adding the created {@link ConfigurableApplication} to.
-     *            Must not be null
+     * @param facesContext to be used for adding the created
+     *                     {@link ConfigurableApplication} to. Must not be null
      * @return the created {@link ConfigurableApplication}
      */
-    public static final ConfigurableApplication createWrapAndRegister(
-            final MockFacesContext facesContext) {
+    public static final ConfigurableApplication createWrapAndRegister(final MockFacesContext facesContext) {
         requireNonNull(facesContext);
-        final var factory =
-                (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
+        final var factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
         final var old = factory.getApplication();
         final var application = new ConfigurableApplication(old);
         factory.setApplication(application);
@@ -92,10 +89,8 @@ public class ConfigurableApplication extends ApplicationWrapper {
     public UIComponent createComponent(final FacesContext context, final String componentType,
             final String rendererType) {
         //
-        if (COMPONENT_RESOUCE_CONTAINER_COMPONENT.equals(componentType)
-                && isEmpty(rendererType)) {
-            return wrapped.createComponent(context, componentType,
-                    COMPONENT_CONTAINER_DEFAULT_RENDERER);
+        if (COMPONENT_RESOUCE_CONTAINER_COMPONENT.equals(componentType) && isEmpty(rendererType)) {
+            return wrapped.createComponent(context, componentType, COMPONENT_CONTAINER_DEFAULT_RENDERER);
         }
         return wrapped.createComponent(context, componentType, rendererType);
     }

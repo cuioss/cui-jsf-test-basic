@@ -24,28 +24,24 @@ class ManagedBeanConfigDecoratorTest extends ConfigurableFacesTest {
 
     @Test
     void shouldHandleNamedBean() {
-        var bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
-                NamedSimpleBean.class);
+        var bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(), NamedSimpleBean.class);
         assertNull(bean);
 
         decorator.register(new NamedSimpleBean());
 
-        bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
-                NamedSimpleBean.class);
+        bean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(), NamedSimpleBean.class);
         assertNotNull(bean);
         assertEquals(NamedSimpleBean.class, bean.getClass());
     }
 
     @Test
     void shouldHandleNamedBeanWOValue() {
-        var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
-                NamedSimpleBeanWOName.class);
+        var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(), NamedSimpleBeanWOName.class);
         assertNull(bean);
 
         decorator.register(new NamedSimpleBeanWOName());
 
-        bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
-                NamedSimpleBeanWOName.class);
+        bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(), NamedSimpleBeanWOName.class);
         assertNotNull(bean);
         assertEquals(NamedSimpleBeanWOName.class, bean.getClass());
     }
@@ -58,12 +54,10 @@ class ManagedBeanConfigDecoratorTest extends ConfigurableFacesTest {
     @Test
     void shouldHandleMultipleBeans() {
         decorator.register(new NamedSimpleBeanWOName(), NamedSimpleBeanWOName.BEAN_NAME);
-        final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(),
-                NamedSimpleBeanWOName.class);
+        final var bean = getBean(NamedSimpleBeanWOName.BEAN_NAME, getFacesContext(), NamedSimpleBeanWOName.class);
         assertNotNull(bean);
         decorator.register(new NamedSimpleBean(), NamedSimpleBean.BEAN_NAME);
-        final var secondBean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(),
-                NamedSimpleBean.class);
+        final var secondBean = getBean(NamedSimpleBean.BEAN_NAME, getFacesContext(), NamedSimpleBean.class);
         assertNotNull(secondBean);
     }
 }

@@ -8,24 +8,18 @@ import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 
-class ValueExpressionPropertyContractTest
-        extends AbstractComponentTest<MultiValuedComponent> {
+class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiValuedComponent> {
 
     @Test
     void shouldTestGoodCase() {
-        var properties =
-            ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
-                    new MultiValuedComponent());
+        var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
+                new MultiValuedComponent());
 
-        var instantiator =
-            new CallbackAwareInstantiator<>(
-                    new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponent.class),
-                            new RuntimeProperties(properties)),
-                    this);
+        var instantiator = new CallbackAwareInstantiator<>(new BeanInstantiator<>(
+                new DefaultInstantiator<>(MultiValuedComponent.class), new RuntimeProperties(properties)), this);
 
         ValueExpressionPropertyContract<MultiValuedComponent> contract;
-        contract =
-            new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
+        contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
 
         contract.assertContract();
     }

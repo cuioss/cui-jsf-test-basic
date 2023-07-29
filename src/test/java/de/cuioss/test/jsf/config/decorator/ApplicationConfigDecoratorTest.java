@@ -32,8 +32,7 @@ class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
 
     @BeforeEach
     void before() {
-        decorator = new ApplicationConfigDecorator(
-                getApplication(), getFacesContext());
+        decorator = new ApplicationConfigDecorator(getApplication(), getFacesContext());
     }
 
     @Test
@@ -106,8 +105,7 @@ class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
 
     @Test
     void shouldSetProjectStageThroughWrapper() {
-        decorator =
-            new ApplicationConfigDecorator(new ConfigurableApplication(getApplication()), getFacesContext());
+        decorator = new ApplicationConfigDecorator(new ConfigurableApplication(getApplication()), getFacesContext());
         decorator.setProjectStage(ProjectStage.Development);
         assertEquals(ProjectStage.Development, getApplication().getProjectStage());
 
@@ -117,9 +115,8 @@ class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
 
     @Test
     void shouldFailToSetProjectWithInvalidApplication() {
-        decorator =
-            new ApplicationConfigDecorator(new ConfigurableApplication(new MockApplication12()),
-                    getFacesContext());
+        decorator = new ApplicationConfigDecorator(new ConfigurableApplication(new MockApplication12()),
+                getFacesContext());
         assertThrows(IllegalArgumentException.class, () -> decorator.setProjectStage(ProjectStage.Development));
     }
 }

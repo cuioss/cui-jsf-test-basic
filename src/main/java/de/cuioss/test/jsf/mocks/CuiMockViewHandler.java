@@ -9,10 +9,10 @@ import org.easymock.EasyMock;
 
 /**
  * In addition to {@link MockViewHandler20} this extension provides a mocked
- * {@link #getViewDeclarationLanguage(FacesContext, String)} using {@link EasyMock} and a method for
- * dynamically adding Composite-Component:
- * {@link #registerCompositeComponent(String, String, UIComponent)}
- * Technically they have not other use but being defined.
+ * {@link #getViewDeclarationLanguage(FacesContext, String)} using
+ * {@link EasyMock} and a method for dynamically adding Composite-Component:
+ * {@link #registerCompositeComponent(String, String, UIComponent)} Technically
+ * they have not other use but being defined.
  *
  * @author Oliver Wolff
  *
@@ -28,13 +28,12 @@ public class CuiMockViewHandler extends MockViewHandler20 {
 
     /**
      * @param libraryName must not be null
-     * @param tagName must not be null
+     * @param tagName     must not be null
      * @param uiComponent must not be null
      */
     public void registerCompositeComponent(String libraryName, String tagName, UIComponent uiComponent) {
         EasyMock.expect(mock.createComponent(EasyMock.anyObject(), EasyMock.eq(libraryName), EasyMock.eq(tagName),
-                EasyMock.anyObject()))
-                .andReturn(uiComponent).anyTimes();
+                EasyMock.anyObject())).andReturn(uiComponent).anyTimes();
         EasyMock.replay(mock);
     }
 }

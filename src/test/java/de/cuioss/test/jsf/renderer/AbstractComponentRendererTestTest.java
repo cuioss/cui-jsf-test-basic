@@ -18,7 +18,7 @@ import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.mocks.CuiMockRenderer;
 
 @VetoRenderAttributeAssert({ CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
-    CommonRendererAsserts.STYLE_CLASS })
+        CommonRendererAsserts.STYLE_CLASS })
 class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<CuiMockRenderer> {
 
     @Test

@@ -7,7 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Extension to {@link TestItem} that contains the the additional field "stringValue"
+ * Extension to {@link TestItem} that contains the the additional field
+ * "stringValue"
  *
  * @author Oliver Wolff
  * @param <T> is the Type of value which will be checked

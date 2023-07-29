@@ -48,8 +48,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     private String calledOutcome;
 
     @Override
-    public NavigationCase getNavigationCase(final FacesContext context, final String fromAction,
-            final String outcome) {
+    public NavigationCase getNavigationCase(final FacesContext context, final String fromAction, final String outcome) {
 
         // Api Check
         requireNonNull(context, "FacesContext must not be null");
@@ -58,19 +57,16 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     }
 
     @Override
-    public void handleNavigation(final FacesContext context, final String fromAction,
-            final String outcome) {
+    public void handleNavigation(final FacesContext context, final String fromAction, final String outcome) {
 
         if (!(context.getExternalContext() instanceof MockExternalContext)) {
 
-            throw new UnsupportedOperationException(
-                    "handleNavigation is working only with MockExternalContext");
+            throw new UnsupportedOperationException("handleNavigation is working only with MockExternalContext");
 
         }
         final var navigationCase = getNavigationCase(context, fromAction, outcome);
 
-        final var externalContext = (MockExternalContext) context
-                .getExternalContext();
+        final var externalContext = (MockExternalContext) context.getExternalContext();
 
         var newViewId = outcome;
         try {
@@ -108,13 +104,12 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     /**
      * Add NavigationCase for attributes fromAction and outcome
      *
-     * @param fromAction String
-     * @param outcome String
+     * @param fromAction     String
+     * @param outcome        String
      * @param navigationCase {@link NavigationCase}
      * @return fluent api style
      */
-    public CuiMockConfigurableNavigationHandler addNavigationCase(final String fromAction,
-            final String outcome,
+    public CuiMockConfigurableNavigationHandler addNavigationCase(final String fromAction, final String outcome,
             final NavigationCase navigationCase) {
 
         final var key = calculateKey(fromAction, outcome);
@@ -126,8 +121,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
         return this;
     }
 
-    private NavigationCase getFirstFittingNavigationCase(final String fromAction,
-            final String outcome) {
+    private NavigationCase getFirstFittingNavigationCase(final String fromAction, final String outcome) {
         final var key = calculateKey(fromAction, outcome);
         if (navigationCases.containsKey(key)) {
             final List<NavigationCase> list = mutableList(navigationCases.get(key));

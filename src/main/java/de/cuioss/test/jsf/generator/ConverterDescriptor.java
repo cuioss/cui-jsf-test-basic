@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
- * Simple helper class that bundles runtime information for a certain {@link Converter}, including
- * the targetType and the converterId
+ * Simple helper class that bundles runtime information for a certain
+ * {@link Converter}, including the targetType and the converterId
  *
  * @author Oliver Wolff
  */

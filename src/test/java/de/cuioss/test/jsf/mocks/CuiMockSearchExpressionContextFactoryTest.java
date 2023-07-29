@@ -20,16 +20,16 @@ class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
     void shouldHandleSearchExpressionContext() {
         var factory = CuiMockSearchExpressionContextFactory.retrieve();
 
-        var inlineCreated = factory.getSearchExpressionContext(getFacesContext(),
-                new CuiMockComponent(), Collections.emptySet(), Collections.emptySet());
+        var inlineCreated = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
+                Collections.emptySet(), Collections.emptySet());
 
         assertNotNull(inlineCreated.getVisitHints());
 
         factory.setSearchExpressionContext(
                 new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(), null, null));
 
-        var preconfigured = factory.getSearchExpressionContext(getFacesContext(),
-                new CuiMockComponent(), Collections.emptySet(), Collections.emptySet());
+        var preconfigured = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
+                Collections.emptySet(), Collections.emptySet());
 
         assertNull(preconfigured.getVisitHints());
     }

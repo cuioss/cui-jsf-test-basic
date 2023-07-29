@@ -23,10 +23,10 @@ import lombok.Setter;
  * <li>{@link RequestScoped} {@link HttpServletRequest}.</li>
  * <li>{@link Dependent} {@link ServletContext}</li>
  * </ul>
- * 
+ *
  * In contrast to {@link ServletObjectsFromJSFContextProducers} the mocks are
  * instantiated directly
- * 
+ *
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  */
 @ApplicationScoped

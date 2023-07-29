@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Base class for creating unit-tests with a wired / configured JSF-environment being annotated with
- * {@link EnableJsfEnvironment} and implementing {@link JsfEnvironmentConsumer}
+ * Base class for creating unit-tests with a wired / configured JSF-environment
+ * being annotated with {@link EnableJsfEnvironment} and implementing
+ * {@link JsfEnvironmentConsumer}
  *
  * @author Oliver Wolff
  *

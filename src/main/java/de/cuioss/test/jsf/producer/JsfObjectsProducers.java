@@ -21,10 +21,10 @@ import javax.inject.Named;
 
 /**
  * Various JSF Producers for junit tests.
- * 
+ *
  * Reason: In the test context we don't have a JSF implementation, which would
  * provide equivalent producers.
- * 
+ *
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  *
  * @author Oliver Wolff

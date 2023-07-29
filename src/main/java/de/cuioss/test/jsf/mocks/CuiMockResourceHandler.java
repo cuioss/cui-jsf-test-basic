@@ -34,8 +34,8 @@ public class CuiMockResourceHandler extends ResourceHandler {
     public static final String RENDERER_SUFFIX = "-rendererererer";
 
     /**
-     * the availableResouces use the form libraryName +
-     * LIBRARY_RESOURCE_DELIMITER + resourceName as key
+     * the availableResouces use the form libraryName + LIBRARY_RESOURCE_DELIMITER +
+     * resourceName as key
      */
     public static final String LIBRARY_RESOURCE_DELIMITER = "-";
 
@@ -85,10 +85,8 @@ public class CuiMockResourceHandler extends ResourceHandler {
     /**
      * Creates an resourceIdetnifier utilized by availableResouces
      *
-     * @param resourceName
-     *            may be null
-     * @param libraryName
-     *            may be null
+     * @param resourceName may be null
+     * @param libraryName  may be null
      * @return the concatenated String, see {@link #LIBRARY_RESOURCE_DELIMITER}
      */
     public static final String createResourceMapKey(final String resourceName, final String libraryName) {

@@ -10,13 +10,11 @@ import javax.faces.validator.ValidatorException;
 @FacesValidator(ValidatorWithAnnotation.VALIDATOR_ID)
 public class ValidatorWithAnnotation implements Validator {
 
-    public static final String VALIDATOR_ID =
-        "de.cuioss.test.jsf.context.support.ValidatorWithAnnotation";
+    public static final String VALIDATOR_ID = "de.cuioss.test.jsf.context.support.ValidatorWithAnnotation";
 
     @Override
-    public void validate(final FacesContext context, final UIComponent component,
-            final Object value)
-        throws ValidatorException {
+    public void validate(final FacesContext context, final UIComponent component, final Object value)
+            throws ValidatorException {
 
     }
 

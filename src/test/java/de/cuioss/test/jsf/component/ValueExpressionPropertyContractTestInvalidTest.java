@@ -16,20 +16,16 @@ class ValueExpressionPropertyContractTestInvalidTest
 
     @Test
     void shouldTestGoodCase() {
-        var properties =
-            ComponentTestHelper.filterPropertyMetadata(
-                    MultiValuedComponentWithInvalidELHandling.class,
-                    new MultiValuedComponentWithInvalidELHandling());
+        var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponentWithInvalidELHandling.class,
+                new MultiValuedComponentWithInvalidELHandling());
 
-        var instantiator =
-            new CallbackAwareInstantiator<>(
-                    new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
-                            new RuntimeProperties(properties)),
-                    this);
+        var instantiator = new CallbackAwareInstantiator<>(
+                new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
+                        new RuntimeProperties(properties)),
+                this);
 
         ValueExpressionPropertyContract<MultiValuedComponentWithInvalidELHandling> contract;
-        contract =
-            new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
+        contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
 
         assertThrows(AssertionError.class, () -> {
             contract.assertContract();

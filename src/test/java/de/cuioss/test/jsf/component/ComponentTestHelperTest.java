@@ -17,15 +17,13 @@ class ComponentTestHelperTest {
 
     @Test
     void shouldHandleMissingAnnotationGracefully() {
-        assertNotNull(ComponentTestHelper.filterPropertyMetadata(getClass(),
-                new MultiValuedComponent()));
+        assertNotNull(ComponentTestHelper.filterPropertyMetadata(getClass(), new MultiValuedComponent()));
     }
 
     @Test
     void shouldHandleSimpleProperties() {
-        var filterPropertyMetadata =
-            ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
-                    new MultiValuedComponent());
+        var filterPropertyMetadata = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
+                new MultiValuedComponent());
         assertNotNull(filterPropertyMetadata);
         assertEquals(3, filterPropertyMetadata.size());
     }

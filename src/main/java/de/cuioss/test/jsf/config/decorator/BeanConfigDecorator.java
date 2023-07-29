@@ -37,33 +37,33 @@ public class BeanConfigDecorator {
      * Registers a given Object as jsf-managed bean for the given key
      *
      * @param managedBean to be registered, must not be null
-     * @param name to be registered to. May be a correct value-expression or not (actual name only).
-     *            Must not be null nor empty.
-     * @return the {@link BeanConfigDecorator} itself in order to enable a fluent-api style usage
+     * @param name        to be registered to. May be a correct value-expression or
+     *                    not (actual name only). Must not be null nor empty.
+     * @return the {@link BeanConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public BeanConfigDecorator register(final Object managedBean, final String name) {
         requireNonNull(emptyToNull(name), NAME_MUST_NOT_BE_NULL);
         requireNonNull(managedBean, BEAN_MUST_NOT_BE_NULL);
 
-        final var expressionFactory =
-            facesContext.getApplication().getExpressionFactory();
+        final var expressionFactory = facesContext.getApplication().getExpressionFactory();
 
-        final var ve =
-            expressionFactory.createValueExpression(facesContext.getELContext(),
-                    checkManagedBeanKey(name), managedBean.getClass());
+        final var ve = expressionFactory.createValueExpression(facesContext.getELContext(), checkManagedBeanKey(name),
+                managedBean.getClass());
         ve.setValue(facesContext.getELContext(), managedBean);
 
         return this;
     }
 
     /**
-     * Registers a given Object as jsf-managed bean. It checks the given bean for the annotation
-     * {@link Named} in oder to extract the corresponding value attribute.
-     * If none could be found it uses the {@link Class#getSimpleName()} with the first letter being
-     * lower-cased
+     * Registers a given Object as jsf-managed bean. It checks the given bean for
+     * the annotation {@link Named} in oder to extract the corresponding value
+     * attribute. If none could be found it uses the {@link Class#getSimpleName()}
+     * with the first letter being lower-cased
      *
      * @param managedBean to be registered, must not be null
-     * @return the {@link BeanConfigDecorator} itself in order to enable a fluent-api style usage
+     * @return the {@link BeanConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public BeanConfigDecorator register(final Object managedBean) {
         requireNonNull(managedBean, BEAN_MUST_NOT_BE_NULL);
@@ -71,8 +71,7 @@ public class BeanConfigDecorator {
         final Class<?> type = managedBean.getClass();
         String name = null;
 
-        final Optional<Named> named =
-            MoreReflection.extractAnnotation(type, Named.class);
+        final Optional<Named> named = MoreReflection.extractAnnotation(type, Named.class);
         if (named.isPresent() && !isEmpty(named.get().value())) {
             name = named.get().value();
         }
@@ -87,11 +86,12 @@ public class BeanConfigDecorator {
     }
 
     /**
-     * In case the beanKey is not an el expression (starting not with '#{') this method wraps the
-     * expression accordingly.
+     * In case the beanKey is not an el expression (starting not with '#{') this
+     * method wraps the expression accordingly.
      *
      * @param managedBeanKey must not be null or empty
-     * @return the key wrapped as an EL-Expression if needed, otherwise the given key.
+     * @return the key wrapped as an EL-Expression if needed, otherwise the given
+     *         key.
      */
     public static String checkManagedBeanKey(final String managedBeanKey) {
         requireNonNull(emptyToNull(managedBeanKey), NAME_MUST_NOT_BE_NULL);
@@ -105,19 +105,17 @@ public class BeanConfigDecorator {
     /**
      * Utility method for accessing a concrete bean
      *
-     * @param name May be a correct value-expression or not (actual name only).
-     *            Must not be null nor empty.
+     * @param name         May be a correct value-expression or not (actual name
+     *                     only). Must not be null nor empty.
      * @param facesContext to be used for accessing the bean
      * @param expectedType identifying the type to be checked
      * @return the registered bean for a given type or null, if none could be found
      */
-    public static <T> T getBean(final String name, final FacesContext facesContext,
-            final Class<T> expectedType) {
+    public static <T> T getBean(final String name, final FacesContext facesContext, final Class<T> expectedType) {
         requireNonNull(facesContext);
         requireNonNull(name);
         requireNonNull(expectedType);
-        return facesContext.getApplication().evaluateExpressionGet(facesContext,
-                checkManagedBeanKey(name),
+        return facesContext.getApplication().evaluateExpressionGet(facesContext, checkManagedBeanKey(name),
                 expectedType);
     }
 }

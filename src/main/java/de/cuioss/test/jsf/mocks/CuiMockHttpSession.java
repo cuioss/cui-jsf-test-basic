@@ -11,8 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Extension to {@link MockHttpSession} that provides the programmatic setting of
- * 'maxInactiveInterval'
+ * Extension to {@link MockHttpSession} that provides the programmatic setting
+ * of 'maxInactiveInterval'
  *
  * @author Oliver Wolff
  *

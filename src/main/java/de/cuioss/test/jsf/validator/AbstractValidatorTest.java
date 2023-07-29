@@ -23,36 +23,38 @@ import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
 /**
- * Base Class for testing implementations of {@link Validator} within a Junit 5 context
+ * Base Class for testing implementations of {@link Validator} within a Junit 5
+ * context
  * <h3>Setup</h3>
  * <p>
- * It uses {@link EnableJsfEnvironment}, for the basic test-infrastructure.See the
- * class-documentation for details.
+ * It uses {@link EnableJsfEnvironment}, for the basic test-infrastructure.See
+ * the class-documentation for details.
  * </p>
  * <p>
- * {@link #initValidator()}: Instantiates the concrete {@link Validator} using reflection. After
- * this the method calls {@link #configure(Object)} that can be used for further
- * configuration of the {@link Validator}
+ * {@link #initValidator()}: Instantiates the concrete {@link Validator} using
+ * reflection. After this the method calls {@link #configure(Object)} that can
+ * be used for further configuration of the {@link Validator}
  * </p>
  * <p>
- * In case you want you want to create the {@link Validator} yourself you can overwrite
- * {@link #getValidator()}
+ * In case you want you want to create the {@link Validator} yourself you can
+ * overwrite {@link #getValidator()}
  * </p>
  * <p>
- * In case you want a pass another {@link UIComponent} as parameter to the {@link Validator} you can
- * overwrite {@link #getComponent()}
+ * In case you want a pass another {@link UIComponent} as parameter to the
+ * {@link Validator} you can overwrite {@link #getComponent()}
  * </p>
  * <h3>Test-Methods</h3>
  * <p>
  * The core test-methods are {@link #shouldFailOnInvalidTestdata()} and
- * {@link #shouldHandleValidTestdata()}. They call {@link #populate(TestItems)} in oder to
- * create corresponding test-data. The implementation is in the actual test-class.
+ * {@link #shouldHandleValidTestdata()}. They call {@link #populate(TestItems)}
+ * in oder to create corresponding test-data. The implementation is in the
+ * actual test-class.
  * </p>
  * <h3>API-Test</h3>
  * <p>
  * The api as defined within {@link Validator} is tested with the methods
- * {@link #shouldFailOnNullComponent()}, {@link #shouldFailOnNullFacesContext()} and
- * {@link #shouldHandleNullValue()}
+ * {@link #shouldFailOnNullComponent()}, {@link #shouldFailOnNullFacesContext()}
+ * and {@link #shouldHandleNullValue()}
  * </p>
  * <h3>Example</h3>
  *
@@ -102,7 +104,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link UIComponent}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link UIComponent}, see
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
@@ -111,7 +114,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link FacesContext}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link FacesContext}, see
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
@@ -120,7 +124,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for the actual value, see
+     * Checks the api contract regarding {@code null} as parameter for the actual
+     * value, see
      * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
@@ -136,14 +141,13 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     void shouldHandleValidTestdata() {
         final var items = new TestItems<T>();
         populate(items);
-        items.allValid().forEach(
-                item -> validator.validate(getFacesContext(), getComponent(), item.getTestValue()));
+        items.allValid().forEach(item -> validator.validate(getFacesContext(), getComponent(), item.getTestValue()));
     }
 
     /**
      * Tests whether the invalid {@link TestItems} fail to validate by throwing
-     * {@link ValidatorException}. In case the single {@link TestItems} provide a message,
-     * it will be compared as well.
+     * {@link ValidatorException}. In case the single {@link TestItems} provide a
+     * message, it will be compared as well.
      */
     @Test
     void shouldFailOnInvalidTestdata() {
@@ -156,8 +160,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
             } catch (final ValidatorException e) {
                 assertEquals(FacesMessage.SEVERITY_ERROR, e.getFacesMessage().getSeverity());
                 if (null != item.getErrorMessage()) {
-                    assertEquals(
-                            item.getErrorMessage(), e.getFacesMessage().getSummary(),
+                    assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
                             "The validation failed as expected, but the messages are not equal as expected");
                 }
             }

@@ -34,12 +34,14 @@ import lombok.Getter;
  * {@link de.cuioss.test.valueobjects.api.property}</li>
  * </ul>
  * <p>
- * It acts as an {@link ConfigurationCallBackHandler}, saying after initialization and prior to
- * testing the method {@link #configure(Object)} will be called allowing the concrete
- * test-class to do some specific configuration e.g. calling init-methods and such.
+ * It acts as an {@link ConfigurationCallBackHandler}, saying after
+ * initialization and prior to testing the method {@link #configure(Object)}
+ * will be called allowing the concrete test-class to do some specific
+ * configuration e.g. calling init-methods and such.
  * </p>
  * <p>
- * You can easily access pre-configured instance by calling {@link #anyComponent()}.
+ * You can easily access pre-configured instance by calling
+ * {@link #anyComponent()}.
  * </p>
  *
  * @author Oliver Wolff
@@ -68,14 +70,12 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
     public void initializeBaseClass() {
         targetClass = MoreReflection.extractFirstGenericTypeArgument(getClass());
 
-        filteredMetadata =
-            ComponentTestHelper.filterPropertyMetadata(getClass(),
-                    new DefaultInstantiator<>(targetClass).newInstance());
+        filteredMetadata = ComponentTestHelper.filterPropertyMetadata(getClass(),
+                new DefaultInstantiator<>(targetClass).newInstance());
 
         PropertyHelper.logMessageForPropertyMetadata(filteredMetadata);
-        instantiator =
-            new CallbackAwareInstantiator<>(new BeanInstantiator<>(new DefaultInstantiator<>(getTargetClass()),
-                    new RuntimeProperties(filteredMetadata)), this);
+        instantiator = new CallbackAwareInstantiator<>(new BeanInstantiator<>(
+                new DefaultInstantiator<>(getTargetClass()), new RuntimeProperties(filteredMetadata)), this);
     }
 
     /**
@@ -91,15 +91,13 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
      */
     @Test
     void shouldHandleValueExpressions() {
-        new ValueExpressionPropertyContract<>(instantiator, filteredMetadata, getFacesContext())
-                .assertContract();
+        new ValueExpressionPropertyContract<>(instantiator, filteredMetadata, getFacesContext()).assertContract();
     }
 
     /**
      * @return a minimal configured instance of the {@link UIComponent} with
-     *         {@link #configure(Object)} being already
-     *         called. 'Minimal configured' hereby defined as all attributes that are required are
-     *         set
+     *         {@link #configure(Object)} being already called. 'Minimal configured'
+     *         hereby defined as all attributes that are required are set
      */
     public T anyComponent() {
         return getInstantiator().newInstanceMinimal();

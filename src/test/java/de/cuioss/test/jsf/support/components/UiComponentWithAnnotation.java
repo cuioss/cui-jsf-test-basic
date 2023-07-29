@@ -7,6 +7,5 @@ import javax.faces.component.html.HtmlInputText;
 @FacesComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE)
 public class UiComponentWithAnnotation extends HtmlInputText {
 
-    public static final String ANNOTATED_COMPONENT_TYPE =
-        "de.cuioss.test.jsf.context.support.UiComponentWithAnnotation";
+    public static final String ANNOTATED_COMPONENT_TYPE = "de.cuioss.test.jsf.context.support.UiComponentWithAnnotation";
 }

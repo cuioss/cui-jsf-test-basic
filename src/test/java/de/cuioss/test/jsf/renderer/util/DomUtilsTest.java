@@ -22,8 +22,7 @@ class DomUtilsTest {
 
     public static final String NESTED_DIV_WITH_STYLE = "<div style=\"first\"><div style=\"second\"/></div>";
 
-    public static final String NESTED_DIV_WITH_MULITPLE =
-        "<div style=\"first\" class=\"firstClass\"><div style=\"second\"/></div>";
+    public static final String NESTED_DIV_WITH_MULITPLE = "<div style=\"first\" class=\"firstClass\"><div style=\"second\"/></div>";
 
     @Test
     void shouldCreateDomFromHml() {

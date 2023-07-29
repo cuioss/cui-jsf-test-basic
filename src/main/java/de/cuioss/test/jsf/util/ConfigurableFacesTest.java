@@ -38,30 +38,34 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 /**
- * Base class for configuring the {@link FacesContext} provided by MyFaces-Test. The configuration
- * is implemented using some kind of decorator pattern (roughly). The actual configuration relies on
- * two sources:
+ * Base class for configuring the {@link FacesContext} provided by MyFaces-Test.
+ * The configuration is implemented using some kind of decorator pattern
+ * (roughly). The actual configuration relies on two sources:
  * <ul>
- * <li>It scans for the annotations of type {@link JsfTestConfiguration} instantiates the
- * corresponding classes and configures the environment accordingly</li>
- * <li>It checks whether the actual test-class implements one of {@link ApplicationConfigurator},
- * {@link BeanConfigurator}, {@link RequestConfigurator} or {@link ComponentConfigurator} and calls
- * the corresponding methods accordingly, <em>after</em> the configurator derived by the
- * annotations</li>
+ * <li>It scans for the annotations of type {@link JsfTestConfiguration}
+ * instantiates the corresponding classes and configures the environment
+ * accordingly</li>
+ * <li>It checks whether the actual test-class implements one of
+ * {@link ApplicationConfigurator}, {@link BeanConfigurator},
+ * {@link RequestConfigurator} or {@link ComponentConfigurator} and calls the
+ * corresponding methods accordingly, <em>after</em> the configurator derived by
+ * the annotations</li>
  * </ul>
  * <p>
- * The corresponding objects {@link ComponentConfigurator}, {@link BeanConfigDecorator},
- * {@link RequestConfigDecorator} and {@link ApplicationConfigurator} can be accessed by the
- * getter-methods, in case you need to configure elements for a certain test only.
+ * The corresponding objects {@link ComponentConfigurator},
+ * {@link BeanConfigDecorator}, {@link RequestConfigDecorator} and
+ * {@link ApplicationConfigurator} can be accessed by the getter-methods, in
+ * case you need to configure elements for a certain test only.
  * </p>
  * <p>
- * In addition there is a new way of dealing with localized messages for unit-tests. In essence
- * there is the {@link IdentityResourceBundle} configured: This is helpful for tests
- * where you want to ensure that a certain message key is used to create a message but do not want
- * to test the actual ResourceBundle mechanism itself. It will always return the given key itself.
+ * In addition there is a new way of dealing with localized messages for
+ * unit-tests. In essence there is the {@link IdentityResourceBundle}
+ * configured: This is helpful for tests where you want to ensure that a certain
+ * message key is used to create a message but do not want to test the actual
+ * ResourceBundle mechanism itself. It will always return the given key itself.
  * As default this mechanism is active, you can change this by overwriting
- * #isUseIdentityResouceBundle(). If it is active it is used as well for resolving
- * the MessageBundle
+ * #isUseIdentityResouceBundle(). If it is active it is used as well for
+ * resolving the MessageBundle
  * </p>
  *
  * @author Oliver Wolff
@@ -100,9 +104,8 @@ public class ConfigurableFacesTest {
         componentConfigDecorator = new ComponentConfigDecorator(getApplication(), getFacesContext());
         beanConfigDecorator = new BeanConfigDecorator(getFacesContext());
         applicationConfigDecorator = new ApplicationConfigDecorator(getApplication(), getFacesContext());
-        requestConfigDecorator =
-            new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
-                    (MockExternalContext22) getExternalContext());
+        requestConfigDecorator = new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
+                (MockExternalContext22) getExternalContext());
 
         final var annotations = extractJsfTestConfiguration(getClass());
         configureApplication(this, applicationConfigDecorator, annotations);
@@ -110,12 +113,11 @@ public class ConfigurableFacesTest {
         configureManagedBeans(this, beanConfigDecorator, annotations);
         configureRequestConfig(this, requestConfigDecorator, annotations);
 
-        // Fix for invalid set converter Id at org.apache.myfaces.test.mock.MockApplication@91
-        componentConfigDecorator.registerConverter(IntegerConverter.class,
-                IntegerConverter.CONVERTER_ID);
+        // Fix for invalid set converter Id at
+        // org.apache.myfaces.test.mock.MockApplication@91
+        componentConfigDecorator.registerConverter(IntegerConverter.class, IntegerConverter.CONVERTER_ID);
         // Enum converter is currently omitted.
-        componentConfigDecorator.registerConverter(EnumConverter.class,
-                EnumConverter.CONVERTER_ID);
+        componentConfigDecorator.registerConverter(EnumConverter.class, EnumConverter.CONVERTER_ID);
         componentConfigDecorator.registerConverter(EnumConverter.class, Enum.class);
 
         // Enable CuiMockConfigurableNavigationHandler to be used

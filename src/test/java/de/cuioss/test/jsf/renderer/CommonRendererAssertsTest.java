@@ -16,14 +16,14 @@ class CommonRendererAssertsTest {
 
     public static final String NESTED_DIV = "<div><div /></div>";
 
-    public static final String NESTED_DIV_WITH_ID_ATTRIBUTE =
-        "<div id=\"" + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
+    public static final String NESTED_DIV_WITH_ID_ATTRIBUTE = "<div id=\""
+            + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
 
-    public static final String NESTED_DIV_WITH_STYLE_ATTRIBUTE =
-        "<div style=\"" + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
+    public static final String NESTED_DIV_WITH_STYLE_ATTRIBUTE = "<div style=\""
+            + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
 
-    public static final String NESTED_DIV_WITH_STYLE_CLASS_ATTRIBUTE =
-        "<div class=\"" + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
+    public static final String NESTED_DIV_WITH_STYLE_CLASS_ATTRIBUTE = "<div class=\""
+            + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_PT_ATTRIBUTE = "<div data-passthrough-test=\""
             + CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue() + "\"><div /></div>";
@@ -62,8 +62,7 @@ class CommonRendererAssertsTest {
                 component.getPassThroughAttributes().get(CommonRendererAsserts.PASSTHROUGH.getAttributeName()));
         // Should detect missing attribute
         var result = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
-        assertThrows(AssertionError.class, () -> CommonRendererAsserts.PASSTHROUGH
-                .assertAttributeSet(result));
+        assertThrows(AssertionError.class, () -> CommonRendererAsserts.PASSTHROUGH.assertAttributeSet(result));
         CommonRendererAsserts.PASSTHROUGH
                 .assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV_WITH_PT_ATTRIBUTE).getRootElement());
     }

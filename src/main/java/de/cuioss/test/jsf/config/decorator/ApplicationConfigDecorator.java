@@ -23,7 +23,8 @@ import de.cuioss.tools.reflect.FieldWrapper;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Helper class acting as runtime-registry for {@link ResourceBundle}, {@link NavigationHandler},
+ * Helper class acting as runtime-registry for {@link ResourceBundle},
+ * {@link NavigationHandler},
  *
  * @author Oliver Wolff
  */
@@ -38,11 +39,10 @@ public class ApplicationConfigDecorator {
      *
      * @param bundleName the name of the bundle to be registered to
      * @param bundlePath the path to the {@link ResourceBundle}
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
-    public ApplicationConfigDecorator registerResourceBundle(final String bundleName,
-            final String bundlePath) {
+    public ApplicationConfigDecorator registerResourceBundle(final String bundleName, final String bundlePath) {
         ResourceBundleVarNames.addVarName(bundleName, bundlePath);
         return this;
     }
@@ -52,8 +52,8 @@ public class ApplicationConfigDecorator {
      * {@link Application#setSupportedLocales(Collection)}
      *
      * @param locales to be registered
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public ApplicationConfigDecorator registerSupportedLocales(final Collection<Locale> locales) {
         application.setSupportedLocales(locales);
@@ -61,11 +61,12 @@ public class ApplicationConfigDecorator {
     }
 
     /**
-     * Registers the default {@link Locale}, see {@link Application#setDefaultLocale(Locale)}
+     * Registers the default {@link Locale}, see
+     * {@link Application#setDefaultLocale(Locale)}
      *
      * @param locale to be registered
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public ApplicationConfigDecorator registerDefaultLocale(final Locale locale) {
         application.setDefaultLocale(locale);
@@ -75,21 +76,21 @@ public class ApplicationConfigDecorator {
     /**
      * Register a navigation case in a simple way, with two parameter only
      *
-     * @param outcome to be registered
+     * @param outcome  to be registered
      * @param toViewId to be registered
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
-    public ApplicationConfigDecorator registerNavigationCase(final String outcome,
-            final String toViewId) {
+    public ApplicationConfigDecorator registerNavigationCase(final String outcome, final String toViewId) {
         getMockNavigationHandler().addNavigationCase(outcome,
                 new NavigationCase(null, null, outcome, null, toViewId, null, null, true, true));
         return this;
     }
 
     /**
-     * @return an instance of {@link CuiMockConfigurableNavigationHandler} If not already configured
-     *         this method will implicitly register a new instance
+     * @return an instance of {@link CuiMockConfigurableNavigationHandler} If not
+     *         already configured this method will implicitly register a new
+     *         instance
      */
     public CuiMockConfigurableNavigationHandler getMockNavigationHandler() {
         if (!(application.getNavigationHandler() instanceof CuiMockConfigurableNavigationHandler)) {
@@ -99,18 +100,17 @@ public class ApplicationConfigDecorator {
     }
 
     /**
-     * Sets the {@link ProjectStage}. Caution: this method uses hardcore reflection to access the
-     * field with the name "_projectStage", may therefore be fragile.
+     * Sets the {@link ProjectStage}. Caution: this method uses hardcore reflection
+     * to access the field with the name "_projectStage", may therefore be fragile.
      *
      * @param projectStage to be set
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public ApplicationConfigDecorator setProjectStage(final ProjectStage projectStage) {
         var projectStageField = FieldWrapper.from(MockApplication20.class, "_projectStage");
         if (projectStageField.isEmpty()) {
-            throw new IllegalStateException(
-                    "Unable to set projectStage, due to underlying Exception");
+            throw new IllegalStateException("Unable to set projectStage, due to underlying Exception");
         }
         projectStageField.get().writeValue(getMockApplicationInstance(application), projectStage);
         return this;
@@ -130,22 +130,24 @@ public class ApplicationConfigDecorator {
      * Sets the contextPath in {@link HttpServletRequest}
      *
      * @param contextPath to be set
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public ApplicationConfigDecorator setContextPath(final String contextPath) {
-        ((MockHttpServletRequest) facesContext.getExternalContext().getRequest())
-                .setContextPath(contextPath);
+        ((MockHttpServletRequest) facesContext.getExternalContext().getRequest()).setContextPath(contextPath);
         return this;
     }
 
     /**
-     * Registers a concrete InitParameter to {@link ExternalContext#getInitParameterMap()}
+     * Registers a concrete InitParameter to
+     * {@link ExternalContext#getInitParameterMap()}
      *
-     * @param key used as the key for the {@link ExternalContext#getInitParameterMap()}
-     * @param value used as the value for the {@link ExternalContext#getInitParameterMap()}
-     * @return the {@link ApplicationConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @param key   used as the key for the
+     *              {@link ExternalContext#getInitParameterMap()}
+     * @param value used as the value for the
+     *              {@link ExternalContext#getInitParameterMap()}
+     * @return the {@link ApplicationConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public ApplicationConfigDecorator addInitParameter(final String key, final String value) {
         var context = (MockServletContext) facesContext.getExternalContext().getContext();

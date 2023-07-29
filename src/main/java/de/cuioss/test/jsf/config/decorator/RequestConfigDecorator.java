@@ -33,8 +33,8 @@ public class RequestConfigDecorator {
      * Sets the postback attribute to {@link FacesContext#isPostback()}
      *
      * @param postback to be set
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public RequestConfigDecorator setPostback(final boolean postback) {
         facesContext.setPostback(postback);
@@ -45,8 +45,8 @@ public class RequestConfigDecorator {
      * Sets the viewId in {@link UIViewRoot}
      *
      * @param viewId to be set
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public RequestConfigDecorator setViewId(final String viewId) {
         facesContext.getViewRoot().setViewId(viewId);
@@ -54,29 +54,33 @@ public class RequestConfigDecorator {
     }
 
     /**
-     * Registers a concrete RequestHeader to {@link ExternalContext#getRequestHeaderMap()}
+     * Registers a concrete RequestHeader to
+     * {@link ExternalContext#getRequestHeaderMap()}
      *
-     * @param key used as the key for the {@link ExternalContext#getRequestHeaderMap()}
-     * @param value used as the value for the {@link ExternalContext#getRequestHeaderMap()}
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @param key   used as the key for the
+     *              {@link ExternalContext#getRequestHeaderMap()}
+     * @param value used as the value for the
+     *              {@link ExternalContext#getRequestHeaderMap()}
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
-    public RequestConfigDecorator setRequestHeader(final String key,
-            final String value) {
+    public RequestConfigDecorator setRequestHeader(final String key, final String value) {
         externalContext.addRequestHeader(key, value);
         return this;
     }
 
     /**
-     * Registers a concrete Request-parameter to {@link ExternalContext#getRequestParameterMap()}
+     * Registers a concrete Request-parameter to
+     * {@link ExternalContext#getRequestParameterMap()}
      *
-     * @param key used as the key for the {@link ExternalContext#getRequestHeaderMap()}
-     * @param value used as the value for the {@link ExternalContext#getRequestHeaderMap()}
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @param key   used as the key for the
+     *              {@link ExternalContext#getRequestHeaderMap()}
+     * @param value used as the value for the
+     *              {@link ExternalContext#getRequestHeaderMap()}
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
-    public RequestConfigDecorator setRequestParameter(final String key,
-            final String value) {
+    public RequestConfigDecorator setRequestParameter(final String key, final String value) {
         externalContext.addRequestParameterMap(key, value);
         return this;
     }
@@ -85,14 +89,14 @@ public class RequestConfigDecorator {
      * Registers a concrete Request-attribute to
      * {@link HttpServletRequest#setAttribute(String, Object)}
      *
-     * @param key used as the key for the {@link HttpServletRequest#setAttribute(String, Object)}
+     * @param key   used as the key for the
+     *              {@link HttpServletRequest#setAttribute(String, Object)}
      * @param value used as the value for the
-     *            {@link HttpServletRequest#setAttribute(String, Object)}
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     *              {@link HttpServletRequest#setAttribute(String, Object)}
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
-    public RequestConfigDecorator setRequestAttribute(final String key,
-            final Serializable value) {
+    public RequestConfigDecorator setRequestAttribute(final String key, final Serializable value) {
         ((HttpServletRequest) externalContext.getRequest()).setAttribute(key, value);
         return this;
     }
@@ -101,8 +105,8 @@ public class RequestConfigDecorator {
      * Registers one or more cookies the the contained request
      *
      * @param cookie to be added
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public RequestConfigDecorator addRequestCookie(final Cookie... cookie) {
         var request = (MockHttpServletRequest) externalContext.getRequest();
@@ -114,15 +118,16 @@ public class RequestConfigDecorator {
 
     /**
      * <p>
-     * Registers one or more requestLocale to {@link ExternalContext#getRequestLocales()}. It can
-     * be used for resetting the locales as well.
+     * Registers one or more requestLocale to
+     * {@link ExternalContext#getRequestLocales()}. It can be used for resetting the
+     * locales as well.
      * </p>
-     * <em>Caution: </em> It expects the {@link HttpServletRequest} being an instance of
-     * {@link CuiMockHttpServletRequest}
+     * <em>Caution: </em> It expects the {@link HttpServletRequest} being an
+     * instance of {@link CuiMockHttpServletRequest}
      *
      * @param requestLocale one or more requestLocales to be set
-     * @return the {@link RequestConfigDecorator} itself in order to enable a fluent-api style
-     *         usage
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     *         fluent-api style usage
      */
     public RequestConfigDecorator setRequestLocale(final Locale... requestLocale) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();

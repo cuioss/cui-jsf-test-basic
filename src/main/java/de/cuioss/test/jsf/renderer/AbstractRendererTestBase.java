@@ -31,23 +31,25 @@ import de.cuioss.tools.string.MoreStrings;
 import lombok.Getter;
 
 /**
- * Base class for testing implementations of {@link Renderer}. It focuses on conveniences and the
- * basic-api contracts.
+ * Base class for testing implementations of {@link Renderer}. It focuses on
+ * conveniences and the basic-api contracts.
  * <h3>Configuration</h3>
  * <p>
- * Documentation on the setup of the JSF-related test-infrastructure can be found at
- * {@link EnableJsfEnvironment}
+ * Documentation on the setup of the JSF-related test-infrastructure can be
+ * found at {@link EnableJsfEnvironment}
  * </p>
  * <p>
- * It acts as an {@link ConfigurationCallBackHandler}, saying after initialization and prior to
- * testing the method {@link #configure(Object)} will be called allowing the concrete
- * test-class to do some specific configuration e.g. calling init-methods and such.
+ * It acts as an {@link ConfigurationCallBackHandler}, saying after
+ * initialization and prior to testing the method {@link #configure(Object)}
+ * will be called allowing the concrete test-class to do some specific
+ * configuration e.g. calling init-methods and such.
  * </p>
  * <p>
- * You can easily access pre-configured instance by calling {@link #getRenderer()}.
+ * You can easily access pre-configured instance by calling
+ * {@link #getRenderer()}.
  * </p>
- * <h3>API-Tests</h3>
- * Base {@linkplain Renderer} Test. Verify API contract of Renderer for
+ * <h3>API-Tests</h3> Base {@linkplain Renderer} Test. Verify API contract of
+ * Renderer for
  * <ul>
  * <li>{@linkplain Renderer#decode(FacesContext, UIComponent)}</li>
  * <li>{@linkplain Renderer#encodeBegin(FacesContext, UIComponent)}</li>
@@ -58,8 +60,8 @@ import lombok.Getter;
  * <h3>Contracts</h3>
  * <ul>
  * <li>{@link #assertRenderResult(UIComponent, Document)} and
- * {@link #assertRenderResult(UIComponent, String)} are the main
- * 'business' methods for explicit testing</li>
+ * {@link #assertRenderResult(UIComponent, String)} are the main 'business'
+ * methods for explicit testing</li>
  * </ul>
  *
  * @author Oliver Wolff
@@ -68,14 +70,11 @@ import lombok.Getter;
 public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEnabledTestEnvironment
         implements ConfigurationCallBackHandler<R> {
 
-    private static final String NPE_ON_MISSING_CLIENT_ID_EXPECTED =
-        "NullPointerException expected on missing ClientId parameter. Use inheritance or implement own check.";
+    private static final String NPE_ON_MISSING_CLIENT_ID_EXPECTED = "NullPointerException expected on missing ClientId parameter. Use inheritance or implement own check.";
 
-    private static final String NPE_ON_MISSING_PARAMETER_EXPECTED =
-        "NullPointerException expected on missing UIComponent parameter. Use inheritance or implement own check.";
+    private static final String NPE_ON_MISSING_PARAMETER_EXPECTED = "NullPointerException expected on missing UIComponent parameter. Use inheritance or implement own check.";
 
-    private static final String NPE_ON_MISSING_FACESCONTEXT_EXPECTED =
-        "NullPointerException expected on missing FacesContext. Use inheritance or implement own check.";
+    private static final String NPE_ON_MISSING_FACESCONTEXT_EXPECTED = "NullPointerException expected on missing FacesContext. Use inheritance or implement own check.";
 
     @Getter
     private R renderer;
@@ -94,15 +93,16 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     }
 
     /**
-     * @return the configured {@link UIComponent}. <em>Caution: </em> you must always create a
-     *         new instance of the component on each call
+     * @return the configured {@link UIComponent}. <em>Caution: </em> you must
+     *         always create a new instance of the component on each call
      */
     protected abstract UIComponent getComponent();
 
     /**
      * Renders the given component / renderer into a String representation
      *
-     * @param toBeRendered the component to be passed to the renderer, must not be null
+     * @param toBeRendered the component to be passed to the renderer, must not be
+     *                     null
      * @return the String-result of the rendering
      * @throws IOException
      */
@@ -118,10 +118,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     }
 
     /**
-     * Calls the renderer and checks the result against the given expected {@link Document}
+     * Calls the renderer and checks the result against the given expected
+     * {@link Document}
      *
-     * @param toBeRendered the component to be passed to the renderer, must not be null
-     * @param expected must not be null
+     * @param toBeRendered the component to be passed to the renderer, must not be
+     *                     null
+     * @param expected     must not be null
      */
     public void assertRenderResult(final UIComponent toBeRendered, final Document expected) {
         var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered));
@@ -133,8 +135,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * Shorthand for {@link #assertRenderResult(UIComponent, Document)} and
      * {@link DomUtils#htmlStringToDocument(String)}
      *
-     * @param toBeRendered the component to be passed to the renderer, must not be null
-     * @param expected must not be null
+     * @param toBeRendered the component to be passed to the renderer, must not be
+     *                     null
+     * @param expected     must not be null
      */
     public void assertRenderResult(final UIComponent toBeRendered, final String expected) {
         assertNotNull(emptyToNull(expected), "Render result must not be empty.");
@@ -144,7 +147,8 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     /**
      * Assert, that the given component does not render any output.
      *
-     * @param toBeRendered the component to be passed to the renderer, must not be null
+     * @param toBeRendered the component to be passed to the renderer, must not be
+     *                     null
      */
     public void assertEmptyRenderResult(final UIComponent toBeRendered) {
         var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered));
@@ -155,7 +159,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @Test
     void shouldThrowNPEOnMissingParameterForDecode() {
         assertThrows(NullPointerException.class, () -> renderer.decode(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
+                NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
         assertThrows(NullPointerException.class, () -> renderer.decode(getFacesContext(), null),
                 NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
@@ -163,14 +167,14 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeBegin() {
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
+                NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(getFacesContext(), null));
     }
 
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeChildren() {
         assertThrows(NullPointerException.class, () -> renderer.encodeChildren(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
+                NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
         assertThrows(NullPointerException.class, () -> renderer.encodeChildren(getFacesContext(), null),
                 NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
@@ -178,7 +182,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @Test
     void shouldThrowNPEOnMissingParameterForConvertClientId() {
         assertThrows(NullPointerException.class, () -> renderer.convertClientId(null, "SomeId"),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
+                NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
         assertThrows(NullPointerException.class, () -> renderer.convertClientId(getFacesContext(), null),
                 NPE_ON_MISSING_CLIENT_ID_EXPECTED);
     }
@@ -186,7 +190,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeEnd() {
         assertThrows(NullPointerException.class, () -> renderer.encodeEnd(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
+                NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
         assertThrows(NullPointerException.class, () -> renderer.encodeEnd(getFacesContext(), null),
                 NPE_ON_MISSING_PARAMETER_EXPECTED);
     }

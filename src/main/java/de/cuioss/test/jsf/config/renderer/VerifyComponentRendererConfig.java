@@ -20,9 +20,9 @@ import de.cuioss.test.jsf.renderer.AbstractComponentRendererTest;
 public @interface VerifyComponentRendererConfig {
 
     /**
-     * @return boolean indicating whether the test should wrap the component to be tested into a
-     *         {@link HtmlForm} prior to rendering. Defaults to {@code false}, The form itself will
-     *         not be rendered
+     * @return boolean indicating whether the test should wrap the component to be
+     *         tested into a {@link HtmlForm} prior to rendering. Defaults to
+     *         {@code false}, The form itself will not be rendered
      */
     boolean wrapComponentInForm() default false;
 }

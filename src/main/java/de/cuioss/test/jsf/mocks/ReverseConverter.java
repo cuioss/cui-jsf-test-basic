@@ -23,14 +23,12 @@ public class ReverseConverter implements Converter<String> {
     public static final String CONVERTER_ID = "de.cuioss.test.jsf.mocks.ReserveConverter";
 
     @Override
-    public String getAsObject(final FacesContext context, final UIComponent component,
-            final String value) {
+    public String getAsObject(final FacesContext context, final UIComponent component, final String value) {
         return reverse(context, component, value);
     }
 
     @Override
-    public String getAsString(final FacesContext context, final UIComponent component,
-            final String value) {
+    public String getAsString(final FacesContext context, final UIComponent component, final String value) {
         return reverse(context, component, value);
     }
 

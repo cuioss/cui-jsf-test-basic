@@ -15,8 +15,8 @@ import lombok.Getter;
 
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
 
-    public static final String RENDER_RESULT =
-        String.format("<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>", "__v_0", "__v_0");
+    public static final String RENDER_RESULT = String
+            .format("<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>", "__v_0", "__v_0");
 
     @Getter
     private HtmlInputText component;

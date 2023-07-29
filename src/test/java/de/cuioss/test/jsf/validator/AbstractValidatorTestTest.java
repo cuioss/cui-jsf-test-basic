@@ -10,8 +10,7 @@ class AbstractValidatorTestTest extends AbstractValidatorTest<LengthValidator, S
 
     @Override
     public void populate(final TestItems<String> testItems) {
-        testItems.addValid("1").addValid("abc").addInvalidWithMessage("123456",
-                LengthValidator.MAXIMUM_MESSAGE_ID);
+        testItems.addValid("1").addValid("abc").addInvalidWithMessage("123456", LengthValidator.MAXIMUM_MESSAGE_ID);
     }
 
     @Override

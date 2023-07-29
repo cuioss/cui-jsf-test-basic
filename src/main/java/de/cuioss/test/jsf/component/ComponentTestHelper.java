@@ -25,7 +25,8 @@ import de.cuioss.tools.reflect.MoreReflection;
 import lombok.experimental.UtilityClass;
 
 /**
- * Helper class providing utility methods for convenient filtering of properties.
+ * Helper class providing utility methods for convenient filtering of
+ * properties.
  *
  * @author Oliver Wolff
  */
@@ -33,21 +34,19 @@ import lombok.experimental.UtilityClass;
 public final class ComponentTestHelper {
 
     /**
-     * Filters the given metadata according to the annotations {@link VerifyComponentProperties}
-     * found on the given annotated type
+     * Filters the given metadata according to the annotations
+     * {@link VerifyComponentProperties} found on the given annotated type
      *
      * @param annotated must not be null
-     * @param instance of the type to be checked.
+     * @param instance  of the type to be checked.
      * @return the filtered list with {@link ComponentPropertyMetadata}
      */
-    public static List<ComponentPropertyMetadata> filterPropertyMetadata(
-            final Class<?> annotated,
+    public static List<ComponentPropertyMetadata> filterPropertyMetadata(final Class<?> annotated,
             final UIComponent instance) {
         requireNonNull(annotated);
         requireNonNull(instance);
 
-        var propertyConfigs =
-                PropertyHelper.handlePropertyConfigAnnotations(annotated);
+        var propertyConfigs = PropertyHelper.handlePropertyConfigAnnotations(annotated);
 
         var of = new ArrayList<String>();
         var defaultValued = new ArrayList<String>();
@@ -67,23 +66,21 @@ public final class ComponentTestHelper {
             map.put(configuredName, resolvePropertyForConfiguredName(instance, configuredName));
         }
 
-        var filtered = AnnotationHelper.modifyPropertyMetadata(map,
-                defaultValued, Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
-                unorderedCollection);
+        var filtered = AnnotationHelper.modifyPropertyMetadata(map, defaultValued, Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), unorderedCollection);
 
         List<ComponentPropertyMetadata> found = new ArrayList<>();
         for (Entry<String, PropertyMetadata> entry : filtered.entrySet()) {
-            found.add(
-                    new ComponentPropertyMetadata(entry.getValue(), noVE.contains(entry.getKey())));
+            found.add(new ComponentPropertyMetadata(entry.getValue(), noVE.contains(entry.getKey())));
         }
         return found;
     }
 
     /**
-     * Creates a {@link PropertyMetadata} for the given propertyName on the given type.
+     * Creates a {@link PropertyMetadata} for the given propertyName on the given
+     * type.
      *
-     * @param instance must not be null
+     * @param instance       must not be null
      * @param configuredName must not be null
      * @return {@link PropertyMetadata} instance with the corresponding attributes.
      */
@@ -92,18 +89,13 @@ public final class ComponentTestHelper {
         Class<?> propertyType = null;
         var collectionType = CollectionType.NO_ITERABLE;
         propertyType = PropertyHolder.from(instance.getClass(), configuredName)
-                .orElseThrow(
-                        () -> new IllegalStateException("Unable to determine property type for " + configuredName
-                                + ", use @PropertyConfig to define this property"))
+                .orElseThrow(() -> new IllegalStateException("Unable to determine property type for " + configuredName
+                        + ", use @PropertyConfig to define this property"))
                 .getType();
-        final var collectionTypeOption =
-                CollectionType.findResponsibleCollectionType(propertyType);
+        final var collectionTypeOption = CollectionType.findResponsibleCollectionType(propertyType);
         if (collectionTypeOption.isPresent()) {
-            throw new IllegalStateException(
-                    String.format(
-                            "Unable to determine generic-type for %s, you need to "
-                                    + "provide a custom @PropertyConfig for this field",
-                                    configuredName));
+            throw new IllegalStateException(String.format("Unable to determine generic-type for %s, you need to "
+                    + "provide a custom @PropertyConfig for this field", configuredName));
 
         }
         return PropertyMetadataImpl.builder().propertyClass(propertyType).name(configuredName)

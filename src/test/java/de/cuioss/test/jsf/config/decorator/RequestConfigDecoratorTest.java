@@ -27,9 +27,8 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
     @BeforeEach
     public void before() {
-        decorator =
-            new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
-                    (MockExternalContext22) getExternalContext());
+        decorator = new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
+                (MockExternalContext22) getExternalContext());
     }
 
     @Test
@@ -50,8 +49,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
     @Test
     public void shouldRegisterRequestHeader() {
-        assertFalse(getExternalContext().getRequestHeaderMap()
-                .containsKey(USER_AGENT));
+        assertFalse(getExternalContext().getRequestHeaderMap().containsKey(USER_AGENT));
 
         decorator.setRequestHeader(USER_AGENT, FIREFOX);
 
@@ -60,8 +58,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
     @Test
     public void shouldRegisterRequestParameter() {
-        assertFalse(getExternalContext().getRequestParameterMap()
-                .containsKey(USER_AGENT));
+        assertFalse(getExternalContext().getRequestParameterMap().containsKey(USER_AGENT));
 
         decorator.setRequestParameter(USER_AGENT, FIREFOX);
 

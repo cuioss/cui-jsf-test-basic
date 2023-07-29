@@ -9,18 +9,15 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
 public class ConverterWithConverterIdAnnotation implements Converter {
 
-    public static final String CONVERTER_ID =
-        "de.cuioss.test.jsf.context.support.ConverterWithConverterIdAnnotation";
+    public static final String CONVERTER_ID = "de.cuioss.test.jsf.context.support.ConverterWithConverterIdAnnotation";
 
     @Override
-    public Object getAsObject(final FacesContext context, final UIComponent component,
-            final String value) {
+    public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
         return null;
     }
 
     @Override
-    public String getAsString(final FacesContext context, final UIComponent component,
-            final Object value) {
+    public String getAsString(final FacesContext context, final UIComponent component, final Object value) {
         return null;
     }
 

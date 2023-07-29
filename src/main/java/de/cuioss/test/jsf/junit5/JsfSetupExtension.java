@@ -29,8 +29,9 @@ import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import de.cuioss.test.jsf.util.JsfRuntimeSetup;
 
 /**
- * Starts and Configures the {@link JsfRuntimeSetup}, wraps it into an {@link JsfEnvironmentHolder}
- * and inject it into an {@link JsfEnvironmentConsumer} if available
+ * Starts and Configures the {@link JsfRuntimeSetup}, wraps it into an
+ * {@link JsfEnvironmentHolder} and inject it into an
+ * {@link JsfEnvironmentConsumer} if available
  *
  * @author Oliver Wolff
  *
@@ -40,8 +41,8 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
     private static final Logger LOGGER = LoggerFactory.getLogger(JsfSetupExtension.class);
 
     /**
-     * Identifies the {@link Namespace} under which the concrete instance of {@link JsfRuntimeSetup}
-     * is stored .
+     * Identifies the {@link Namespace} under which the concrete instance of
+     * {@link JsfRuntimeSetup} is stored .
      */
     public static final Namespace NAMESPACE = Namespace.create("test", "jsf", "JsfRuntimeSetup");
 
@@ -65,7 +66,8 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
         ConfigurableApplication.createWrapAndRegister((MockFacesContext) environment.getFacesContext())
                 .setUseIdentityResouceBundle(useIdentityResourceBundle);
 
-        // Ensure that the ConfigurableApplication is set for JsfRuntimeSetup#getApplication
+        // Ensure that the ConfigurableApplication is set for
+        // JsfRuntimeSetup#getApplication
         setup.setApplication(environment.getFacesContext().getApplication());
 
         LOGGER.debug(() -> "Registering Decorators");
@@ -111,7 +113,6 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
     }
 
     private Optional<JsfRuntimeSetup> get(ExtensionContext context) {
-        return Optional
-                .ofNullable((JsfRuntimeSetup) context.getStore(NAMESPACE).get(JsfRuntimeSetup.class.getName()));
+        return Optional.ofNullable((JsfRuntimeSetup) context.getStore(NAMESPACE).get(JsfRuntimeSetup.class.getName()));
     }
 }

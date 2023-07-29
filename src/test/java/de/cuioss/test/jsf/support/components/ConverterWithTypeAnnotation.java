@@ -14,14 +14,12 @@ public class ConverterWithTypeAnnotation implements Converter {
     public static final Class<?> FOR_CLASS = Serializable.class;
 
     @Override
-    public Object getAsObject(final FacesContext context, final UIComponent component,
-            final String value) {
+    public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
         return null;
     }
 
     @Override
-    public String getAsString(final FacesContext context, final UIComponent component,
-            final Object value) {
+    public String getAsString(final FacesContext context, final UIComponent component, final Object value) {
         return null;
     }
 

@@ -20,9 +20,9 @@ import org.apache.myfaces.test.mock.MockExternalContext22;
  * <li>{@link Dependent} {@link ServletContext}</li>
  * </ul>
  * The objects are derived from the {@link FacesContext}
- * 
+ *
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
- * 
+ *
  */
 @ApplicationScoped
 public class ServletObjectsFromJSFContextProducers {

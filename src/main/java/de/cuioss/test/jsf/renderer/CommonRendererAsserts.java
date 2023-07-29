@@ -25,10 +25,10 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
     /** Checks the attribute 'id', see {@link UIComponent#getId()} */
     ID("id", "traceId"),
     /**
-     * Checks the attribute 'rendered', see {@link UIComponent#isRendered()}. Due to its nature this
-     * test must not work all the time correctly and should therefore considered as candidate for
-     * vetoing. The actual assert checks whether the given component is {@code null} or does not
-     * contain any children.
+     * Checks the attribute 'rendered', see {@link UIComponent#isRendered()}. Due to
+     * its nature this test must not work all the time correctly and should
+     * therefore considered as candidate for vetoing. The actual assert checks
+     * whether the given component is {@code null} or does not contain any children.
      */
     RENDERED("rendered", Boolean.FALSE) {
 
@@ -49,8 +49,8 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
 
         @Override
         public void assertAttributeSet(final Element element) {
-            var found =
-                    DomUtils.filterForAttributeContainingValue(element, "class", getAttributeTraceValue().toString());
+            var found = DomUtils.filterForAttributeContainingValue(element, "class",
+                    getAttributeTraceValue().toString());
             assertFalse(found.isEmpty(), "The expected attribute with name='class' and traceValue="
                     + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
         }

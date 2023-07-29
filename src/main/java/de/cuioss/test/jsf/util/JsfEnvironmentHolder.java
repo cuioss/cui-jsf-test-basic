@@ -16,9 +16,10 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Holder for for {@link JsfRuntimeSetup} that provides shorthands for accessing contained
- * JSF-Objects like {@link FacesContext}, {@link ExternalContext}, {@link Application}, ... and
- * implicit accessor for objects like {@link BeanConfigDecorator}, {@link ComponentConfigDecorator},
+ * Holder for for {@link JsfRuntimeSetup} that provides shorthands for accessing
+ * contained JSF-Objects like {@link FacesContext}, {@link ExternalContext},
+ * {@link Application}, ... and implicit accessor for objects like
+ * {@link BeanConfigDecorator}, {@link ComponentConfigDecorator},
  * {@link ApplicationConfigDecorator} and {@link RequestConfigDecorator}
  *
  * @author Oliver Wolff
@@ -31,28 +32,32 @@ public class JsfEnvironmentHolder {
     private final JsfRuntimeSetup runtimeSetup;
 
     /**
-     * @return an {@link ComponentConfigDecorator} for the contained {@link JsfRuntimeSetup}
+     * @return an {@link ComponentConfigDecorator} for the contained
+     *         {@link JsfRuntimeSetup}
      */
     public ComponentConfigDecorator getComponentConfigDecorator() {
         return new ComponentConfigDecorator(getApplication(), getFacesContext());
     }
 
     /**
-     * @return an {@link BeanConfigDecorator} for the contained {@link JsfRuntimeSetup}
+     * @return an {@link BeanConfigDecorator} for the contained
+     *         {@link JsfRuntimeSetup}
      */
     public BeanConfigDecorator getBeanConfigDecorator() {
         return new BeanConfigDecorator(getFacesContext());
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained {@link JsfRuntimeSetup}
+     * @return an {@link ApplicationConfigDecorator} for the contained
+     *         {@link JsfRuntimeSetup}
      */
     public ApplicationConfigDecorator getApplicationConfigDecorator() {
         return new ApplicationConfigDecorator(getApplication(), getFacesContext());
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained {@link JsfRuntimeSetup}
+     * @return an {@link ApplicationConfigDecorator} for the contained
+     *         {@link JsfRuntimeSetup}
      */
     public RequestConfigDecorator getRequestConfigDecorator() {
         return new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
@@ -81,7 +86,8 @@ public class JsfEnvironmentHolder {
     }
 
     /**
-     * @return an {@link MockHttpServletResponse} for the contained {@link JsfRuntimeSetup}
+     * @return an {@link MockHttpServletResponse} for the contained
+     *         {@link JsfRuntimeSetup}
      */
     public MockHttpServletResponse getResponse() {
         return runtimeSetup.getResponse();

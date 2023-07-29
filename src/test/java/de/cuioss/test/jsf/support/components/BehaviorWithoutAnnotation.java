@@ -12,8 +12,7 @@ import javax.faces.context.FacesContext;
 @SuppressWarnings("javadoc")
 public class BehaviorWithoutAnnotation extends BehaviorBase implements ClientBehavior {
 
-    public static final String BEHAVIOR_ID =
-        "de.cuioss.test.jsf.support.BehaviorWithoutAnnotation";
+    public static final String BEHAVIOR_ID = "de.cuioss.test.jsf.support.BehaviorWithoutAnnotation";
 
     @Override
     public void decode(final FacesContext context, final UIComponent component) {

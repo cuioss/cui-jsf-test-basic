@@ -16,7 +16,8 @@ import de.cuioss.tools.logging.CuiLogger;
 import lombok.Getter;
 
 /**
- * Tests all given properties according to the given List of {@link ComponentPropertyMetadata}
+ * Tests all given properties according to the given List of
+ * {@link ComponentPropertyMetadata}
  *
  * @author Oliver Wolff
  * @param <T> Rule does not apply to annotations: There is no inheritance
@@ -40,33 +41,29 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     public ValueExpressionPropertyContract(final ParameterizedInstantiator<T> instantiator,
             final List<ComponentPropertyMetadata> metadatas, final FacesContext facesContext) {
         this.instantiator = instantiator;
-        filteredMetadata = metadatas.stream().filter(m -> !m.isIgnoreOnValueExpresssion())
-                .collect(Collectors.toList());
+        filteredMetadata = metadatas.stream().filter(m -> !m.isIgnoreOnValueExpresssion()).collect(Collectors.toList());
         this.facesContext = facesContext;
     }
 
     @Override
     public void assertContract() {
-        List<String> names =
-            filteredMetadata.stream().map(ComponentPropertyMetadata::getName).collect(Collectors.toList());
+        List<String> names = filteredMetadata.stream().map(ComponentPropertyMetadata::getName)
+                .collect(Collectors.toList());
         final var builder = new StringBuilder("Verifying ");
-        builder.append(getClass().getName()).append("\nWith properties: ")
-                .append(String.join(" ", names));
+        builder.append(getClass().getName()).append("\nWith properties: ").append(String.join(" ", names));
         log.info(builder.toString());
 
         checkGetterAndSetterContract();
     }
 
     private void checkGetterAndSetterContract() {
-        final List<PropertySupport> supportList =
-            filteredMetadata.stream().map(PropertySupport::new)
-                    .collect(Collectors.toList());
+        final List<PropertySupport> supportList = filteredMetadata.stream().map(PropertySupport::new)
+                .collect(Collectors.toList());
         final UIComponent target = getInstantiator().newInstanceMinimal();
 
         for (final PropertySupport support : supportList) {
-            var expression =
-                new MockValueExpression(BeanConfigDecorator.checkManagedBeanKey(support.getName()),
-                        support.getPropertyMetadata().resolveActualClass());
+            var expression = new MockValueExpression(BeanConfigDecorator.checkManagedBeanKey(support.getName()),
+                    support.getPropertyMetadata().resolveActualClass());
             target.setValueExpression(support.getName(), expression);
             expression.setValue(facesContext.getELContext(), support.generateTestValue());
 

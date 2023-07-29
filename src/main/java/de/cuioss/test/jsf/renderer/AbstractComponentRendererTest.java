@@ -29,10 +29,10 @@ import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
 
 /**
- * While {@link AbstractRendererTestBase} focuses on API-Contract utility methods, this class
- * provides a number of implicit tests. Simplifying the testing of concrete renderer behavior.
- * <h3>Configuration</h3>
- * You can configure this test by
+ * While {@link AbstractRendererTestBase} focuses on API-Contract utility
+ * methods, this class provides a number of implicit tests. Simplifying the
+ * testing of concrete renderer behavior.
+ * <h3>Configuration</h3> You can configure this test by
  * <ul>
  * <li>{@link VerifyComponentRendererConfig}</li>
  * <li>{@link VetoRenderAttributeAssert}</li>
@@ -60,10 +60,10 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     }
 
     private void handleConfigAnnotation() {
-        Optional<VerifyComponentRendererConfig> configOption =
-            MoreReflection.extractAnnotation(getClass(), VerifyComponentRendererConfig.class);
-        configOption.ifPresent(verifyComponentRendererConfig -> wrapComponentInForm =
-            verifyComponentRendererConfig.wrapComponentInForm());
+        Optional<VerifyComponentRendererConfig> configOption = MoreReflection.extractAnnotation(getClass(),
+                VerifyComponentRendererConfig.class);
+        configOption.ifPresent(verifyComponentRendererConfig -> wrapComponentInForm = verifyComponentRendererConfig
+                .wrapComponentInForm());
     }
 
     private void handleRenderAttributeAsserts() {
@@ -75,7 +75,8 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     }
 
     /**
-     * Iterates through all active RendererAttributeAssert and tests them accordingly
+     * Iterates through all active RendererAttributeAssert and tests them
+     * accordingly
      */
     @Test
     public void shouldHandleRendererAttributeAsserts() {
@@ -89,8 +90,9 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     }
 
     /**
-     * @return the {@link UIComponent} derived by {@link #getComponent()} or the same wrapped in an
-     *         {@link HtmlForm} in case {@link #isWrapComponentInForm()} is {@code true}
+     * @return the {@link UIComponent} derived by {@link #getComponent()} or the
+     *         same wrapped in an {@link HtmlForm} in case
+     *         {@link #isWrapComponentInForm()} is {@code true}
      */
     protected UIComponent getWrappedComponent() {
         var component = getComponent();
@@ -104,8 +106,8 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     /**
      * Helper method that extracts all queued events from {@link UIViewRoot}. In
      * order to use this method the corresponding test must ensure, that the
-     * component under test is child of {@link UIViewRoot}. Otherwise the events can not be
-     * extracted
+     * component under test is child of {@link UIViewRoot}. Otherwise the events can
+     * not be extracted
      *
      * @return the plain list of events available at {@link UIViewRoot} at this
      *         time.

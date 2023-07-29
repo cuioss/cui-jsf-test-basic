@@ -18,15 +18,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Mock variant of {@link SearchExpressionHandler} to be used for unit-tests. The concrete instance
- * can be derived via {@link #retrieve(FacesContext)}
+ * Mock variant of {@link SearchExpressionHandler} to be used for unit-tests.
+ * The concrete instance can be derived via {@link #retrieve(FacesContext)}
  *
  * @author Oliver Wolff
  */
 public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
-    private static final String UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION =
-        "Unable to find component with expression = ";
+    private static final String UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION = "Unable to find component with expression = ";
 
     private static final String NOT_IMPLEMENTED = "Not implemented";
 
@@ -83,8 +82,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
         if (MoreStrings.isEmpty(expressions)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);
         }
-        if (resolvedComponents.isEmpty()
-                && shouldIgnoreNoResult(searchExpressionContext)) {
+        if (resolvedComponents.isEmpty() && shouldIgnoreNoResult(searchExpressionContext)) {
             throw new ComponentNotFoundException("Unable to find components with expression = " + expressions);
         }
 

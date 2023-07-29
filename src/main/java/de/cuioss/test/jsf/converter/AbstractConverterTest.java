@@ -26,27 +26,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Base class for testing implementations of {@link Converter} within a Junit 5 context
+ * Base class for testing implementations of {@link Converter} within a Junit 5
+ * context
  * <h3>Setup</h3>
  * <p>
- * The actual test must provide {@link EnableJsfEnvironment}, for the basic test-infrastructure. See
- * the class-documentation for details.
+ * The actual test must provide {@link EnableJsfEnvironment}, for the basic
+ * test-infrastructure. See the class-documentation for details.
  * </p>
  * <p>
- * {@link #initConverter()}: Instantiates the concrete {@link Converter} using reflection. After
- * this the method calls {@link #configure(Object)} that can be used for further configuration of
- * the {@link Converter}
+ * {@link #initConverter()}: Instantiates the concrete {@link Converter} using
+ * reflection. After this the method calls {@link #configure(Object)} that can
+ * be used for further configuration of the {@link Converter}
  * </p>
  * <p>
- * In case you want you want to create the {@link Converter} yourself you can overwrite
- * {@link #getConverter()}
+ * In case you want you want to create the {@link Converter} yourself you can
+ * overwrite {@link #getConverter()}
  * </p>
  * <p>
- * In case you want a pass another {@link UIComponent} as parameter to the {@link Converter} you can
- * overwrite {@link #getComponent()}
+ * In case you want a pass another {@link UIComponent} as parameter to the
+ * {@link Converter} you can overwrite {@link #getComponent()}
  * </p>
- * <h3>Test-Methods</h3>
- * The core test-methods are:
+ * <h3>Test-Methods</h3> The core test-methods are:
  * <ul>
  * <li>{@link #shouldFailOnInvalidObjects()}</li>
  * <li>{@link #shouldFailOnInvalidStrings()}</li>
@@ -54,10 +54,10 @@ import lombok.Setter;
  * <li>{@link #shouldPassOnValidStrings()}</li>
  * <li>{@link #shouldRoundTripValidData()}</li>
  * </ul>
- * They call {@link #populate(TestItems)} in oder to create corresponding test-data. The
- * implementation is in the actual test-class.
- * <h3>API-Test</h3>
- * The api as defined within {@link Converter} is tested with the methods
+ * They call {@link #populate(TestItems)} in oder to create corresponding
+ * test-data. The implementation is in the actual test-class.
+ * <h3>API-Test</h3> The api as defined within {@link Converter} is tested with
+ * the methods
  * <ul>
  * <li>{@link #shouldFailOnNullComponentOnGetAsObject()}</li>
  * <li>{@link #shouldFailOnNullComponentOnGetAsString()}</li>
@@ -65,8 +65,7 @@ import lombok.Setter;
  * <li>{@link #shouldFailOnNullFacesContextOnGetAsString()}</li>
  * <li>{@link #shouldReturnEmptyStringOnNullValue()}</li>
  * </ul>
- * <h3>Example</h3>
- * Shows all variants of dealing with {@link TestItems}
+ * <h3>Example</h3> Shows all variants of dealing with {@link TestItems}
  *
  * <pre>
  * <code>
@@ -87,8 +86,8 @@ import lombok.Setter;
  * </pre>
  *
  * @param <C> identifying the concrete {@link Converter} to be tested.
- * @param <T> identifying the type of elements to be used for values to be given to the
- *            {@link Converter}
+ * @param <T> identifying the type of elements to be used for values to be given
+ *            to the {@link Converter}
  *
  * @author Oliver Wolff
  */
@@ -97,8 +96,7 @@ import lombok.Setter;
 public abstract class AbstractConverterTest<C extends Converter, T> extends JsfEnabledTestEnvironment
         implements ConfigurationCallBackHandler<C>, ComponentConfigurator {
 
-    private static final String SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION =
-        "Should have thrown ConverterException for invalid Value: ";
+    private static final String SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION = "Should have thrown ConverterException for invalid Value: ";
 
     @Getter
     @Setter
@@ -130,11 +128,10 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     public abstract void populate(TestItems<T> testItems);
 
     /**
-     * Callback method for interacting with the {@link ComponentConfigDecorator} at the correct
-     * time.<br>
-     * This method provide <b>extension point</b> to prepare needed test environment for your
-     * converter test.
-     * For example :
+     * Callback method for interacting with the {@link ComponentConfigDecorator} at
+     * the correct time.<br>
+     * This method provide <b>extension point</b> to prepare needed test environment
+     * for your converter test. For example :
      *
      * <pre>
      *    // register some converter
@@ -151,7 +148,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link UIComponent}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link UIComponent}, see
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
@@ -160,7 +158,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link FacesContext}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link FacesContext}, see
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
@@ -169,7 +168,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link UIComponent}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link UIComponent}, see
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
@@ -178,7 +178,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for {@link FacesContext}, see
+     * Checks the api contract regarding {@code null} as parameter for
+     * {@link FacesContext}, see
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
@@ -187,8 +188,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Checks the api contract regarding {@code null} as parameter for the actual value, see
-     * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
+     * Checks the api contract regarding {@code null} as parameter for the actual
+     * value, see {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
     void shouldReturnEmptyStringOnNullValue() {
@@ -197,8 +198,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
     /**
      * Core test for converter testing. It collects the test-data using
-     * {@link TestItems} and iterates them for the individual test. For each
-     * element there will be called the method
+     * {@link TestItems} and iterates them for the individual test. For each element
+     * there will be called the method
      * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)},
      * with the result again
      * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
@@ -207,10 +208,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @Test
     void shouldRoundTripValidData() {
         for (final String value : getTestItems().getRoundtripValues()) {
-            final var converted =
-                (T) getConverter().getAsObject(getFacesContext(), getComponent(), value);
-            final var roundTripped =
-                getConverter().getAsString(getFacesContext(), getComponent(), converted);
+            final var converted = (T) getConverter().getAsObject(getFacesContext(), getComponent(), value);
+            final var roundTripped = getConverter().getAsString(getFacesContext(), getComponent(), converted);
             assertEquals(value, roundTripped);
         }
     }
@@ -241,14 +240,14 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     }
 
     /**
-     * Tests the method {@link Converter#getAsString(javax.faces.context.FacesContext,
-     * javax.faces.component.UIComponent, Object)} with valid objects, derived by {@link TestItems}
+     * Tests the method
+     * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * with valid objects, derived by {@link TestItems}
      */
     @Test
     void shouldPassOnValidObjects() {
         for (final ConverterTestItem<T> item : getTestItems().getValidObjectTestItems()) {
-            final var result =
-                getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
+            final var result = getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
             if (null != item.getStringValue()) {
                 assertEquals(item.getStringValue(), result, item.toString());
             }
@@ -280,8 +279,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     @Test
     void shouldPassOnValidStrings() {
         for (final ConverterTestItem<T> item : getTestItems().getValidStringTestItems()) {
-            final var result = (T) getConverter().getAsObject(getFacesContext(), getComponent(),
-                    item.getStringValue());
+            final var result = (T) getConverter().getAsObject(getFacesContext(), getComponent(), item.getStringValue());
             if (null != item.getTestValue()) {
                 assertEquals(item.getTestValue(), result, item.toString());
             }

@@ -21,13 +21,14 @@ import de.cuioss.tools.property.PropertyHolder;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Simple Mock renderer that is capable of rendering any element by using the simple-name of
- * the given component. In addition it is capable of rendering the 'id'-attribute as 'id' and
- * 'name' in case the component is of type {@link UIInput} or the attribute
- * {@link UIComponent#getId()} is set, the 'styleClass' and 'style' attributes and reacts to the
- * 'rendered'-attribute.
+ * Simple Mock renderer that is capable of rendering any element by using the
+ * simple-name of the given component. In addition it is capable of rendering
+ * the 'id'-attribute as 'id' and 'name' in case the component is of type
+ * {@link UIInput} or the attribute {@link UIComponent#getId()} is set, the
+ * 'styleClass' and 'style' attributes and reacts to the 'rendered'-attribute.
  * It can be configured to use a certain tagname to be rendered by using
- * {@link #CuiMockRenderer(String)}. Otherwise the simple-name of the component will be used.
+ * {@link #CuiMockRenderer(String)}. Otherwise the simple-name of the component
+ * will be used.
  *
  * @author Oliver Wolff
  */
@@ -53,8 +54,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     @Override
-    public void encodeBegin(final FacesContext context, final UIComponent component)
-        throws IOException {
+    public void encodeBegin(final FacesContext context, final UIComponent component) throws IOException {
         if (component.isRendered()) {
             context.getResponseWriter().startElement(getTagName(component), component);
             writeIdAndName(context, component);
@@ -119,10 +119,8 @@ public class CuiMockRenderer extends Renderer {
         writeAttributeIfPresent(context, component, STYLE_ATTRIBUTE, STYLE_ATTRIBUTE);
         writeAttributeIfPresent(context, component, TITLE, TITLE);
 
-        for (Entry<String, Object> entry : component.getPassThroughAttributes(true)
-                .entrySet()) {
-            context.getResponseWriter().writeAttribute(entry.getKey(), entry.getValue(),
-                    null);
+        for (Entry<String, Object> entry : component.getPassThroughAttributes(true).entrySet()) {
+            context.getResponseWriter().writeAttribute(entry.getKey(), entry.getValue(), null);
         }
     }
 
@@ -144,8 +142,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private static void writeAttributeIfPresent(final FacesContext context, final UIComponent component,
-            final String propertyName, final String attributeName)
-        throws IOException {
+            final String propertyName, final String attributeName) throws IOException {
         var holder = PropertyHolder.from(component.getClass(), propertyName);
         if (holder.isPresent() && holder.get().getReadWrite().isReadable()) {
             var propertyValue = holder.get().readFrom(component);
@@ -156,8 +153,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     @Override
-    public void encodeEnd(final FacesContext context, final UIComponent component)
-        throws IOException {
+    public void encodeEnd(final FacesContext context, final UIComponent component) throws IOException {
         if (component.isRendered()) {
             context.getResponseWriter().endElement(getTagName(component));
         }

@@ -23,7 +23,8 @@ import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import lombok.Setter;
 
 /**
- * Extends {@link MockHttpServletRequest} and provides some additional convenience methods
+ * Extends {@link MockHttpServletRequest} and provides some additional
+ * convenience methods
  *
  * @author Oliver Wolff
  */

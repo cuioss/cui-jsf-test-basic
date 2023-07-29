@@ -28,17 +28,18 @@ import lombok.experimental.UtilityClass;
 public class DomUtils {
 
     /**
-     * The root element for creating {@link Document}s. This ensures correct structure regarding xml
-     * only having one root-element
+     * The root element for creating {@link Document}s. This ensures correct
+     * structure regarding xml only having one root-element
      */
     public static final String ROOT_TEMPLATE = "<root>%s</root>";
 
     /**
-     * Creates an instance of {@link Document} for the given htmlString. It always uses
-     * {@link #ROOT_TEMPLATE} as the root element.
+     * Creates an instance of {@link Document} for the given htmlString. It always
+     * uses {@link #ROOT_TEMPLATE} as the root element.
      *
      * @param htmlString must not be null
-     * @return the created {@link Document} with {@link #ROOT_TEMPLATE} as the root element.
+     * @return the created {@link Document} with {@link #ROOT_TEMPLATE} as the root
+     *         element.
      */
     public static Document htmlStringToDocument(final String htmlString) {
         requireNonNull(htmlString);
@@ -54,15 +55,15 @@ public class DomUtils {
     }
 
     /**
-     * Extracts all attributes with the given name. The method will recursively check all children
-     * as well.
+     * Extracts all attributes with the given name. The method will recursively
+     * check all children as well.
      *
-     * @param element to be checked, must not be null.
+     * @param element       to be checked, must not be null.
      * @param attributeName to be looked for, must not be null nor empty.
-     * @return a {@link List} with the found attributes, never null but may be empty.
+     * @return a {@link List} with the found attributes, never null but may be
+     *         empty.
      */
-    public static List<Attribute> filterForAttribute(final Element element,
-            final String attributeName) {
+    public static List<Attribute> filterForAttribute(final Element element, final String attributeName) {
         requireNonNull(element);
         requireNonNull(emptyToNull(attributeName));
         List<Attribute> found = new ArrayList<>();
@@ -77,20 +78,22 @@ public class DomUtils {
     }
 
     /**
-     * Extracts all attributes with the given name and the attribute-value containing the given
-     * String. The method will recursively check all children as well.
+     * Extracts all attributes with the given name and the attribute-value
+     * containing the given String. The method will recursively check all children
+     * as well.
      *
-     * @param element to be checked, must not be null.
-     * @param attributeName to be looked for, must not be null nor empty.
-     * @param attributeValuePart the string of the attribute value to be filtered for.
-     * @return a {@link List} with the found attributes, never null but may be empty.
+     * @param element            to be checked, must not be null.
+     * @param attributeName      to be looked for, must not be null nor empty.
+     * @param attributeValuePart the string of the attribute value to be filtered
+     *                           for.
+     * @return a {@link List} with the found attributes, never null but may be
+     *         empty.
      */
-    public static List<Attribute> filterForAttributeContainingValue(final Element element,
-            final String attributeName, final String attributeValuePart) {
+    public static List<Attribute> filterForAttributeContainingValue(final Element element, final String attributeName,
+            final String attributeValuePart) {
         requireNonNull(emptyToNull(attributeValuePart));
 
         return filterForAttribute(element, attributeName).stream()
-                .filter(a -> a.getValue().contains(attributeValuePart))
-                .collect(Collectors.toList());
+                .filter(a -> a.getValue().contains(attributeValuePart)).collect(Collectors.toList());
     }
 }
