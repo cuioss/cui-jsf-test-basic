@@ -24,13 +24,13 @@ import lombok.Setter;
  * <li>{@link Dependent} {@link ServletContext}</li>
  * </ul>
  *
- * In contrast to {@link ServletObjectsFromJSFContextProducers} the mocks are
+ * In contrast to {@link ServletObjectsFromJSFContextProducer} the mocks are
  * instantiated directly
  *
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  */
 @ApplicationScoped
-public class ServletMockObjectsProducers {
+public class ServletMockObjectsProducer {
 
     @Getter
     @Setter

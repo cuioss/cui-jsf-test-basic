@@ -30,7 +30,7 @@ import javax.inject.Named;
  * @author Oliver Wolff
  */
 @ApplicationScoped
-public class JsfObjectsProducers {
+public class JsfObjectsProducer {
 
     @Produces
     @RequestScoped

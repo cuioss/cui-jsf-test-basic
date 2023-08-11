@@ -114,7 +114,7 @@ public interface JsfEnvironmentConsumer {
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained
+     * @return an {@link RequestConfigDecorator} for the contained
      *         {@link JsfEnvironmentHolder}
      */
     default RequestConfigDecorator getRequestConfigDecorator() {

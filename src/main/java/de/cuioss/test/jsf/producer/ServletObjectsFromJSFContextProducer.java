@@ -25,7 +25,7 @@ import org.apache.myfaces.test.mock.MockExternalContext22;
  *
  */
 @ApplicationScoped
-public class ServletObjectsFromJSFContextProducers {
+public class ServletObjectsFromJSFContextProducer {
 
     @Produces
     @Typed({ HttpServletRequest.class })
