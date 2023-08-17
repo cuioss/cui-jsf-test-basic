@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.cuioss.test.jsf.renderer.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -61,13 +76,13 @@ public final class HtmlTreeAsserts {
         var expectedTextChild = expected.getTextNormalize();
         var actualTextChild = actual.getTextNormalize();
         assertEquals(expectedTextChild, actualTextChild,
-                String.format("%s: The text content of the elements are not equal, expected=%s, actual=%s",
-                        currentPointer, expectedTextChild, actualTextChild));
+                "%s: The text content of the elements are not equal, expected=%s, actual=%s".formatted(currentPointer,
+                        expectedTextChild, actualTextChild));
         if (expectedChildren.isEmpty() && actualChildren.isEmpty()) {
             return;
         }
         if (expectedChildren.size() != actualChildren.size()) {
-            fail(String.format("%s: The number of children is not equal, expected=%s, actual=%s", currentPointer,
+            fail("%s: The number of children is not equal, expected=%s, actual=%s".formatted(currentPointer,
                     expectedChildren, actualChildren));
         }
         for (var i = 0; i < expectedChildren.size(); i++) {
@@ -88,7 +103,7 @@ public final class HtmlTreeAsserts {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         assertEquals(expected.getName(), actual.getName(),
-                String.format("%s: The names are not equal, expected=%s, actual=%s", pointer, expected, actual));
+                "%s: The names are not equal, expected=%s, actual=%s".formatted(pointer, expected, actual));
         var expectedAttributes = expected.getAttributes();
         var actualAttributes = actual.getAttributes();
         if (expectedAttributes.isEmpty() && actualAttributes.isEmpty()) {
@@ -97,7 +112,7 @@ public final class HtmlTreeAsserts {
         expectedAttributes.sort(ATTRIBUTE_COMPARATOR);
         actualAttributes.sort(ATTRIBUTE_COMPARATOR);
         if (expectedAttributes.size() != actualAttributes.size()) {
-            fail(String.format("%s: The number of the attributes are not equal, expected=%s, actual=%s", pointer,
+            fail("%s: The number of the attributes are not equal, expected=%s, actual=%s".formatted(pointer,
                     expectedAttributes, actualAttributes));
         }
         for (var i = 0; i < expectedAttributes.size(); i++) {
@@ -115,9 +130,10 @@ public final class HtmlTreeAsserts {
     public static void assertAttributeEquals(final Attribute expected, final Attribute actual, final String pointer) {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
-        assertEquals(expected.getName(), actual.getName(), String.format(
-                "%s: The name of the attributes are not equal, expected=%s, actual=%s", pointer, expected, actual));
-        assertEquals(expected.getValue(), actual.getValue(), String.format(THE_VALUES_ARE_NOT_EQUAL_EXPECTED, pointer,
+        assertEquals(expected.getName(), actual.getName(),
+                "%s: The name of the attributes are not equal, expected=%s, actual=%s".formatted(pointer, expected,
+                        actual));
+        assertEquals(expected.getValue(), actual.getValue(), THE_VALUES_ARE_NOT_EQUAL_EXPECTED.formatted(pointer,
                 expected.getName(), expected.getValue(), actual.getValue()));
     }
 }

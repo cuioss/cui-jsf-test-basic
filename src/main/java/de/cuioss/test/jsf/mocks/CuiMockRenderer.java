@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.cuioss.test.jsf.mocks;
 
 import static de.cuioss.tools.string.MoreStrings.isEmpty;
@@ -10,7 +25,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.component.UIOutcomeTarget;
 import javax.faces.component.UIOutput;
-import javax.faces.component.ValueHolder;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutcomeTargetLink;
 import javax.faces.component.html.HtmlOutputLink;
@@ -63,8 +77,7 @@ public class CuiMockRenderer extends Renderer {
 
             writeBasicAttributes(context, component);
 
-            if (component instanceof EditableValueHolder) {
-                var valueHolder = (ValueHolder) component;
+            if (component instanceof EditableValueHolder valueHolder) {
                 context.getResponseWriter().writeAttribute(VALUE, valueHolder.getValue(), VALUE);
             } else if (component instanceof UIOutcomeTarget) {
                 handleOutputTarget(context, component);
@@ -79,8 +92,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private void handleOutcomeTargetLink(final FacesContext context, final UIComponent component) throws IOException {
-        if (component instanceof HtmlOutcomeTargetLink) {
-            var output = (HtmlOutcomeTargetLink) component;
+        if (component instanceof HtmlOutcomeTargetLink output) {
             if (null != output.getTarget()) {
                 context.getResponseWriter().writeAttribute(TARGET, output.getTarget(), TARGET);
             }
@@ -125,9 +137,9 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private void handleInputText(final FacesContext context, final UIComponent component) throws IOException {
-        if (component instanceof HtmlInputText) {
+        if (component instanceof HtmlInputText text) {
             context.getResponseWriter().writeAttribute("type", "text", null);
-            if (((HtmlInputText) component).isDisabled()) {
+            if (text.isDisabled()) {
                 context.getResponseWriter().writeAttribute(DISABLED, DISABLED, null);
             }
         }

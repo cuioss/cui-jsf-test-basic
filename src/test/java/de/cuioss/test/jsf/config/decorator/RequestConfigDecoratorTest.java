@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * https://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.cuioss.test.jsf.config.decorator;
 
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
@@ -26,20 +41,20 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     private RequestConfigDecorator decorator;
 
     @BeforeEach
-    public void before() {
+    void before() {
         decorator = new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
                 (MockExternalContext22) getExternalContext());
     }
 
     @Test
-    public void shouldSetPostaback() {
+    void shouldSetPostaback() {
         assertFalse(getFacesContext().isPostback());
         decorator.setPostback(true);
         assertTrue(getFacesContext().isPostback());
     }
 
     @Test
-    public void shouldSetViewRootPath() {
+    void shouldSetViewRootPath() {
         assertEquals("/viewId", getFacesContext().getViewRoot().getViewId());
         final var viewRoot = "/" + Generators.nonEmptyStrings().next();
 
@@ -48,7 +63,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     }
 
     @Test
-    public void shouldRegisterRequestHeader() {
+    void shouldRegisterRequestHeader() {
         assertFalse(getExternalContext().getRequestHeaderMap().containsKey(USER_AGENT));
 
         decorator.setRequestHeader(USER_AGENT, FIREFOX);
@@ -57,7 +72,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     }
 
     @Test
-    public void shouldRegisterRequestParameter() {
+    void shouldRegisterRequestParameter() {
         assertFalse(getExternalContext().getRequestParameterMap().containsKey(USER_AGENT));
 
         decorator.setRequestParameter(USER_AGENT, FIREFOX);
@@ -66,7 +81,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     }
 
     @Test
-    public void shouldRegisterRequestLocales() {
+    void shouldRegisterRequestLocales() {
         assertNull(getExternalContext().getRequestLocale());
         assertTrue(getExternalContext().getRequestLocales().hasNext());
 
@@ -83,14 +98,14 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     }
 
     @Test
-    public void shouldRegisterRequestAttribute() {
+    void shouldRegisterRequestAttribute() {
         assertNull(((HttpServletRequest) getExternalContext().getRequest()).getAttribute(USER_AGENT));
         decorator.setRequestAttribute(USER_AGENT, FIREFOX);
         assertEquals(FIREFOX, ((HttpServletRequest) getExternalContext().getRequest()).getAttribute(USER_AGENT));
     }
 
     @Test
-    public void shouldAddCookies() {
+    void shouldAddCookies() {
         var request = (HttpServletRequest) getExternalContext().getRequest();
         assertEquals(0, request.getCookies().length);
         decorator.addRequestCookie(new Cookie("coo", "kie"));
