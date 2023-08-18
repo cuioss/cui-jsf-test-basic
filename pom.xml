@@ -33,8 +33,6 @@
         <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
         <version.jcl.logging>1.2</version.jcl.logging>
         <maven.jar.plugin.automatic.module.name>de.cuioss.test.jsf</maven.jar.plugin.automatic.module.name>
-        <version.cui.test.value.objects>2.0-SNAPSHOT</version.cui.test.value.objects>
-
     </properties>
     <dependencyManagement>
         <dependencies>

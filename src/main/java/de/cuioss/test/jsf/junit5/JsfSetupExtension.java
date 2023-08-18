@@ -33,8 +33,6 @@ import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
@@ -42,6 +40,7 @@ import de.cuioss.test.jsf.util.ConfigurableApplication;
 import de.cuioss.test.jsf.util.JsfEnvironmentConsumer;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import de.cuioss.test.jsf.util.JsfRuntimeSetup;
+import de.cuioss.tools.logging.CuiLogger;
 
 /**
  * Starts and Configures the {@link JsfRuntimeSetup}, wraps it into an
@@ -53,7 +52,7 @@ import de.cuioss.test.jsf.util.JsfRuntimeSetup;
  */
 public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCallback {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsfSetupExtension.class);
+    private static final CuiLogger LOGGER = new CuiLogger(JsfSetupExtension.class);
 
     /**
      * Identifies the {@link Namespace} under which the concrete instance of
