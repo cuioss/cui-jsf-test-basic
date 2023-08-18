@@ -16,7 +16,6 @@
 package de.cuioss.test.jsf.component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -62,8 +61,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
 
     @Override
     public void assertContract() {
-        List<String> names = filteredMetadata.stream().map(ComponentPropertyMetadata::getName)
-                .toList();
+        var names = filteredMetadata.stream().map(ComponentPropertyMetadata::getName).toList();
         final var builder = new StringBuilder("Verifying ");
         builder.append(getClass().getName()).append("\nWith properties: ").append(String.join(" ", names));
         log.info(builder.toString());
@@ -72,8 +70,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     }
 
     private void checkGetterAndSetterContract() {
-        final List<PropertySupport> supportList = filteredMetadata.stream().map(PropertySupport::new)
-                .toList();
+        final var supportList = filteredMetadata.stream().map(PropertySupport::new).toList();
         final UIComponent target = getInstantiator().newInstanceMinimal();
 
         for (final PropertySupport support : supportList) {

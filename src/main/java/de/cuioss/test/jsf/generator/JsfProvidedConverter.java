@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.faces.convert.BigDecimalConverter;
 import javax.faces.convert.BigIntegerConverter;
