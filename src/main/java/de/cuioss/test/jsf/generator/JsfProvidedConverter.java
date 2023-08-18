@@ -74,7 +74,7 @@ public class JsfProvidedConverter implements TypedGenerator<Class> {
 
     /** A generator for every id of registered generator. */
     public static final TypedGenerator<String> CONVERTER_ID_GENERATOR = Generators
-            .fixedValues(JSF_CONVERTER.stream().map(ConverterDescriptor::getConverterId).collect(Collectors.toList()));
+            .fixedValues(JSF_CONVERTER.stream().map(ConverterDescriptor::getConverterId).toList());
 
     /** A generator for a subset of types a generator is registered as default. */
     public static final TypedGenerator<Class<?>> TARGET_TYPE_GENERATOR = Generators

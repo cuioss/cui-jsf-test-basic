@@ -47,7 +47,6 @@ import lombok.RequiredArgsConstructor;
  * @author Oliver Wolff
  */
 @RequiredArgsConstructor
-@SuppressWarnings("resource") // owolff: Not an issue because the is for tests
 public class CuiMockRenderer extends Renderer {
 
     private static final String OUTCOME = "outcome";
@@ -92,10 +91,8 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private void handleOutcomeTargetLink(final FacesContext context, final UIComponent component) throws IOException {
-        if (component instanceof HtmlOutcomeTargetLink output) {
-            if (null != output.getTarget()) {
-                context.getResponseWriter().writeAttribute(TARGET, output.getTarget(), TARGET);
-            }
+        if (component instanceof HtmlOutcomeTargetLink output && null != output.getTarget()) {
+            context.getResponseWriter().writeAttribute(TARGET, output.getTarget(), TARGET);
         }
     }
 

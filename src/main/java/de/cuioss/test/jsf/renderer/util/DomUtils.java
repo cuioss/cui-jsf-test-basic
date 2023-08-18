@@ -109,6 +109,6 @@ public class DomUtils {
         requireNonNull(emptyToNull(attributeValuePart));
 
         return filterForAttribute(element, attributeName).stream()
-                .filter(a -> a.getValue().contains(attributeValuePart)).collect(Collectors.toList());
+                .filter(a -> a.getValue().contains(attributeValuePart)).toList();
     }
 }

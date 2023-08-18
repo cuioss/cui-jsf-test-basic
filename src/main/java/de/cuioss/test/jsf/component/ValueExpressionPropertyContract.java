@@ -56,14 +56,14 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     public ValueExpressionPropertyContract(final ParameterizedInstantiator<T> instantiator,
             final List<ComponentPropertyMetadata> metadatas, final FacesContext facesContext) {
         this.instantiator = instantiator;
-        filteredMetadata = metadatas.stream().filter(m -> !m.isIgnoreOnValueExpresssion()).collect(Collectors.toList());
+        filteredMetadata = metadatas.stream().filter(m -> !m.isIgnoreOnValueExpresssion()).toList();
         this.facesContext = facesContext;
     }
 
     @Override
     public void assertContract() {
         List<String> names = filteredMetadata.stream().map(ComponentPropertyMetadata::getName)
-                .collect(Collectors.toList());
+                .toList();
         final var builder = new StringBuilder("Verifying ");
         builder.append(getClass().getName()).append("\nWith properties: ").append(String.join(" ", names));
         log.info(builder.toString());
@@ -73,7 +73,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
 
     private void checkGetterAndSetterContract() {
         final List<PropertySupport> supportList = filteredMetadata.stream().map(PropertySupport::new)
-                .collect(Collectors.toList());
+                .toList();
         final UIComponent target = getInstantiator().newInstanceMinimal();
 
         for (final PropertySupport support : supportList) {

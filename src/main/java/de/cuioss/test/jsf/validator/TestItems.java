@@ -93,13 +93,13 @@ public class TestItems<T> {
      * @return all valid test-items
      */
     List<TestItem<T>> allValid() {
-        return localItems.stream().filter(TestItem::isValid).collect(Collectors.toList());
+        return localItems.stream().filter(TestItem::isValid).toList();
     }
 
     /**
      * @return all invalid test-items
      */
     List<TestItem<T>> allInvalid() {
-        return localItems.stream().filter(item -> !item.isValid()).collect(Collectors.toList());
+        return localItems.stream().filter(item -> !item.isValid()).toList();
     }
 }
