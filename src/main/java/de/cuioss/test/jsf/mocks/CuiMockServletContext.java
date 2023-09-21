@@ -18,12 +18,14 @@ package de.cuioss.test.jsf.mocks;
 import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletRegistration.Dynamic;
+import javax.servlet.SessionCookieConfig;
 
 import org.apache.myfaces.test.mock.MockServletContext;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 public class CuiMockServletContext extends MockServletContext {
 
     @Override
@@ -31,24 +33,22 @@ public class CuiMockServletContext extends MockServletContext {
         throw new UnsupportedOperationException();
     }
 
-    @Getter
     @Setter
     private int sessionTimeout = 200;
 
-    @Getter
     @Setter
     private String requestCharacterEncoding = StandardCharsets.UTF_8.name();
 
-    @Getter
     @Setter
     private String responseCharacterEncoding = StandardCharsets.UTF_8.name();
 
-    @Getter
     @Setter
     private String virtualServerName = "virtual";
 
-    @Getter
     @Setter
     private String contextPath = "mock-context";
+
+    @Setter
+    private SessionCookieConfig sessionCookieConfig;
 
 }
