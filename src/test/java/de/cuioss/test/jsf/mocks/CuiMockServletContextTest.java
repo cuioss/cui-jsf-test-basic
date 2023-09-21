@@ -15,12 +15,11 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class CuiMockServletContextTest {
 
@@ -33,6 +32,7 @@ class CuiMockServletContextTest {
         assertEquals(200, context.getSessionTimeout());
         assertEquals("virtual", context.getVirtualServerName());
         assertEquals("mock-context", context.getContextPath());
+        assertNull(context.getSessionCookieConfig());
         assertThrows(UnsupportedOperationException.class, () -> context.addJspFile("aa", "bb"));
     }
 
