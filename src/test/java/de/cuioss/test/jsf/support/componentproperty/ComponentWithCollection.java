@@ -21,7 +21,6 @@ import javax.faces.component.html.HtmlInputText;
 
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 
-@SuppressWarnings("javadoc")
 @VerifyComponentProperties(of = { "stringList" })
 public class ComponentWithCollection extends HtmlInputText {
 

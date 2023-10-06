@@ -20,7 +20,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@SuppressWarnings("javadoc")
 @FacesConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
 public class ConverterWithConverterIdAnnotation implements Converter {
 

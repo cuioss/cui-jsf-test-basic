@@ -17,7 +17,6 @@ package de.cuioss.test.jsf.support.componentproperty;
 
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 
-@SuppressWarnings("javadoc")
 @VerifyComponentProperties(of = { "someProperty" })
 public class MultiValuedComponentWithInvalidELHandling extends MultiValuedComponent {
 

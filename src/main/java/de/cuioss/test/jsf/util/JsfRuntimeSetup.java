@@ -159,7 +159,6 @@ public class JsfRuntimeSetup {
      * cases, the default classloader cannot be properly set.
      *
      */
-    @SuppressWarnings("resource") // owolff: No problem in test context
     private void setUpClassloader() {
         threadContextClassLoader = Thread.currentThread().getContextClassLoader();
         Thread.currentThread().setContextClassLoader(new URLClassLoader(new URL[0], this.getClass().getClassLoader()));

@@ -18,7 +18,6 @@ package de.cuioss.test.jsf.support.components;
 import javax.faces.render.FacesRenderer;
 import javax.faces.render.Renderer;
 
-@SuppressWarnings("javadoc")
 @FacesRenderer(componentFamily = RendererWithAnnotation.COMPONENT_FAMILY, rendererType = RendererWithAnnotation.RENDERER_TYPE)
 public class RendererWithAnnotation extends Renderer {
 

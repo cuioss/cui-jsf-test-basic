@@ -25,7 +25,6 @@ import javax.faces.component.behavior.ClientBehaviorHint;
 import javax.faces.component.behavior.FacesBehavior;
 import javax.faces.context.FacesContext;
 
-@SuppressWarnings("javadoc")
 @FacesBehavior(BehaviorWithAnnotation.BEHAVIOR_ID)
 public class BehaviorWithAnnotation extends BehaviorBase implements ClientBehavior {
 

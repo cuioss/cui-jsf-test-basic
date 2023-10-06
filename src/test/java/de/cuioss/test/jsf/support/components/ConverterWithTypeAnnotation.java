@@ -22,7 +22,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@SuppressWarnings("javadoc")
 @FacesConverter(forClass = Serializable.class)
 public class ConverterWithTypeAnnotation implements Converter {
 

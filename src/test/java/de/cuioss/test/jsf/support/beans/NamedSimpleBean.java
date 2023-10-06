@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 import javax.inject.Named;
 
-@SuppressWarnings("javadoc")
 @Named(NamedSimpleBean.BEAN_NAME)
 public class NamedSimpleBean implements Serializable {
 

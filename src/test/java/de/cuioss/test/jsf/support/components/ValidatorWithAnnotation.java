@@ -21,7 +21,6 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-@SuppressWarnings("javadoc")
 @FacesValidator(ValidatorWithAnnotation.VALIDATOR_ID)
 public class ValidatorWithAnnotation implements Validator {
 

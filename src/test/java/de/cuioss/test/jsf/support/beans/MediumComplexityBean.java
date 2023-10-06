@@ -34,7 +34,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@SuppressWarnings("javadoc")
 @EqualsAndHashCode(exclude = { "noObjectIdentitiyString" })
 @ToString(exclude = { "noObjectIdentitiyString" })
 public class MediumComplexityBean implements Serializable {
