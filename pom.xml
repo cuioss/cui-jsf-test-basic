@@ -29,7 +29,7 @@
     </issueManagement>
     <properties>
         <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
-        <version.jcl.logging>1.2</version.jcl.logging>
+        <version.jcl.logging>1.3.0</version.jcl.logging>
         <maven.jar.plugin.automatic.module.name>de.cuioss.test.jsf</maven.jar.plugin.automatic.module.name>
     </properties>
     <dependencyManagement>
