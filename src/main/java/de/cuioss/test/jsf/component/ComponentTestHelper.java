@@ -109,10 +109,10 @@ public final class ComponentTestHelper {
                 .getType();
         final var collectionTypeOption = CollectionType.findResponsibleCollectionType(propertyType);
         if (collectionTypeOption.isPresent()) {
-            throw new IllegalStateException(("""
+            throw new IllegalStateException("""
                     Unable to determine generic-type for %s, you need to \
                     provide a custom @PropertyConfig for this field\
-                    """).formatted(configuredName));
+                    """.formatted(configuredName));
 
         }
         return PropertyMetadataImpl.builder().propertyClass(propertyType).name(configuredName)
