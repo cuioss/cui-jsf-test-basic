@@ -2,5 +2,5 @@ name: cui-jsf-test-basic
 pages-reference: cui-jsf-test-basic
 sonar-project-key: cuioss_cui-jsf-test-basic
 release:
-  current-version: 2.0.1
+  current-version: 2.0.2
   next-version: 2.0-SNAPSHOT
