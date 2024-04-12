@@ -10,10 +10,10 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 ** `AbstractComponentTest`
 ** `AbstractUiComponentTest`
 ** `AbstractComponentRendererTest`
-* Tooling for generating (partial-) HTML-trees including the corresponding Assertions
+* Tooling for generating (partial-)HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
-* Baseline is JSF 2.3
+* Baseline is JSF 4.0
 
 == How To use it
 
@@ -64,14 +64,12 @@ The framework takes care of calling the callback methods at the correct time pri
 Available Extension-Types:
 
 * `de.cuioss.test.jsf.config.ApplicationConfigurator`
-* `de.cuioss.test.jsf.config.BeanConfigurator` -> ManagedBean -> Will be removed 
 * `de.cuioss.test.jsf.config.ComponentConfigurator`
 * `de.cuioss.test.jsf.config.RequestConfigurator`
 
 Corresponding Configurator-Types:
 
 * `de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator`
-* `de.cuioss.test.jsf.config.decorator.BeanConfigDecorator` -> ManagedBean -> Will be removed
 * `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
@@ -80,7 +78,7 @@ See the javadoc-documentation for the actual usage
 
 === Fine grained control
 
-For cases you want to modify the tests more fine grained or want to have access on `FacesContext`, `ExternalContext` and Co. you can use `de.cuioss.test.jsf.util.JsfEnvironmentConsumer`
+For cases, you want to modify the tests more fine grained or want to have access on `FacesContext`, `ExternalContext` and Co. you can use `de.cuioss.test.jsf.util.JsfEnvironmentConsumer`
 
 [source,java]
 ----
@@ -130,7 +128,7 @@ class FacesTestEnabledTest implements JsfEnvironmentConsumer {
 ----
 
 
-## Testing a Validator
+== Testing a Validator
 Testing a validator is straight-forward. You focus on the actual data to be checked, by using the fluent-api on TestItems. The api-tests are implicitly run. Additional configuration can be done using the mechanisms described previously.
 The callback method for configuring the validator is optional.
 
