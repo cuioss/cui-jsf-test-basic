@@ -15,10 +15,10 @@
  */
 package de.cuioss.test.jsf.support.components;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
 
 @FacesConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
 public class ConverterWithConverterIdAnnotation implements Converter {

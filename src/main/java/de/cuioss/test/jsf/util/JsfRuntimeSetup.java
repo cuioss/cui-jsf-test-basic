@@ -15,35 +15,22 @@
  */
 package de.cuioss.test.jsf.util;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
-import javax.faces.FactoryFinder;
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
-import javax.faces.component.UIViewRoot;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.render.RenderKitFactory;
-
+import de.cuioss.test.jsf.mocks.*;
+import jakarta.faces.FactoryFinder;
+import jakarta.faces.application.Application;
+import jakarta.faces.application.ApplicationFactory;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.lifecycle.LifecycleFactory;
+import jakarta.faces.render.RenderKitFactory;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.myfaces.test.config.ResourceBundleVarNames;
-import org.apache.myfaces.test.mock.MockExternalContext;
-import org.apache.myfaces.test.mock.MockFacesContext;
-import org.apache.myfaces.test.mock.MockFacesContextFactory;
-import org.apache.myfaces.test.mock.MockHttpServletRequest;
-import org.apache.myfaces.test.mock.MockHttpServletResponse;
-import org.apache.myfaces.test.mock.MockHttpSession;
-import org.apache.myfaces.test.mock.MockRenderKit;
-import org.apache.myfaces.test.mock.MockServletConfig;
+import org.apache.myfaces.test.mock.*;
 import org.apache.myfaces.test.mock.lifecycle.MockLifecycle;
 import org.apache.myfaces.test.mock.lifecycle.MockLifecycleFactory;
 
-import de.cuioss.test.jsf.mocks.CuiMockHttpServletRequest;
-import de.cuioss.test.jsf.mocks.CuiMockHttpSession;
-import de.cuioss.test.jsf.mocks.CuiMockSearchExpressionContextFactory;
-import de.cuioss.test.jsf.mocks.CuiMockServletContext;
-import de.cuioss.test.jsf.mocks.CuiMockUIViewRoot;
-import lombok.Getter;
-import lombok.Setter;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * Replacement for MyFaces
@@ -51,7 +38,6 @@ import lombok.Setter;
  * code is initially taken from
  *
  * @author Oliver Wolff
- *
  */
 public class JsfRuntimeSetup {
 
@@ -157,7 +143,6 @@ public class JsfRuntimeSetup {
      * Set up the thread context classloader. JSF uses the this classloader in order
      * to find related factory classes and other resources, but in some selected
      * cases, the default classloader cannot be properly set.
-     *
      */
     private void setUpClassloader() {
         threadContextClassLoader = Thread.currentThread().getContextClassLoader();
@@ -201,7 +186,6 @@ public class JsfRuntimeSetup {
      * <li><code>response</code> (<code>MockHttpServletResponse</code>)</li>
      * <li><code>session</code> (<code>CuiMockHttpSession</code>)</li>
      * </ul>
-     *
      */
     private void setUpServletObjects() {
         servletContext = new CuiMockServletContext();
@@ -217,33 +201,31 @@ public class JsfRuntimeSetup {
      * <p>
      * Set JSF factories using FactoryFinder method setFactory.
      * </p>
-     *
      */
     private void setFactories() {
         FactoryFinder.setFactory(FactoryFinder.APPLICATION_FACTORY,
-                "org.apache.myfaces.test.mock.MockApplicationFactory");
+            "org.apache.myfaces.test.mock.MockApplicationFactory");
         FactoryFinder.setFactory(FactoryFinder.FACES_CONTEXT_FACTORY,
-                "org.apache.myfaces.test.mock.MockFacesContextFactory");
+            "org.apache.myfaces.test.mock.MockFacesContextFactory");
         FactoryFinder.setFactory(FactoryFinder.LIFECYCLE_FACTORY,
-                "org.apache.myfaces.test.mock.lifecycle.MockLifecycleFactory");
+            "org.apache.myfaces.test.mock.lifecycle.MockLifecycleFactory");
         FactoryFinder.setFactory(FactoryFinder.RENDER_KIT_FACTORY, "org.apache.myfaces.test.mock.MockRenderKitFactory");
         FactoryFinder.setFactory(FactoryFinder.EXCEPTION_HANDLER_FACTORY,
-                "org.apache.myfaces.test.mock.MockExceptionHandlerFactory");
+            "org.apache.myfaces.test.mock.MockExceptionHandlerFactory");
         FactoryFinder.setFactory(FactoryFinder.PARTIAL_VIEW_CONTEXT_FACTORY,
-                "org.apache.myfaces.test.mock.MockPartialViewContextFactory");
+            "org.apache.myfaces.test.mock.MockPartialViewContextFactory");
         FactoryFinder.setFactory(FactoryFinder.VISIT_CONTEXT_FACTORY,
-                "org.apache.myfaces.test.mock.visit.MockVisitContextFactory");
+            "org.apache.myfaces.test.mock.visit.MockVisitContextFactory");
         FactoryFinder.setFactory(FactoryFinder.CLIENT_WINDOW_FACTORY,
-                "org.apache.myfaces.test.mock.MockClientWindowFactory");
+            "org.apache.myfaces.test.mock.MockClientWindowFactory");
         // Cui Extensions
         FactoryFinder.setFactory(FactoryFinder.SEARCH_EXPRESSION_CONTEXT_FACTORY,
-                CuiMockSearchExpressionContextFactory.class.getName());
+            CuiMockSearchExpressionContextFactory.class.getName());
     }
 
     /**
      * Setup the <code>externalContext</code> variable, using the servlet variables
      * already initialized.
-     *
      */
     private void setUpExternalContext() {
         externalContext = new MockExternalContext(servletContext, request, response);
@@ -251,7 +233,6 @@ public class JsfRuntimeSetup {
 
     /**
      * Setup the <code>lifecycle</code> and <code>lifecycleFactory</code> variables.
-     *
      */
     private void setUpLifecycle() {
         lifecycleFactory = (MockLifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
@@ -264,12 +245,11 @@ public class JsfRuntimeSetup {
      * variable from the value retrieved from facesContext.getExternalContext(),
      * because sometimes it is possible facesContext overrides externalContext
      * internally.
-     *
      */
     private void setUpFacesContext() {
         facesContextFactory = (MockFacesContextFactory) FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
         facesContext = (MockFacesContext) facesContextFactory.getFacesContext(servletContext, request, response,
-                lifecycle);
+            lifecycle);
         if (facesContext.getExternalContext() != null) {
             externalContext = (MockExternalContext) facesContext.getExternalContext();
         }
@@ -278,7 +258,6 @@ public class JsfRuntimeSetup {
     /**
      * By default, create an instance of UIViewRoot, set its viewId as "/viewId" and
      * assign it to the current facesContext.
-     *
      */
     private void setUpView() {
         UIViewRoot root = new CuiMockUIViewRoot();
@@ -291,7 +270,6 @@ public class JsfRuntimeSetup {
      * Setup the <code>application</code> variable and before the end by default it
      * is assigned to the <code>facesContext</code> variable, calling
      * <code>facesContext.setApplication(application)</code>
-     *
      */
     private void setUpApplication() {
         var applicationFactory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
@@ -303,7 +281,6 @@ public class JsfRuntimeSetup {
      * Setup the <code>renderKit</code> variable. This is a good place to use
      * <code>ConfigParser</code> to register converters, validators, components or
      * renderkits.
-     *
      */
     private void setUpRenderKit() {
         var renderKitFactory = (RenderKitFactory) FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);

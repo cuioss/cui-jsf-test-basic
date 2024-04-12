@@ -15,14 +15,10 @@
  */
 package de.cuioss.test.jsf.config.renderer;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import de.cuioss.test.jsf.renderer.AbstractComponentRendererTest;
 import de.cuioss.test.jsf.renderer.CommonRendererAsserts;
+
+import java.lang.annotation.*;
 
 /**
  * A contract Veto is used for for suppressing certain test-contracts. The
@@ -32,7 +28,7 @@ import de.cuioss.test.jsf.renderer.CommonRendererAsserts;
  * @author Oliver Wolff
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Repeatable(VetoRenderAttributeAsserts.class)
 public @interface VetoRenderAttributeAssert {
 

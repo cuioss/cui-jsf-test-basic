@@ -15,18 +15,18 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import de.cuioss.test.jsf.renderer.util.DomUtils;
+import de.cuioss.tools.property.PropertyUtil;
+import jakarta.faces.component.html.HtmlInputText;
+import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 
-import javax.faces.component.html.HtmlInputText;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Test;
-
-import de.cuioss.test.jsf.renderer.util.DomUtils;
-import de.cuioss.tools.property.PropertyUtil;
-
+@EnableJsfEnvironment
 class CommonRendererAssertsTest {
 
     public static final String NESTED_DIV = "<div><div /></div>";

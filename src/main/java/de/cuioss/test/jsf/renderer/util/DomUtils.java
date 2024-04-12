@@ -15,23 +15,21 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
-import static de.cuioss.tools.string.MoreStrings.emptyToNull;
-import static java.util.Objects.requireNonNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.XMLConstants;
-
+import de.cuioss.tools.io.IOStreams;
+import lombok.experimental.UtilityClass;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-import de.cuioss.tools.io.IOStreams;
-import lombok.experimental.UtilityClass;
+import javax.xml.XMLConstants;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static de.cuioss.tools.string.MoreStrings.emptyToNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Helper class providing convenience methods for dealing with Dom trees.
@@ -53,7 +51,7 @@ public class DomUtils {
      *
      * @param htmlString must not be null
      * @return the created {@link Document} with {@link #ROOT_TEMPLATE} as the root
-     *         element.
+     * element.
      */
     public static Document htmlStringToDocument(final String htmlString) {
         requireNonNull(htmlString);
@@ -75,7 +73,7 @@ public class DomUtils {
      * @param element       to be checked, must not be null.
      * @param attributeName to be looked for, must not be null nor empty.
      * @return a {@link List} with the found attributes, never null but may be
-     *         empty.
+     * empty.
      */
     public static List<Attribute> filterForAttribute(final Element element, final String attributeName) {
         requireNonNull(element);
@@ -101,13 +99,13 @@ public class DomUtils {
      * @param attributeValuePart the string of the attribute value to be filtered
      *                           for.
      * @return a {@link List} with the found attributes, never null but may be
-     *         empty.
+     * empty.
      */
     public static List<Attribute> filterForAttributeContainingValue(final Element element, final String attributeName,
-            final String attributeValuePart) {
+                                                                    final String attributeValuePart) {
         requireNonNull(emptyToNull(attributeValuePart));
 
         return filterForAttribute(element, attributeName).stream()
-                .filter(a -> a.getValue().contains(attributeValuePart)).toList();
+            .filter(a -> a.getValue().contains(attributeValuePart)).toList();
     }
 }

@@ -15,12 +15,12 @@
  */
 package de.cuioss.test.jsf.support.components;
 
-import java.io.Serializable;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
+import java.io.Serializable;
 
 @FacesConverter(forClass = Serializable.class)
 public class ConverterWithTypeAnnotation implements Converter {

@@ -15,22 +15,19 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import javax.servlet.ServletContext;
-
-import org.apache.myfaces.test.mock.MockHttpSession;
-
+import jakarta.servlet.ServletContext;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.myfaces.test.mock.MockHttpSession;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Extension to {@link MockHttpSession} that provides the programmatic setting
  * of 'maxInactiveInterval'
  *
  * @author Oliver Wolff
- *
  */
 public class CuiMockHttpSession extends MockHttpSession {
 

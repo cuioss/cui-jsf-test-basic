@@ -15,19 +15,6 @@
  */
 package de.cuioss.test.jsf.converter;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.ConverterException;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
@@ -36,9 +23,18 @@ import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Base class for testing implementations of {@link Converter} within a Junit 5
@@ -103,13 +99,12 @@ import lombok.Setter;
  * @param <C> identifying the concrete {@link Converter} to be tested.
  * @param <T> identifying the type of elements to be used for values to be given
  *            to the {@link Converter}
- *
  * @author Oliver Wolff
  */
-@SuppressWarnings({ "rawtypes", "unchecked" }) // owolff we need to migrate this aspect later
+@SuppressWarnings({"rawtypes", "unchecked"}) // owolff we need to migrate this aspect later
 @EnableGeneratorController
 public abstract class AbstractConverterTest<C extends Converter, T> extends JsfEnabledTestEnvironment
-        implements ConfigurationCallBackHandler<C>, ComponentConfigurator {
+    implements ConfigurationCallBackHandler<C>, ComponentConfigurator {
 
     private static final String SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION = "Should have thrown ConverterException for invalid Value: ";
 
@@ -138,7 +133,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     /**
      * Populates the test-items
      *
-     * @param testItems to be populated, is never null
+     * @param testItems to be populated is never null
      */
     public abstract void populate(TestItems<T> testItems);
 
@@ -159,7 +154,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      */
     @Override
     public void configureComponents(final ComponentConfigDecorator decorator) {
-        // default do nothing
+        decorator.registerMockRenderer(HtmlInputText.COMPONENT_FAMILY, "jakarta.faces.Text");
     }
 
     /**
@@ -215,9 +210,9 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * Core test for converter testing. It collects the test-data using
      * {@link TestItems} and iterates them for the individual test. For each element
      * there will be called the method
-     * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)},
+     * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)},
      * with the result again
-     * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * with the result being checked against the initial value.
      */
     @Test
@@ -231,7 +226,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
     /**
      * Tests the method
-     * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
@@ -250,13 +245,13 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
         // Check message
         if (null != item.getErrorMessage()) {
             assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
-                    "Wrong error message detected. TestItem was : " + item);
+                "Wrong error message detected. TestItem was : " + item);
         }
     }
 
     /**
      * Tests the method
-     * {@link Converter#getAsString(javax.faces.context.FacesContext, javax.faces.component.UIComponent, Object)}
+     * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * with valid objects, derived by {@link TestItems}
      */
     @Test
@@ -271,7 +266,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
     /**
      * Tests the method
-     * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
+     * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
@@ -288,7 +283,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
     /**
      * Tests the method
-     * {@link Converter#getAsObject(javax.faces.context.FacesContext, javax.faces.component.UIComponent, String)}
+     * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      * with valid String, derived by {@link TestItems}
      */
     @Test
@@ -301,4 +296,5 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
 
         }
     }
+
 }

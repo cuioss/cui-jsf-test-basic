@@ -164,9 +164,9 @@ class AbstractConverterTestTest extends AbstractConverterTest<IntegerConverter, 
    @Override
    public void populate(final TestItems<Integer> testItems) {
        testItems.addRoundtripValues("1", "122", "2132121").addInvalidString("a")
-               .addInvalidStringWithMessage("a", "javax.faces.converter.IntegerConverter.INTEGER")
+               .addInvalidStringWithMessage("a", "jakarta.faces.converter.IntegerConverter.INTEGER")
                .addInvalidObject(Boolean.TRUE)
-               .addInvalidObjectWithMessage(Boolean.FALSE, "javax.faces.converter.STRING")
+               .addInvalidObjectWithMessage(Boolean.FALSE, "jakarta.faces.converter.STRING")
                .addValidString("13").addValidStringWithObjectResult("17", 17)
                .addValidObject(2)
                .addValidObjectWithStringResult(14, "14");

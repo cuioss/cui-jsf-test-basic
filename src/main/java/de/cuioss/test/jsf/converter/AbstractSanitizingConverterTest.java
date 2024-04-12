@@ -15,11 +15,10 @@
  */
 package de.cuioss.test.jsf.converter;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import javax.faces.convert.Converter;
-
+import jakarta.faces.convert.Converter;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Extension of {@linkplain AbstractConverterTest} to also test the sanitizing

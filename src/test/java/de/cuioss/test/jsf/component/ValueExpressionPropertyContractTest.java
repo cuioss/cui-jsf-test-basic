@@ -15,13 +15,12 @@
  */
 package de.cuioss.test.jsf.component;
 
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.support.componentproperty.MultiValuedComponent;
 import de.cuioss.test.valueobjects.objects.RuntimeProperties;
 import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
+import org.junit.jupiter.api.Test;
 
 class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiValuedComponent> {
 

@@ -15,26 +15,20 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Locale;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.myfaces.test.mock.MockExternalContext22;
-import org.apache.myfaces.test.mock.MockFacesContext22;
+import de.cuioss.test.generator.Generators;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.myfaces.test.mock.MockExternalContext;
+import org.apache.myfaces.test.mock.MockFacesContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.cuioss.test.generator.Generators;
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import java.util.Locale;
+
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
@@ -42,8 +36,8 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
 
     @BeforeEach
     void before() {
-        decorator = new RequestConfigDecorator((MockFacesContext22) getFacesContext(),
-                (MockExternalContext22) getExternalContext());
+        decorator = new RequestConfigDecorator((MockFacesContext) getFacesContext(),
+                (MockExternalContext) getExternalContext());
     }
 
     @Test

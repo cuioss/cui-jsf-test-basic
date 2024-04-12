@@ -15,38 +15,37 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
+import de.cuioss.test.jsf.renderer.util.DomUtils;
+import de.cuioss.tools.property.PropertyUtil;
+import jakarta.faces.component.UIComponent;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.jdom2.Element;
 
 import java.io.Serializable;
 
-import javax.faces.component.UIComponent;
-
-import org.jdom2.Element;
-
-import de.cuioss.test.jsf.renderer.util.DomUtils;
-import de.cuioss.tools.property.PropertyUtil;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This enum define the commonly used attributes to be tested.
+ * This enum defines the commonly used attributes to be tested.
  *
  * @author Oliver Wolff
  */
 @RequiredArgsConstructor
 public enum CommonRendererAsserts implements RendererAttributeAssert {
 
-    /** Checks the attribute 'id', see {@link UIComponent#getId()} */
+    /**
+     * Checks the attribute 'id', see {@link UIComponent#getId()}
+     */
     ID("id", "traceId"),
     /**
      * Checks the attribute 'rendered', see {@link UIComponent#isRendered()}. Due to
-     * its nature this test must not work all the time correctly and should
-     * therefore considered as candidate for vetoing. The actual assert checks
+     * its nature, this test must not work all the time correctly and should
+     * therefore consider as a candidate for vetoing. The actual assert checks
      * whether the given component is {@code null} or does not contain any children.
      */
     RENDERED("rendered", Boolean.FALSE) {
-
         @Override
         public void assertAttributeSet(final Element element) {
             if (null == element) {
@@ -57,24 +56,26 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
             }
         }
     },
-    /** Checks the attribute 'style' */
+    /**
+     * Checks the attribute 'style'
+     */
     STYLE("style", "traceStyle"),
-    /** Checks the attribute 'style' */
+    /**
+     * Checks the attribute 'style'
+     */
     STYLE_CLASS("styleClass", "traceStyleClass") {
-
         @Override
         public void assertAttributeSet(final Element element) {
             var found = DomUtils.filterForAttributeContainingValue(element, "class",
-                    getAttributeTraceValue().toString());
+                getAttributeTraceValue().toString());
             assertFalse(found.isEmpty(), "The expected attribute with name='class' and traceValue="
-                    + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
+                + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
         }
     },
     /**
      * Checks the passthrough-attributes.
      */
     PASSTHROUGH("data-passthrough-test", "passthroughTraceValue") {
-
         @Override
         public void applyAttribute(final UIComponent component) {
             component.getPassThroughAttributes(true).put(getAttributeName(), getAttributeTraceValue());
@@ -95,8 +96,8 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
     @Override
     public void assertAttributeSet(final Element element) {
         var found = DomUtils.filterForAttributeContainingValue(element, getAttributeName(),
-                getAttributeTraceValue().toString());
+            getAttributeTraceValue().toString());
         assertFalse(found.isEmpty(), "The expected attribute with name=" + getAttributeName() + " and traceValue="
-                + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
+            + getAttributeTraceValue() + " was not found in the resulting dom-tree.");
     }
 }

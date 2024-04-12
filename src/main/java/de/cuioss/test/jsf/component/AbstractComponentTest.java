@@ -15,14 +15,6 @@
  */
 package de.cuioss.test.jsf.component;
 
-import java.util.List;
-
-import javax.el.ValueExpression;
-import javax.faces.component.UIComponent;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.contract.BeanPropertyContractImpl;
@@ -36,8 +28,14 @@ import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.test.valueobjects.util.GeneratorRegistry;
 import de.cuioss.test.valueobjects.util.PropertyHelper;
 import de.cuioss.tools.reflect.MoreReflection;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.UIComponent;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 /**
  * Base class for testing {@link UIComponent}s.
@@ -59,13 +57,13 @@ import lombok.Getter;
  * {@link #anyComponent()}.
  * </p>
  *
- * @author Oliver Wolff
  * @param <T> identifying the type to be tested, at least an {@link UIComponent}
+ * @author Oliver Wolff
  */
 @EnableGeneratorController
 @EnableGeneratorRegistry
 public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEnabledTestEnvironment
-        implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
+    implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
 
     @Getter
     private Class<T> targetClass;
@@ -86,11 +84,11 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
         targetClass = MoreReflection.extractFirstGenericTypeArgument(getClass());
 
         filteredMetadata = ComponentTestHelper.filterPropertyMetadata(getClass(),
-                new DefaultInstantiator<>(targetClass).newInstance());
+            new DefaultInstantiator<>(targetClass).newInstance());
 
         PropertyHelper.logMessageForPropertyMetadata(filteredMetadata);
         instantiator = new CallbackAwareInstantiator<>(new BeanInstantiator<>(
-                new DefaultInstantiator<>(getTargetClass()), new RuntimeProperties(filteredMetadata)), this);
+            new DefaultInstantiator<>(getTargetClass()), new RuntimeProperties(filteredMetadata)), this);
     }
 
     /**
@@ -111,8 +109,8 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
 
     /**
      * @return a minimal configured instance of the {@link UIComponent} with
-     *         {@link #configure(Object)} being already called. 'Minimal configured'
-     *         hereby defined as all attributes that are required are set
+     * {@link #configure(Object)} being already called. 'Minimal configured'
+     * hereby defined as all attributes that are required are set
      */
     public T anyComponent() {
         return getInstantiator().newInstanceMinimal();

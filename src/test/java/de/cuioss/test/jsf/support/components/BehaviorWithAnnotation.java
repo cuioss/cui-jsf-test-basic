@@ -15,15 +15,11 @@
  */
 package de.cuioss.test.jsf.support.components;
 
-import java.util.Set;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.behavior.*;
+import jakarta.faces.context.FacesContext;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.BehaviorBase;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHint;
-import javax.faces.component.behavior.FacesBehavior;
-import javax.faces.context.FacesContext;
+import java.util.Set;
 
 @FacesBehavior(BehaviorWithAnnotation.BEHAVIOR_ID)
 public class BehaviorWithAnnotation extends BehaviorBase implements ClientBehavior {

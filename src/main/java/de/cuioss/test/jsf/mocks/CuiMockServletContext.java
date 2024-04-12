@@ -15,40 +15,33 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.nio.charset.StandardCharsets;
-
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.SessionCookieConfig;
-
-import org.apache.myfaces.test.mock.MockServletContext;
-
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.SessionCookieConfig;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.myfaces.test.mock.MockServletContext;
+
+import java.nio.charset.StandardCharsets;
 
 @Getter
 public class CuiMockServletContext extends MockServletContext {
+
+    @Setter
+    private int sessionTimeout = 200;
+    @Setter
+    private String requestCharacterEncoding = StandardCharsets.UTF_8.name();
+    @Setter
+    private String responseCharacterEncoding = StandardCharsets.UTF_8.name();
+    @Setter
+    private String virtualServerName = "virtual";
+    @Setter
+    private String contextPath = "mock-context";
+    @Setter
+    private SessionCookieConfig sessionCookieConfig;
 
     @Override
     public Dynamic addJspFile(String servletName, String jspFile) {
         throw new UnsupportedOperationException();
     }
-
-    @Setter
-    private int sessionTimeout = 200;
-
-    @Setter
-    private String requestCharacterEncoding = StandardCharsets.UTF_8.name();
-
-    @Setter
-    private String responseCharacterEncoding = StandardCharsets.UTF_8.name();
-
-    @Setter
-    private String virtualServerName = "virtual";
-
-    @Setter
-    private String contextPath = "mock-context";
-
-    @Setter
-    private SessionCookieConfig sessionCookieConfig;
 
 }

@@ -15,31 +15,24 @@
  */
 package de.cuioss.test.jsf.producer;
 
-import java.util.Map;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.faces.annotation.*;
+import jakarta.faces.application.Application;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
-import javax.faces.annotation.ApplicationMap;
-import javax.faces.annotation.HeaderMap;
-import javax.faces.annotation.HeaderValuesMap;
-import javax.faces.annotation.InitParameterMap;
-import javax.faces.annotation.RequestCookieMap;
-import javax.faces.annotation.RequestParameterMap;
-import javax.faces.annotation.SessionMap;
-import javax.faces.annotation.ViewMap;
-import javax.faces.application.Application;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
+import java.util.Map;
 
 /**
  * Various JSF Producers for junit tests.
- *
- * Reason: In the test context we don't have a JSF implementation, which would
+ * <p>
+ * Reason: In the test context, we don't have a JSF implementation, which would
  * provide equivalent producers.
- *
+ * <p>
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  *
  * @author Oliver Wolff

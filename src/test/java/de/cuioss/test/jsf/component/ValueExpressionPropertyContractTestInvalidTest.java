@@ -15,16 +15,15 @@
  */
 package de.cuioss.test.jsf.component;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.junit5.AbstractPropertyAwareFacesTest;
 import de.cuioss.test.jsf.support.componentproperty.MultiValuedComponentWithInvalidELHandling;
 import de.cuioss.test.valueobjects.objects.RuntimeProperties;
 import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValueExpressionPropertyContractTestInvalidTest
         extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {

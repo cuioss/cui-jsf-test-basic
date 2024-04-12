@@ -15,8 +15,7 @@
  */
 package de.cuioss.test.jsf.generator;
 
-import javax.faces.convert.Converter;
-
+import jakarta.faces.convert.Converter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

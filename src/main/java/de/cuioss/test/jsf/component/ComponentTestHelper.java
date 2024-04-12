@@ -15,18 +15,6 @@
  */
 package de.cuioss.test.jsf.component;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.faces.component.UIComponent;
-
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 import de.cuioss.test.valueobjects.generator.dynamic.GeneratorResolver;
 import de.cuioss.test.valueobjects.property.PropertyMetadata;
@@ -37,7 +25,13 @@ import de.cuioss.test.valueobjects.util.PropertyHelper;
 import de.cuioss.tools.property.PropertyHolder;
 import de.cuioss.tools.property.PropertyReadWrite;
 import de.cuioss.tools.reflect.MoreReflection;
+import jakarta.faces.component.UIComponent;
 import lombok.experimental.UtilityClass;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Helper class providing utility methods for convenient filtering of
@@ -57,7 +51,7 @@ public final class ComponentTestHelper {
      * @return the filtered list with {@link ComponentPropertyMetadata}
      */
     public static List<ComponentPropertyMetadata> filterPropertyMetadata(final Class<?> annotated,
-            final UIComponent instance) {
+                                                                         final UIComponent instance) {
         requireNonNull(annotated);
         requireNonNull(instance);
 
@@ -68,7 +62,7 @@ public final class ComponentTestHelper {
         var noVE = new ArrayList<String>();
         var unorderedCollection = new ArrayList<String>();
         for (VerifyComponentProperties property : MoreReflection.extractAllAnnotations(annotated,
-                VerifyComponentProperties.class)) {
+            VerifyComponentProperties.class)) {
             of.addAll(Arrays.asList(property.of()));
             defaultValued.addAll(Arrays.asList(property.defaultValued()));
             noVE.addAll(Arrays.asList(property.noValueExpression()));
@@ -82,7 +76,7 @@ public final class ComponentTestHelper {
         }
 
         var filtered = AnnotationHelper.modifyPropertyMetadata(map, defaultValued, Collections.emptyList(),
-                Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), unorderedCollection);
+            Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), unorderedCollection);
 
         List<ComponentPropertyMetadata> found = new ArrayList<>();
         for (Entry<String, PropertyMetadata> entry : filtered.entrySet()) {
@@ -100,25 +94,25 @@ public final class ComponentTestHelper {
      * @return {@link PropertyMetadata} instance with the corresponding attributes.
      */
     public static PropertyMetadata resolvePropertyForConfiguredName(final UIComponent instance,
-            final String configuredName) {
+                                                                    final String configuredName) {
         Class<?> propertyType = null;
         var collectionType = CollectionType.NO_ITERABLE;
         propertyType = PropertyHolder.from(instance.getClass(), configuredName)
-                .orElseThrow(() -> new IllegalStateException("Unable to determine property type for " + configuredName
-                        + ", use @PropertyConfig to define this property"))
-                .getType();
+            .orElseThrow(() -> new IllegalStateException("Unable to determine property type for " + configuredName
+                + ", use @PropertyConfig to define this property"))
+            .getType();
         final var collectionTypeOption = CollectionType.findResponsibleCollectionType(propertyType);
         if (collectionTypeOption.isPresent()) {
             throw new IllegalStateException("""
-                    Unable to determine generic-type for %s, you need to \
-                    provide a custom @PropertyConfig for this field\
-                    """.formatted(configuredName));
+                Unable to determine generic-type for %s, you need to \
+                provide a custom @PropertyConfig for this field\
+                """.formatted(configuredName));
 
         }
         return PropertyMetadataImpl.builder().propertyClass(propertyType).name(configuredName)
-                .collectionType(collectionType).defaultValue(propertyType.isPrimitive())
-                .generator(GeneratorResolver.resolveGenerator(propertyType))
-                .propertyReadWrite(PropertyReadWrite.READ_WRITE).build();
+            .collectionType(collectionType).defaultValue(propertyType.isPrimitive())
+            .generator(GeneratorResolver.resolveGenerator(propertyType))
+            .propertyReadWrite(PropertyReadWrite.READ_WRITE).build();
     }
 
 }

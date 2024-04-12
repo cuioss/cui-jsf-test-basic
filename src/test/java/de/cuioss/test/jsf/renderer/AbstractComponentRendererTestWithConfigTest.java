@@ -15,19 +15,15 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlInputText;
-
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.config.renderer.VerifyComponentRendererConfig;
 import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.mocks.CuiMockRenderer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.component.html.HtmlInputText;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @VetoRenderAttributeAssert({ CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
         CommonRendererAsserts.STYLE_CLASS })

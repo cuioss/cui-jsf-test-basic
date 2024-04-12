@@ -15,22 +15,17 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.FacesListener;
-
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.mocks.CuiMockRenderer;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIForm;
+import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.FacesListener;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @VetoRenderAttributeAssert({ CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
         CommonRendererAsserts.STYLE_CLASS })

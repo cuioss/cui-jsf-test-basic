@@ -15,20 +15,19 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static javax.faces.FactoryFinder.SEARCH_EXPRESSION_CONTEXT_FACTORY;
+import jakarta.faces.FactoryFinder;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionContextFactory;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.context.FacesContext;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Set;
 
-import javax.faces.FactoryFinder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchExpressionContextFactory;
-import javax.faces.component.search.SearchExpressionHint;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.context.FacesContext;
-
-import lombok.Getter;
-import lombok.Setter;
+import static jakarta.faces.FactoryFinder.SEARCH_EXPRESSION_CONTEXT_FACTORY;
 
 /**
  * Mock for {@link SearchExpressionContextFactory}. It can be used by accessing
@@ -38,7 +37,6 @@ import lombok.Setter;
  * will be returned.
  *
  * @author Oliver Wolff
- *
  */
 public class CuiMockSearchExpressionContextFactory extends SearchExpressionContextFactory {
 
@@ -53,9 +51,19 @@ public class CuiMockSearchExpressionContextFactory extends SearchExpressionConte
         super(null);
     }
 
+    /**
+     * Shorthand for accessing the configured
+     * {@link CuiMockSearchExpressionContextFactory}
+     *
+     * @return the currently active instance of SearchExpressionContextFactory
+     */
+    public static final CuiMockSearchExpressionContextFactory retrieve() {
+        return (CuiMockSearchExpressionContextFactory) FactoryFinder.getFactory(SEARCH_EXPRESSION_CONTEXT_FACTORY);
+    }
+
     @Override
     public SearchExpressionContext getSearchExpressionContext(FacesContext context, UIComponent source,
-            Set<SearchExpressionHint> expressionHints, Set<VisitHint> visitHints) {
+                                                              Set<SearchExpressionHint> expressionHints, Set<VisitHint> visitHints) {
         if (null != searchExpressionContext) {
             return searchExpressionContext;
         }
@@ -65,15 +73,5 @@ public class CuiMockSearchExpressionContextFactory extends SearchExpressionConte
     @Override
     public SearchExpressionContextFactory getWrapped() {
         return null;
-    }
-
-    /**
-     * Shorthand for accessing the configured
-     * {@link CuiMockSearchExpressionContextFactory}
-     *
-     * @return the currently active instance of SearchExpressionContextFactory
-     */
-    public static final CuiMockSearchExpressionContextFactory retrieve() {
-        return (CuiMockSearchExpressionContextFactory) FactoryFinder.getFactory(SEARCH_EXPRESSION_CONTEXT_FACTORY);
     }
 }

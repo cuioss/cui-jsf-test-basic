@@ -15,33 +15,25 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.event.FacesEvent;
-import javax.faces.event.PostAddToViewEvent;
-import javax.faces.render.Renderer;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.config.renderer.VerifyComponentRendererConfig;
 import de.cuioss.test.jsf.config.renderer.VetoRenderAttributeAssert;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
 import de.cuioss.tools.reflect.FieldWrapper;
 import de.cuioss.tools.reflect.MoreReflection;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.event.FacesEvent;
+import jakarta.faces.event.PostAddToViewEvent;
+import jakarta.faces.render.Renderer;
 import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * While {@link AbstractRendererTestBase} focuses on API-Contract utility
@@ -53,8 +45,8 @@ import lombok.Getter;
  * <li>{@link VetoRenderAttributeAssert}</li>
  * </ul>
  *
- * @author Oliver Wolff
  * @param <R> The renderer being tested
+ * @author Oliver Wolff
  */
 public abstract class AbstractComponentRendererTest<R extends Renderer> extends AbstractRendererTestBase<R> {
 
@@ -76,16 +68,16 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
 
     private void handleConfigAnnotation() {
         Optional<VerifyComponentRendererConfig> configOption = MoreReflection.extractAnnotation(getClass(),
-                VerifyComponentRendererConfig.class);
+            VerifyComponentRendererConfig.class);
         configOption.ifPresent(verifyComponentRendererConfig -> wrapComponentInForm = verifyComponentRendererConfig
-                .wrapComponentInForm());
+            .wrapComponentInForm());
     }
 
     private void handleRenderAttributeAsserts() {
         activeAsserts = new HashSet<>(Arrays.asList(CommonRendererAsserts.values()));
         final Set<CommonRendererAsserts> vetoes = new HashSet<>();
         MoreReflection.extractAllAnnotations(this.getClass(), VetoRenderAttributeAssert.class)
-                .forEach(veto -> vetoes.addAll(mutableList(veto.value())));
+            .forEach(veto -> vetoes.addAll(mutableList(veto.value())));
         activeAsserts.removeAll(vetoes);
     }
 
@@ -106,8 +98,8 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
 
     /**
      * @return the {@link UIComponent} derived by {@link #getComponent()} or the
-     *         same wrapped in an {@link HtmlForm} in case
-     *         {@link #isWrapComponentInForm()} is {@code true}
+     * same wrapped in an {@link HtmlForm} in case
+     * {@link #isWrapComponentInForm()} is {@code true}
      */
     protected UIComponent getWrappedComponent() {
         var component = getComponent();
@@ -125,10 +117,10 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      * not be extracted
      *
      * @return the plain list of events available at {@link UIViewRoot} at this
-     *         time.
+     * time.
      */
     // owolff: Sonar false-positive
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public List<FacesEvent> extractEventsFromViewRoot() {
         final List<FacesEvent> found = new ArrayList<>();
         final var uiViewRoot = getFacesContext().getViewRoot();
@@ -143,7 +135,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         eventField = FieldWrapper.from(UIViewRoot.class, "events");
         if (eventField.isEmpty()) {
             throw new AssertionError(
-                    "javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
+                "javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
         var events = eventField.get().readValue(uiViewRoot);
         if (events.isPresent()) {

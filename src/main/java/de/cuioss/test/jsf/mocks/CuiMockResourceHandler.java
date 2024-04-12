@@ -15,19 +15,18 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import de.cuioss.tools.string.MoreStrings;
+import jakarta.faces.application.Resource;
+import jakarta.faces.application.ResourceHandler;
+import jakarta.faces.application.ViewResource;
+import jakarta.faces.context.FacesContext;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.faces.application.Resource;
-import javax.faces.application.ResourceHandler;
-import javax.faces.application.ViewResource;
-import javax.faces.context.FacesContext;
-
-import de.cuioss.tools.string.MoreStrings;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Mock Implementation ResourceHandler
@@ -36,16 +35,24 @@ import lombok.Setter;
  */
 public class CuiMockResourceHandler extends ResourceHandler {
 
-    /**  */
+    /**
+     *
+     */
     public static final String DUMMY_URL = "http://dummy";
 
-    /** "libNotThere" */
+    /**
+     * "libNotThere"
+     */
     public static final String LIBRARY_NOT_THERE = "libNotThere";
 
-    /** "resNotThere" */
+    /**
+     * "resNotThere"
+     */
     public static final String RESOURCE_NOT_THERE = "resNotThere";
 
-    /** "rendererererer" */
+    /**
+     * "rendererererer"
+     */
     public static final String RENDERER_SUFFIX = "-rendererererer";
 
     /**
@@ -54,7 +61,9 @@ public class CuiMockResourceHandler extends ResourceHandler {
      */
     public static final String LIBRARY_RESOURCE_DELIMITER = "-";
 
-    /** "image/png" */
+    /**
+     * "image/png"
+     */
     public static final String DEFAULT_CONTENT_TYPE = "image/png";
 
     @Setter
@@ -66,6 +75,25 @@ public class CuiMockResourceHandler extends ResourceHandler {
     @Getter
     @Setter
     private Map<String, CuiMockResource> availableResouces = new HashMap<>();
+
+    /**
+     * Creates an resourceIdetnifier utilized by availableResouces
+     *
+     * @param resourceName may be null
+     * @param libraryName  may be null
+     * @return the concatenated String, see {@link #LIBRARY_RESOURCE_DELIMITER}
+     */
+    public static final String createResourceMapKey(final String resourceName, final String libraryName) {
+        var resource = resourceName;
+        var library = libraryName;
+        if (MoreStrings.isEmpty(library)) {
+            library = "notThere";
+        }
+        if (MoreStrings.isEmpty(resource)) {
+            resource = "notThere";
+        }
+        return library + LIBRARY_RESOURCE_DELIMITER + resource;
+    }
 
     @Override
     public Resource createResource(final String resourceName) {
@@ -95,25 +123,6 @@ public class CuiMockResourceHandler extends ResourceHandler {
                 }
             }
         };
-    }
-
-    /**
-     * Creates an resourceIdetnifier utilized by availableResouces
-     *
-     * @param resourceName may be null
-     * @param libraryName  may be null
-     * @return the concatenated String, see {@link #LIBRARY_RESOURCE_DELIMITER}
-     */
-    public static final String createResourceMapKey(final String resourceName, final String libraryName) {
-        var resource = resourceName;
-        var library = libraryName;
-        if (MoreStrings.isEmpty(library)) {
-            library = "notThere";
-        }
-        if (MoreStrings.isEmpty(resource)) {
-            resource = "notThere";
-        }
-        return library + LIBRARY_RESOURCE_DELIMITER + resource;
     }
 
     @Override

@@ -15,11 +15,6 @@
  */
 package de.cuioss.test.jsf.junit5;
 
-import java.util.List;
-import java.util.SortedSet;
-
-import org.junit.jupiter.api.BeforeEach;
-
 import de.cuioss.test.generator.TypedGenerator;
 import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.valueobjects.ValueObjectTest;
@@ -33,6 +28,10 @@ import de.cuioss.test.valueobjects.util.GeneratorRegistry;
 import de.cuioss.test.valueobjects.util.ReflectionHelper;
 import de.cuioss.tools.reflect.MoreReflection;
 import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Extension to {@link JsfEnabledTestEnvironment} that is capable of dealing
@@ -53,13 +52,13 @@ import lombok.Getter;
  * {@link TypedGeneratorRegistry}
  * </p>
  *
- * @author Oliver Wolff
  * @param <T> identifying the concrete type to be tested
+ * @author Oliver Wolff
  */
 @EnableGeneratorController
 @EnableGeneratorRegistry
 public abstract class AbstractPropertyAwareFacesTest<T> extends JsfEnabledTestEnvironment
-        implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
+    implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
 
     @Getter
     private Class<T> targetBeanClass;
@@ -82,7 +81,7 @@ public abstract class AbstractPropertyAwareFacesTest<T> extends JsfEnabledTestEn
      * annotations {@link PropertyConfig} and / {@link PropertyConfigs} if provided
      *
      * @return a {@link SortedSet} of {@link PropertyMetadata} defining the base
-     *         line for the configured attributes
+     * line for the configured attributes
      */
     protected List<PropertyMetadata> resolvePropertyMetadata() {
         return ReflectionHelper.handlePropertyMetadata(getClass(), getTargetBeanClass());

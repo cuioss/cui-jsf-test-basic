@@ -15,9 +15,9 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.nio.charset.StandardCharsets;
-
 import org.junit.jupiter.api.Test;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 

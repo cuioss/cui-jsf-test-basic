@@ -15,15 +15,14 @@
  */
 package de.cuioss.test.jsf.converter;
 
-import static java.util.Objects.requireNonNull;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-
 import de.cuioss.test.jsf.mocks.ReverseConverter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
 import lombok.Getter;
 import lombok.Setter;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  *

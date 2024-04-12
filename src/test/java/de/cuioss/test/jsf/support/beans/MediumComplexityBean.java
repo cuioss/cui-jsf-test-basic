@@ -15,17 +15,6 @@
  */
 package de.cuioss.test.jsf.support.beans;
 
-import static de.cuioss.test.valueobjects.generator.JavaTypesGenerator.BOOLEANS;
-import static de.cuioss.test.valueobjects.generator.JavaTypesGenerator.BOOLEANS_PRIMITIVE;
-import static de.cuioss.test.valueobjects.generator.JavaTypesGenerator.STRINGS;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
-
 import de.cuioss.test.valueobjects.property.PropertyMetadata;
 import de.cuioss.test.valueobjects.property.util.CollectionType;
 import de.cuioss.tools.property.PropertyMemberInfo;
@@ -33,6 +22,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.*;
+
+import static de.cuioss.test.valueobjects.generator.JavaTypesGenerator.*;
 
 @EqualsAndHashCode(exclude = { "noObjectIdentitiyString" })
 @ToString(exclude = { "noObjectIdentitiyString" })

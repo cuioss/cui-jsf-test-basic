@@ -15,15 +15,6 @@
  */
 package de.cuioss.test.jsf.junit5;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-
-import org.apache.myfaces.test.config.ResourceBundleVarNames;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
@@ -31,6 +22,12 @@ import de.cuioss.test.jsf.util.JsfEnvironmentConsumer;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.myfaces.test.config.ResourceBundleVarNames;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
 @EnableJsfEnvironment
@@ -48,7 +45,6 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
         assertNotNull(environmentHolder);
         assertNotNull(getApplication());
         assertNotNull(getApplicationConfigDecorator());
-        assertNotNull(getBeanConfigDecorator());
         assertNotNull(getComponentConfigDecorator());
         assertNotNull(getExternalContext());
         assertNotNull(getFacesContext());
@@ -59,11 +55,11 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     @Test
     void shouldApplyBasicConfiguration() {
         assertEquals(BasicApplicationConfiguration.FIREFOX,
-                getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
+            getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
     }
 
     @Test
-    void shoudFailForNoNavigationOutcome() {
+    void shouldFailForNoNavigationOutcome() {
         // No Navigation took place -> Assertion Error
         assertThrows(AssertionError.class, () -> {
             assertNavigatedWithOutcome(OUTCOME);
@@ -71,14 +67,14 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     }
 
     @Test
-    void shoudAssertNavigationOutcome() {
+    void shouldAssertNavigationOutcome() {
         getApplicationConfigDecorator().registerNavigationCase(OUTCOME, TO_VIEW_JSF);
         getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, OUTCOME);
         assertNavigatedWithOutcome(OUTCOME);
     }
 
     @Test
-    void shoudFailForNoRedirect() {
+    void shouldFailForNoRedirect() {
         // No Navigation took place -> Assertion Error
         assertThrows(AssertionError.class, () -> {
             assertRedirect(TO_VIEW_JSF);
@@ -86,7 +82,7 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     }
 
     @Test
-    void shoudAssertRedirect() throws IOException {
+    void shouldAssertRedirect() throws IOException {
         getExternalContext().redirect(TO_VIEW_JSF);
         assertRedirect(TO_VIEW_JSF);
     }

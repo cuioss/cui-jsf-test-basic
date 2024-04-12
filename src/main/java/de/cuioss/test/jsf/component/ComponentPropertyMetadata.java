@@ -23,11 +23,7 @@ import de.cuioss.test.valueobjects.property.util.CollectionType;
 import de.cuioss.test.valueobjects.property.util.PropertyAccessStrategy;
 import de.cuioss.tools.property.PropertyMemberInfo;
 import de.cuioss.tools.property.PropertyReadWrite;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Implements {@link PropertyMetadata} but in addition provides the attribute

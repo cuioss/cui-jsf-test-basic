@@ -15,13 +15,15 @@
  */
 package de.cuioss.test.jsf.support.beans;
 
-import java.io.Serializable;
+import jakarta.inject.Named;
 
-import javax.inject.Named;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Named(NamedSimpleBean.BEAN_NAME)
 public class NamedSimpleBean implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2891864631641853743L;
 
     public static final String BEAN_NAME = "namedSimpleBean";

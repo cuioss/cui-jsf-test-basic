@@ -15,17 +15,16 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
-import javax.el.ELContext;
-import javax.el.MethodExpression;
-import javax.el.MethodInfo;
-
+import jakarta.el.ELContext;
+import jakarta.el.MethodExpression;
+import jakarta.el.MethodInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author Oliver Wolff
@@ -36,16 +35,22 @@ public class CuiMockMethodExpression extends MethodExpression {
 
     private static final long serialVersionUID = 2692860324272056192L;
 
-    /** Indicates whether method was invoked. */
+    /**
+     * Indicates whether method was invoked.
+     */
     @Getter
     @Setter
     private boolean invoked = false;
 
-    /** Parameters method was invoked with. */
+    /**
+     * Parameters method was invoked with.
+     */
     @Getter
     private transient Object[] invokedParams;
 
-    /** Result to be returned on {@link #invoke(ELContext, Object[])} */
+    /**
+     * Result to be returned on {@link #invoke(ELContext, Object[])}
+     */
     @Setter
     private Serializable invokeResult;
 

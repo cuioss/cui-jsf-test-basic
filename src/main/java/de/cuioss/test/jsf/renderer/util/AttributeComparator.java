@@ -15,10 +15,10 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
+import org.jdom2.Attribute;
+
 import java.io.Serializable;
 import java.util.Comparator;
-
-import org.jdom2.Attribute;
 
 /**
  * Compares two {@link Attribute} elements by name

@@ -26,7 +26,6 @@ import lombok.Setter;
  * {@link JsfEnvironmentConsumer}
  *
  * @author Oliver Wolff
- *
  */
 @EnableJsfEnvironment(useIdentityResourceBundle = true)
 public class JsfEnabledTestEnvironment implements JsfEnvironmentConsumer {

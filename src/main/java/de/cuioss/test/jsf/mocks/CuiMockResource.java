@@ -15,16 +15,15 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Map;
-
-import javax.faces.application.Resource;
-import javax.faces.context.FacesContext;
-
+import jakarta.faces.application.Resource;
+import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * Mock with all necessary values provided with setters

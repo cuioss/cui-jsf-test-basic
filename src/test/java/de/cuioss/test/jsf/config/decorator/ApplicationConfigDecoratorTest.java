@@ -15,25 +15,17 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
-import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import javax.faces.application.ProjectStage;
-
-import org.apache.myfaces.test.mock.MockApplication12;
-import org.apache.myfaces.test.mock.MockHttpServletRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
+import jakarta.faces.application.ProjectStage;
+import org.apache.myfaces.test.mock.MockHttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
 
@@ -63,7 +55,7 @@ class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerResourceBundle(INVALID_BUNDLE_NAME, INVALID_BUNDLE_PATH);
 
         assertInstanceOf(IdentityResourceBundle.class,
-                getApplication().getResourceBundle(getFacesContext(), INVALID_BUNDLE_NAME));
+            getApplication().getResourceBundle(getFacesContext(), INVALID_BUNDLE_NAME));
     }
 
     @Test
@@ -128,10 +120,4 @@ class ApplicationConfigDecoratorTest extends ConfigurableFacesTest {
         assertEquals(ProjectStage.Production, getApplication().getProjectStage());
     }
 
-    @Test
-    void shouldFailToSetProjectWithInvalidApplication() {
-        decorator = new ApplicationConfigDecorator(new ConfigurableApplication(new MockApplication12()),
-                getFacesContext());
-        assertThrows(IllegalArgumentException.class, () -> decorator.setProjectStage(ProjectStage.Development));
-    }
 }

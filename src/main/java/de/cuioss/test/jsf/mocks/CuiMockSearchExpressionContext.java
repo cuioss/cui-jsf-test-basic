@@ -15,22 +15,20 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import java.util.Set;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchExpressionHint;
-import javax.faces.component.visit.VisitHint;
-import javax.faces.context.FacesContext;
-
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.component.visit.VisitHint;
+import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Set;
 
 /**
  * Base Class for creating own instance of {@link SearchExpressionContext}
  *
  * @author Oliver Wolff
- *
  */
 @RequiredArgsConstructor
 public class CuiMockSearchExpressionContext extends SearchExpressionContext {

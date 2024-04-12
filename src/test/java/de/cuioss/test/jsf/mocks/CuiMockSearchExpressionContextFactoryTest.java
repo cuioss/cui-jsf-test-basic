@@ -15,14 +15,13 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import org.junit.jupiter.api.Test;
-
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
 

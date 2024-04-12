@@ -15,8 +15,7 @@
  */
 package de.cuioss.test.jsf.validator;
 
-import javax.faces.application.FacesMessage.Severity;
-
+import jakarta.faces.application.FacesMessage.Severity;
 import lombok.Data;
 
 /**

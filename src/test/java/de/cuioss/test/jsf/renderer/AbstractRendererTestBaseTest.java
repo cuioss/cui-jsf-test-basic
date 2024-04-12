@@ -15,18 +15,14 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import javax.faces.component.html.HtmlInputText;
-
+import de.cuioss.test.jsf.mocks.CuiMockRenderer;
+import de.cuioss.test.jsf.renderer.util.DomUtils;
+import jakarta.faces.component.html.HtmlInputText;
+import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.cuioss.test.jsf.mocks.CuiMockRenderer;
-import de.cuioss.test.jsf.renderer.util.DomUtils;
-import lombok.Getter;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
 

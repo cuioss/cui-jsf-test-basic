@@ -15,22 +15,21 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static java.util.Objects.requireNonNull;
+import de.cuioss.tools.string.MoreStrings;
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.ComponentNotFoundException;
+import jakarta.faces.component.search.SearchExpressionContext;
+import jakarta.faces.component.search.SearchExpressionHandler;
+import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.context.FacesContext;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.component.search.ComponentNotFoundException;
-import javax.faces.component.search.SearchExpressionContext;
-import javax.faces.component.search.SearchExpressionHandler;
-import javax.faces.component.search.SearchExpressionHint;
-import javax.faces.context.FacesContext;
-
-import de.cuioss.tools.string.MoreStrings;
-import lombok.Getter;
-import lombok.Setter;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Mock variant of {@link SearchExpressionHandler} to be used for unit-tests.
@@ -60,6 +59,17 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
     @Setter
     private List<String> resolvedClientIds = new ArrayList<>();
 
+    /**
+     * Shorthand for accessing an instance of {@link CuiMockSearchExpressionHandler}
+     *
+     * @param context to be used
+     * @return the previously configured {@link CuiMockSearchExpressionHandler}
+     */
+    public static final CuiMockSearchExpressionHandler retrieve(FacesContext context) {
+        return (CuiMockSearchExpressionHandler) context.getApplication().getSearchExpressionHandler();
+
+    }
+
     @Override
     public String resolveClientId(SearchExpressionContext searchExpressionContext, String expression) {
         if (MoreStrings.isEmpty(expression)) {
@@ -78,7 +88,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void resolveComponent(SearchExpressionContext searchExpressionContext, String expression,
-            ContextCallback callback) {
+                                 ContextCallback callback) {
         if (MoreStrings.isEmpty(expression)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expression);
         }
@@ -92,7 +102,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void resolveComponents(SearchExpressionContext searchExpressionContext, String expressions,
-            ContextCallback callback) {
+                                  ContextCallback callback) {
         requireNonNull(resolvedComponents);
         if (MoreStrings.isEmpty(expressions)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);
@@ -102,7 +112,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
         }
 
         resolvedComponents.forEach(
-                component -> callback.invokeContextCallback(searchExpressionContext.getFacesContext(), component));
+            component -> callback.invokeContextCallback(searchExpressionContext.getFacesContext(), component));
     }
 
     private boolean shouldIgnoreNoResult(SearchExpressionContext searchExpressionContext) {
@@ -112,7 +122,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void invokeOnComponent(SearchExpressionContext searchExpressionContext, UIComponent previous,
-            String expression, ContextCallback topCallback) {
+                                  String expression, ContextCallback topCallback) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED);
     }
 
@@ -129,16 +139,5 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
     @Override
     public boolean isValidExpression(SearchExpressionContext searchExpressionContext, String expression) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED);
-    }
-
-    /**
-     * Shorthand for accessing an instance of {@link CuiMockSearchExpressionHandler}
-     *
-     * @param context to be used
-     * @return the previously configured {@link CuiMockSearchExpressionHandler}
-     */
-    public static final CuiMockSearchExpressionHandler retrieve(FacesContext context) {
-        return (CuiMockSearchExpressionHandler) context.getApplication().getSearchExpressionHandler();
-
     }
 }

@@ -15,15 +15,15 @@
  */
 package de.cuioss.test.jsf.defaults;
 
-import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
-
-import java.util.Collection;
-import java.util.Locale;
-
 import de.cuioss.test.jsf.config.ApplicationConfigurator;
 import de.cuioss.test.jsf.config.RequestConfigurator;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
+
+import java.util.Collection;
+import java.util.Locale;
+
+import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
 
 /**
  * Provides some default configuration for the tests. The defaults are:
@@ -38,25 +38,33 @@ import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
  */
 public class BasicApplicationConfiguration implements ApplicationConfigurator, RequestConfigurator {
 
-    /** Firefox user-agent */
+    /**
+     * Firefox user-agent
+     */
     public static final String FIREFOX = "Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0";
 
-    /** User-agent identifier. */
+    /**
+     * User-agent identifier.
+     */
     public static final String USER_AGENT = "user-agent";
 
-    /** The supported {@link Locale}s */
+    /**
+     * The supported {@link Locale}s
+     */
     @SuppressWarnings("java:S2386") // owolff: false positive -> immutableSet
     public static final Collection<Locale> SUPPORTED_LOCALES = immutableSet(Locale.ENGLISH, Locale.GERMANY,
-            Locale.FRENCH);
+        Locale.FRENCH);
 
-    /** The default {@link Locale} */
+    /**
+     * The default {@link Locale}
+     */
     public static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     @Override
     public void configureApplication(final ApplicationConfigDecorator config) {
         config.registerSupportedLocales(SUPPORTED_LOCALES).registerDefaultLocale(DEFAULT_LOCALE).setContextPath(""); // default
-                                                                                                                     // context
-                                                                                                                     // path
+        // context
+        // path
         // for myfaces test is
         // 'null'
     }
@@ -64,6 +72,6 @@ public class BasicApplicationConfiguration implements ApplicationConfigurator, R
     @Override
     public void configureRequest(final RequestConfigDecorator decorator) {
         decorator.setRequestHeader(USER_AGENT, FIREFOX)
-                .setRequestLocale(SUPPORTED_LOCALES.toArray(new Locale[SUPPORTED_LOCALES.size()]));
+            .setRequestLocale(SUPPORTED_LOCALES.toArray(new Locale[SUPPORTED_LOCALES.size()]));
     }
 }

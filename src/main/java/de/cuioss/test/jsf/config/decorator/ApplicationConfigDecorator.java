@@ -15,27 +15,21 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.faces.application.Application;
-import javax.faces.application.ApplicationWrapper;
-import javax.faces.application.NavigationCase;
-import javax.faces.application.NavigationHandler;
-import javax.faces.application.ProjectStage;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-
+import de.cuioss.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
+import de.cuioss.tools.reflect.FieldWrapper;
+import jakarta.faces.application.*;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.apache.myfaces.test.config.ResourceBundleVarNames;
 import org.apache.myfaces.test.mock.MockApplication20;
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.apache.myfaces.test.mock.MockServletContext;
 
-import de.cuioss.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
-import de.cuioss.tools.reflect.FieldWrapper;
-import lombok.RequiredArgsConstructor;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Helper class acting as runtime-registry for {@link ResourceBundle},
@@ -49,13 +43,23 @@ public class ApplicationConfigDecorator {
     private final Application application;
     private final FacesContext facesContext;
 
+    private static Object getMockApplicationInstance(final Application application) {
+        if (application instanceof MockApplication20) {
+            return application;
+        }
+        if (application instanceof ApplicationWrapper wrapper) {
+            return getMockApplicationInstance(wrapper.getWrapped());
+        }
+        return application;
+    }
+
     /**
      * Registers a {@link ResourceBundle} to a given name
      *
      * @param bundleName the name of the bundle to be registered to
      * @param bundlePath the path to the {@link ResourceBundle}
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator registerResourceBundle(final String bundleName, final String bundlePath) {
         ResourceBundleVarNames.addVarName(bundleName, bundlePath);
@@ -68,7 +72,7 @@ public class ApplicationConfigDecorator {
      *
      * @param locales to be registered
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator registerSupportedLocales(final Collection<Locale> locales) {
         application.setSupportedLocales(locales);
@@ -81,7 +85,7 @@ public class ApplicationConfigDecorator {
      *
      * @param locale to be registered
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator registerDefaultLocale(final Locale locale) {
         application.setDefaultLocale(locale);
@@ -94,18 +98,18 @@ public class ApplicationConfigDecorator {
      * @param outcome  to be registered
      * @param toViewId to be registered
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator registerNavigationCase(final String outcome, final String toViewId) {
         getMockNavigationHandler().addNavigationCase(outcome,
-                new NavigationCase(null, null, outcome, null, toViewId, null, null, true, true));
+            new NavigationCase(null, null, outcome, null, toViewId, null, null, true, true));
         return this;
     }
 
     /**
      * @return an instance of {@link CuiMockConfigurableNavigationHandler} If not
-     *         already configured this method will implicitly register a new
-     *         instance
+     * already configured this method will implicitly register a new
+     * instance
      */
     public CuiMockConfigurableNavigationHandler getMockNavigationHandler() {
         if (!(application.getNavigationHandler() instanceof CuiMockConfigurableNavigationHandler)) {
@@ -120,7 +124,7 @@ public class ApplicationConfigDecorator {
      *
      * @param projectStage to be set
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator setProjectStage(final ProjectStage projectStage) {
         var projectStageField = FieldWrapper.from(MockApplication20.class, "_projectStage");
@@ -131,22 +135,12 @@ public class ApplicationConfigDecorator {
         return this;
     }
 
-    private static Object getMockApplicationInstance(final Application application) {
-        if (application instanceof MockApplication20) {
-            return application;
-        }
-        if (application instanceof ApplicationWrapper wrapper) {
-            return getMockApplicationInstance(wrapper.getWrapped());
-        }
-        return application;
-    }
-
     /**
      * Sets the contextPath in {@link HttpServletRequest}
      *
      * @param contextPath to be set
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator setContextPath(final String contextPath) {
         ((MockHttpServletRequest) facesContext.getExternalContext().getRequest()).setContextPath(contextPath);
@@ -162,7 +156,7 @@ public class ApplicationConfigDecorator {
      * @param value used as the value for the
      *              {@link ExternalContext#getInitParameterMap()}
      * @return the {@link ApplicationConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public ApplicationConfigDecorator addInitParameter(final String key, final String value) {
         var context = (MockServletContext) facesContext.getExternalContext().getContext();

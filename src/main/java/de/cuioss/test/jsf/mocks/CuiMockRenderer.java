@@ -15,24 +15,19 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static de.cuioss.tools.string.MoreStrings.isEmpty;
+import de.cuioss.tools.property.PropertyHolder;
+import jakarta.faces.component.*;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.component.html.HtmlOutcomeTargetLink;
+import jakarta.faces.component.html.HtmlOutputLink;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.render.Renderer;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.Map.Entry;
 
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIOutcomeTarget;
-import javax.faces.component.UIOutput;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlOutcomeTargetLink;
-import javax.faces.component.html.HtmlOutputLink;
-import javax.faces.context.FacesContext;
-import javax.faces.render.Renderer;
-
-import de.cuioss.tools.property.PropertyHolder;
-import lombok.RequiredArgsConstructor;
+import static de.cuioss.tools.string.MoreStrings.isEmpty;
 
 /**
  * Simple Mock renderer that is capable of rendering any element by using the
@@ -64,6 +59,17 @@ public class CuiMockRenderer extends Renderer {
      */
     public CuiMockRenderer() {
         this(null);
+    }
+
+    private static void writeAttributeIfPresent(final FacesContext context, final UIComponent component,
+                                                final String propertyName, final String attributeName) throws IOException {
+        var holder = PropertyHolder.from(component.getClass(), propertyName);
+        if (holder.isPresent() && holder.get().getReadWrite().isReadable()) {
+            var propertyValue = holder.get().readFrom(component);
+            if (null != propertyValue) {
+                context.getResponseWriter().writeAttribute(attributeName, propertyValue, null);
+            }
+        }
     }
 
     @Override
@@ -147,17 +153,6 @@ public class CuiMockRenderer extends Renderer {
             var id = component.getClientId();
             context.getResponseWriter().writeAttribute("id", id, null);
             context.getResponseWriter().writeAttribute("name", id, null);
-        }
-    }
-
-    private static void writeAttributeIfPresent(final FacesContext context, final UIComponent component,
-            final String propertyName, final String attributeName) throws IOException {
-        var holder = PropertyHolder.from(component.getClass(), propertyName);
-        if (holder.isPresent() && holder.get().getReadWrite().isReadable()) {
-            var propertyValue = holder.get().readFrom(component);
-            if (null != propertyValue) {
-                context.getResponseWriter().writeAttribute(attributeName, propertyValue, null);
-            }
         }
     }
 

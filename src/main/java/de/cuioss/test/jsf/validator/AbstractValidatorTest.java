@@ -15,27 +15,23 @@
  */
 package de.cuioss.test.jsf.validator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.Validator;
-import javax.faces.validator.ValidatorException;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.validator.Validator;
+import jakarta.faces.validator.ValidatorException;
 import lombok.Getter;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Base Class for testing implementations of {@link Validator} within a Junit 5
@@ -77,29 +73,29 @@ import lombok.Getter;
  * <code>
  * &#64;EnableJsfEnvironment
  * class LengthValidatorTest extends AbstractValidatorTest&lt;LengthValidator, String&gt; {
-
-    &#64;Override
-    public void populate(final TestItems&lt;String&gt; testItems) {
-        testItems.addValid("1").addValid("abc").addInvalidWithMessage("123456",
-                LengthValidator.MAXIMUM_MESSAGE_ID);
-    }
-
-    &#64;Override
-    public void configure(final LengthValidator validator) {
-        validator.setMaximum(5);
-    }
-   }
+ *
+ * &#64;Override
+ * public void populate(final TestItems&lt;String&gt; testItems) {
+ * testItems.addValid("1").addValid("abc").addInvalidWithMessage("123456",
+ * LengthValidator.MAXIMUM_MESSAGE_ID);
+ * }
+ *
+ * &#64;Override
+ * public void configure(final LengthValidator validator) {
+ * validator.setMaximum(5);
+ * }
+ * }
  * </code>
  * </pre>
  *
- * @author Oliver Wolff
  * @param <V> identifying the concrete {@link Validator} to be tested.
  * @param <T> identifying the type of elements to be passed into the validator
+ * @author Oliver Wolff
  */
-@SuppressWarnings({ "rawtypes", "unchecked" }) // owolff we need to migrate this aspect later
+@SuppressWarnings({"rawtypes", "unchecked"}) // owolff we need to migrate this aspect later
 @EnableGeneratorController
 public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfEnabledTestEnvironment
-        implements ConfigurationCallBackHandler<V> {
+    implements ConfigurationCallBackHandler<V> {
 
     @Getter
     private final UIComponent component = new HtmlInputText();
@@ -120,7 +116,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     /**
      * Checks the api contract regarding {@code null} as parameter for
      * {@link UIComponent}, see
-     * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
+     * {@link Validator#validate(jakarta.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
     void shouldFailOnNullComponent() {
@@ -130,7 +126,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     /**
      * Checks the api contract regarding {@code null} as parameter for
      * {@link FacesContext}, see
-     * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
+     * {@link Validator#validate(jakarta.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
     void shouldFailOnNullFacesContext() {
@@ -140,7 +136,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
     /**
      * Checks the api contract regarding {@code null} as parameter for the actual
      * value, see
-     * {@link Validator#validate(javax.faces.context.FacesContext, UIComponent, Object)}
+     * {@link Validator#validate(jakarta.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
     void shouldHandleNullValue() {
@@ -175,7 +171,7 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
                 assertEquals(FacesMessage.SEVERITY_ERROR, e.getFacesMessage().getSeverity());
                 if (null != item.getErrorMessage()) {
                     assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
-                            "The validation failed as expected, but the messages are not equal as expected");
+                        "The validation failed as expected, but the messages are not equal as expected");
                 }
             }
         }

@@ -15,15 +15,12 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
+import lombok.experimental.UtilityClass;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
-import lombok.experimental.UtilityClass;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Provides asserts for {@link Document} and Jdom elements.
@@ -65,7 +62,7 @@ public final class HtmlTreeAsserts {
      * @param pointer  String based path identifier
      */
     public static void assertElementWithChildrenEquals(final Element expected, final Element actual,
-            final String pointer) {
+                                                       final String pointer) {
         var currentPointer = pointer + ">" + expected.getName();
         assertElementEquals(expected, actual, currentPointer);
         var expectedChildren = expected.getChildren();
@@ -76,14 +73,14 @@ public final class HtmlTreeAsserts {
         var expectedTextChild = expected.getTextNormalize();
         var actualTextChild = actual.getTextNormalize();
         assertEquals(expectedTextChild, actualTextChild,
-                "%s: The text content of the elements are not equal, expected=%s, actual=%s".formatted(currentPointer,
-                        expectedTextChild, actualTextChild));
+            "%s: The text content of the elements are not equal, expected=%s, actual=%s".formatted(currentPointer,
+                expectedTextChild, actualTextChild));
         if (expectedChildren.isEmpty() && actualChildren.isEmpty()) {
             return;
         }
         if (expectedChildren.size() != actualChildren.size()) {
             fail("%s: The number of children is not equal, expected=%s, actual=%s".formatted(currentPointer,
-                    expectedChildren, actualChildren));
+                expectedChildren, actualChildren));
         }
         for (var i = 0; i < expectedChildren.size(); i++) {
             assertElementWithChildrenEquals(expectedChildren.get(i), actualChildren.get(i), currentPointer);
@@ -103,7 +100,7 @@ public final class HtmlTreeAsserts {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         assertEquals(expected.getName(), actual.getName(),
-                "%s: The names are not equal, expected=%s, actual=%s".formatted(pointer, expected, actual));
+            "%s: The names are not equal, expected=%s, actual=%s".formatted(pointer, expected, actual));
         var expectedAttributes = expected.getAttributes();
         var actualAttributes = actual.getAttributes();
         if (expectedAttributes.isEmpty() && actualAttributes.isEmpty()) {
@@ -113,7 +110,7 @@ public final class HtmlTreeAsserts {
         actualAttributes.sort(ATTRIBUTE_COMPARATOR);
         if (expectedAttributes.size() != actualAttributes.size()) {
             fail("%s: The number of the attributes are not equal, expected=%s, actual=%s".formatted(pointer,
-                    expectedAttributes, actualAttributes));
+                expectedAttributes, actualAttributes));
         }
         for (var i = 0; i < expectedAttributes.size(); i++) {
             assertAttributeEquals(expectedAttributes.get(i), actualAttributes.get(i), pointer);
@@ -131,9 +128,9 @@ public final class HtmlTreeAsserts {
         assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         assertEquals(expected.getName(), actual.getName(),
-                "%s: The name of the attributes are not equal, expected=%s, actual=%s".formatted(pointer, expected,
-                        actual));
+            "%s: The name of the attributes are not equal, expected=%s, actual=%s".formatted(pointer, expected,
+                actual));
         assertEquals(expected.getValue(), actual.getValue(), THE_VALUES_ARE_NOT_EQUAL_EXPECTED.formatted(pointer,
-                expected.getName(), expected.getValue(), actual.getValue()));
+            expected.getName(), expected.getValue(), actual.getValue()));
     }
 }

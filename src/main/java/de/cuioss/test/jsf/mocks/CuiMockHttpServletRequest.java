@@ -15,27 +15,20 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Locale;
-import java.util.Vector;
-
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.Part;
-
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.Part;
+import lombok.Setter;
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
 
-import lombok.Setter;
+import java.util.*;
+
+import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
 
 /**
  * Extends {@link MockHttpServletRequest} and provides some additional
@@ -45,7 +38,9 @@ import lombok.Setter;
  */
 public class CuiMockHttpServletRequest extends MockHttpServletRequest {
 
-    /** "http://localhost:8080/servletRequestUrl/" */
+    /**
+     * "http://localhost:8080/servletRequestUrl/"
+     */
     public static final String SERVLET_REQUEST_URL = "http://localhost:8080/servletRequestUrl/";
 
     @Setter

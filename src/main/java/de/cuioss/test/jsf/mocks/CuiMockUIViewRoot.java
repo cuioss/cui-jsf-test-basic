@@ -15,23 +15,23 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static de.cuioss.tools.collect.CollectionLiterals.mutableMap;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
 
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
+import static de.cuioss.tools.collect.CollectionLiterals.mutableMap;
 
 /**
  * Mock variant of {@link UIViewRoot} providing a heloer for adding a
  * {@link UIComponent} at runtime
  *
  * @author Oliver Wolff
- *
  */
 public class CuiMockUIViewRoot extends UIViewRoot {
 
     private final Map<String, UIComponent> componentMap = mutableMap();
+    private final Map<String, Object> viewMap = mutableMap();
 
     /**
      * @param expr      must not be null
@@ -47,5 +47,15 @@ public class CuiMockUIViewRoot extends UIViewRoot {
             return componentMap.get(expr);
         }
         return super.findComponent(expr);
+    }
+
+    @Override
+    public Map<String, Object> getViewMap() {
+        return viewMap;
+    }
+
+    @Override
+    public Map<String, Object> getViewMap(boolean create) {
+        return viewMap;
     }
 }

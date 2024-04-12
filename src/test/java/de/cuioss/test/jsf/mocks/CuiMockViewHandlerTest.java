@@ -15,10 +15,10 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.junit.jupiter.api.Test;
 
 class CuiMockViewHandlerTest {
 

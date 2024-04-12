@@ -15,12 +15,12 @@
  */
 package de.cuioss.test.jsf.validator;
 
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.validator.ValidatorException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.validator.ValidatorException;
 
 /**
  * TestData Store for Test Items which will be used by

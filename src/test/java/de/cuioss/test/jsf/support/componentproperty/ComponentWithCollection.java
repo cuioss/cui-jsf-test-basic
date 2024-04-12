@@ -15,11 +15,10 @@
  */
 package de.cuioss.test.jsf.support.componentproperty;
 
-import java.util.List;
-
-import javax.faces.component.html.HtmlInputText;
-
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
+import jakarta.faces.component.html.HtmlInputText;
+
+import java.util.List;
 
 @VerifyComponentProperties(of = { "stringList" })
 public class ComponentWithCollection extends HtmlInputText {

@@ -15,47 +15,37 @@
  */
 package de.cuioss.test.jsf.util;
 
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.DEFAULT_LOCALE;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.SUPPORTED_LOCALES;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.IOException;
-
-import org.junit.jupiter.api.Test;
-
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.jsf.config.ApplicationConfigurator;
-import de.cuioss.test.jsf.config.BeanConfigurator;
 import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
 import de.cuioss.test.jsf.config.RequestConfigurator;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
-import de.cuioss.test.jsf.config.decorator.BeanConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
 class ConfigurableFacesTestTest extends ConfigurableFacesTest
-        implements BeanConfigurator, ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
+        implements ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
 
     public static final String TO_VIEW_JSF = "/to/view.jsf";
     public static final String OUTCOME = "outcome";
 
     private boolean componentsCallbackCalled = false;
     private boolean applicationCallbackCalled = false;
-    private boolean beanCallbackCalled = false;
     private boolean requestCallbackCalled = false;
 
     @Test
     void shouldCallCallbackDecorator() {
         assertTrue(componentsCallbackCalled);
         assertTrue(applicationCallbackCalled);
-        assertTrue(beanCallbackCalled);
         assertTrue(requestCallbackCalled);
     }
 
@@ -81,11 +71,6 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     @Override
     public void configureApplication(final ApplicationConfigDecorator decorator) {
         applicationCallbackCalled = true;
-    }
-
-    @Override
-    public void configureBeans(final BeanConfigDecorator decorator) {
-        beanCallbackCalled = true;
     }
 
     @Override

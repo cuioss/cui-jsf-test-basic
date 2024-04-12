@@ -15,21 +15,19 @@
  */
 package de.cuioss.test.jsf.producer;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.Typed;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.myfaces.test.mock.MockHttpServletResponse;
-
 import de.cuioss.test.jsf.mocks.CuiMockHttpServletRequest;
 import de.cuioss.test.jsf.mocks.CuiMockServletContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.Typed;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.myfaces.test.mock.MockHttpServletResponse;
 
 /**
  * Produces a
@@ -38,10 +36,10 @@ import lombok.Setter;
  * <li>{@link RequestScoped} {@link HttpServletRequest}.</li>
  * <li>{@link Dependent} {@link ServletContext}</li>
  * </ul>
- *
+ * <p>
  * In contrast to {@link ServletObjectsFromJSFContextProducer} the mocks are
  * instantiated directly
- *
+ * <p>
  * It is designed as 'opt-in'. Use with {@code @AddBeanClasses}.
  */
 @ApplicationScoped
@@ -60,21 +58,21 @@ public class ServletMockObjectsProducer {
     private CuiMockServletContext servletContext = new CuiMockServletContext();
 
     @Produces
-    @Typed({ HttpServletRequest.class })
+    @Typed({HttpServletRequest.class})
     @RequestScoped
     HttpServletRequest produceServletRequest() {
         return servletRequest;
     }
 
     @Produces
-    @Typed({ HttpServletResponse.class })
+    @Typed({HttpServletResponse.class})
     @RequestScoped
     HttpServletResponse produceServletResponse() {
         return servletResponse;
     }
 
     @Produces
-    @Typed({ ServletContext.class })
+    @Typed({ServletContext.class})
     @Dependent
     ServletContext produceServletContext() {
         return servletContext;

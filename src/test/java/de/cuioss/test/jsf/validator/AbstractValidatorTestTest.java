@@ -15,7 +15,7 @@
  */
 package de.cuioss.test.jsf.validator;
 
-import javax.faces.validator.LengthValidator;
+import jakarta.faces.validator.LengthValidator;
 
 /**
  * @author Oliver Wolff

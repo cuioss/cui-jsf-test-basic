@@ -15,15 +15,10 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
-import static de.cuioss.test.jsf.renderer.util.DomUtils.filterForAttribute;
-import static de.cuioss.test.jsf.renderer.util.DomUtils.filterForAttributeContainingValue;
-import static de.cuioss.test.jsf.renderer.util.DomUtils.htmlStringToDocument;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
+
+import static de.cuioss.test.jsf.renderer.util.DomUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DomUtilsTest {
 

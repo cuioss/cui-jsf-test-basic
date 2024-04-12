@@ -15,21 +15,16 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
-import static de.cuioss.tools.collect.CollectionLiterals.mutableSet;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import jakarta.faces.component.search.ComponentNotFoundException;
+import jakarta.faces.component.search.SearchExpressionHint;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import javax.faces.component.search.ComponentNotFoundException;
-import javax.faces.component.search.SearchExpressionHint;
-
-import org.junit.jupiter.api.Test;
-
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
+import static de.cuioss.tools.collect.CollectionLiterals.mutableSet;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
 

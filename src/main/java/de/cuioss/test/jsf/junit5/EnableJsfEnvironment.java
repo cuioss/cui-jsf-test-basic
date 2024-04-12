@@ -15,25 +15,22 @@
  */
 package de.cuioss.test.jsf.junit5;
 
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import de.cuioss.test.jsf.config.ApplicationConfigurator;
+import de.cuioss.test.jsf.config.ComponentConfigurator;
+import de.cuioss.test.jsf.config.JsfTestConfiguration;
+import de.cuioss.test.jsf.config.RequestConfigurator;
+import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
+import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.faces.context.FacesContext;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import de.cuioss.test.jsf.config.ApplicationConfigurator;
-import de.cuioss.test.jsf.config.BeanConfigurator;
-import de.cuioss.test.jsf.config.ComponentConfigurator;
-import de.cuioss.test.jsf.config.JsfTestConfiguration;
-import de.cuioss.test.jsf.config.RequestConfigurator;
-import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
-import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Using this annotations at type-level of a junit 5 test enable the
@@ -45,8 +42,7 @@ import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
  * instantiates the corresponding classes and configures the environment
  * accordingly</li>
  * <li>It checks whether the actual test-class implements one of
- * {@link ApplicationConfigurator}, {@link BeanConfigurator},
- * {@link RequestConfigurator} or {@link ComponentConfigurator} and calls the
+ * {@link ApplicationConfigurator}, {@link RequestConfigurator} or {@link ComponentConfigurator} and calls the
  * corresponding methods accordingly, <em>after</em> the configurator derived by
  * the annotations</li>
  * </ul>
@@ -58,10 +54,10 @@ import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
  *
  * <pre>
  * <code>
-     &#64;EnableJsfEnvironment
-     &#64;JsfTestConfiguration(BasicApplicationConfiguration.class)
-     class JSFEnableTest {
-</code>
+ * &#64;EnableJsfEnvironment
+ * &#64;JsfTestConfiguration(BasicApplicationConfiguration.class)
+ * class JSFEnableTest {
+ * </code>
  * </pre>
  *
  * <p>
@@ -73,13 +69,13 @@ import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
  *
  * <pre>
  * <code>
-     &#64;EnableJsfEnvironment
-     &#64;JsfTestConfiguration(BasicApplicationConfiguration.class)
-     class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
-
-        &#64;Setter
-        &#64;Getter
-        private JsfEnvironmentHolder environmentHolder;</code>
+ * &#64;EnableJsfEnvironment
+ * &#64;JsfTestConfiguration(BasicApplicationConfiguration.class)
+ * class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
+ *
+ * &#64;Setter
+ * &#64;Getter
+ * private JsfEnvironmentHolder environmentHolder;</code>
  * </pre>
  *
  * <p>
@@ -96,7 +92,6 @@ import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
  * </p>
  *
  * @author Oliver Wolff
- *
  */
 @Documented
 @Retention(RUNTIME)

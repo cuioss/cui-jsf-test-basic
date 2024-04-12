@@ -15,12 +15,12 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HtmlTreeAssertsTest {
 

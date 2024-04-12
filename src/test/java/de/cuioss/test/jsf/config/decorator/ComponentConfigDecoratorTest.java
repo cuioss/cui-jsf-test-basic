@@ -15,41 +15,25 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
-import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.FORM_RENDERER_ID;
-import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.TEXT_RENDERER_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.Serializable;
-
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIForm;
-import javax.faces.component.UIInput;
-import javax.faces.component.UIOutput;
-import javax.faces.component.UISelectBoolean;
-import javax.faces.component.UISelectOne;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.convert.Converter;
-import javax.faces.render.Renderer;
-import javax.faces.validator.LengthValidator;
-
+import de.cuioss.test.jsf.mocks.CuiMockComponent;
+import de.cuioss.test.jsf.mocks.ReverseConverter;
+import de.cuioss.test.jsf.support.components.*;
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import jakarta.faces.FacesException;
+import jakarta.faces.component.*;
+import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.render.Renderer;
+import jakarta.faces.validator.LengthValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.cuioss.test.jsf.mocks.CuiMockComponent;
-import de.cuioss.test.jsf.mocks.ReverseConverter;
-import de.cuioss.test.jsf.support.components.BehaviorWithAnnotation;
-import de.cuioss.test.jsf.support.components.BehaviorWithoutAnnotation;
-import de.cuioss.test.jsf.support.components.ConverterWithConverterIdAnnotation;
-import de.cuioss.test.jsf.support.components.ConverterWithTypeAnnotation;
-import de.cuioss.test.jsf.support.components.RendererWithAnnotation;
-import de.cuioss.test.jsf.support.components.UiComponentWithAnnotation;
-import de.cuioss.test.jsf.support.components.ValidatorWithAnnotation;
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import java.io.Serializable;
+
+import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.FORM_RENDERER_ID;
+import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.TEXT_RENDERER_ID;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
 
@@ -247,7 +231,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
     }
 
     @Test
-    void testAddComponent() {
+    void addComponent() {
         final UIComponent input = new HtmlInputText();
         decorator.addUiComponent("test:id", input);
         assertEquals(input, getFacesContext().getViewRoot().findComponent("test:id"));

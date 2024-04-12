@@ -15,18 +15,17 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import jakarta.faces.component.ContextCallback;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.faces.component.ContextCallback;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 
 /**
  * Mock Variant of {@link ContextCallback}.
  *
  * @author Oliver Wolff
- *
  */
 public class CuiMockContextCallback implements ContextCallback {
 

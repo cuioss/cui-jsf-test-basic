@@ -15,14 +15,12 @@
  */
 package de.cuioss.test.jsf.producer;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import javax.faces.application.Application;
-
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import jakarta.faces.application.Application;
 import org.junit.jupiter.api.Test;
 
-import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableJsfEnvironment
 class JsfObjectsProducerTest {

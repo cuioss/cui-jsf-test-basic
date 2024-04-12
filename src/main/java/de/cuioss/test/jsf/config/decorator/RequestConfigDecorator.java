@@ -15,23 +15,21 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
+import de.cuioss.test.jsf.mocks.CuiMockHttpServletRequest;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.apache.myfaces.test.mock.MockExternalContext;
+import org.apache.myfaces.test.mock.MockFacesContext;
+import org.apache.myfaces.test.mock.MockHttpServletRequest;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.myfaces.test.mock.MockExternalContext22;
-import org.apache.myfaces.test.mock.MockFacesContext22;
-import org.apache.myfaces.test.mock.MockHttpServletRequest;
-
-import de.cuioss.test.jsf.mocks.CuiMockHttpServletRequest;
-import lombok.RequiredArgsConstructor;
 
 /**
  * Helper class for configuring the request
@@ -41,15 +39,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequestConfigDecorator {
 
-    private final MockFacesContext22 facesContext;
-    private final MockExternalContext22 externalContext;
+    private final MockFacesContext facesContext;
+    private final MockExternalContext externalContext;
 
     /**
      * Sets the postback attribute to {@link FacesContext#isPostback()}
      *
      * @param postback to be set
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator setPostback(final boolean postback) {
         facesContext.setPostback(postback);
@@ -60,8 +58,8 @@ public class RequestConfigDecorator {
      * Sets the viewId in {@link UIViewRoot}
      *
      * @param viewId to be set
-     * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * @return the {@link RequestConfigDecorator} itself to enable a
+     * fluent-api style usage
      */
     public RequestConfigDecorator setViewId(final String viewId) {
         facesContext.getViewRoot().setViewId(viewId);
@@ -77,7 +75,7 @@ public class RequestConfigDecorator {
      * @param value used as the value for the
      *              {@link ExternalContext#getRequestHeaderMap()}
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator setRequestHeader(final String key, final String value) {
         externalContext.addRequestHeader(key, value);
@@ -93,7 +91,7 @@ public class RequestConfigDecorator {
      * @param value used as the value for the
      *              {@link ExternalContext#getRequestHeaderMap()}
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator setRequestParameter(final String key, final String value) {
         externalContext.addRequestParameterMap(key, value);
@@ -109,7 +107,7 @@ public class RequestConfigDecorator {
      * @param value used as the value for the
      *              {@link HttpServletRequest#setAttribute(String, Object)}
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator setRequestAttribute(final String key, final Serializable value) {
         ((HttpServletRequest) externalContext.getRequest()).setAttribute(key, value);
@@ -121,7 +119,7 @@ public class RequestConfigDecorator {
      *
      * @param cookie to be added
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator addRequestCookie(final Cookie... cookie) {
         var request = (MockHttpServletRequest) externalContext.getRequest();
@@ -142,7 +140,7 @@ public class RequestConfigDecorator {
      *
      * @param requestLocale one or more requestLocales to be set
      * @return the {@link RequestConfigDecorator} itself in order to enable a
-     *         fluent-api style usage
+     * fluent-api style usage
      */
     public RequestConfigDecorator setRequestLocale(final Locale... requestLocale) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();
@@ -164,6 +162,6 @@ public class RequestConfigDecorator {
     public void setQueryString(String parameterString) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();
         request.setPathElements(request.getContextPath(), request.getServletPath(), request.getPathInfo(),
-                parameterString);
+            parameterString);
     }
 }

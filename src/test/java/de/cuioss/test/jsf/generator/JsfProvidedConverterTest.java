@@ -15,12 +15,11 @@
  */
 package de.cuioss.test.jsf.generator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 import org.junit.jupiter.api.Test;
 
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class JsfProvidedConverterTest extends ConfigurableFacesTest {
 

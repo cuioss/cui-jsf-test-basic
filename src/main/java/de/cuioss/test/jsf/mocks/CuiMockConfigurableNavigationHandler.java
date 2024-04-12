@@ -15,30 +15,22 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import de.cuioss.tools.logging.CuiLogger;
+import de.cuioss.tools.string.Joiner;
+import jakarta.faces.application.ConfigurableNavigationHandler;
+import jakarta.faces.application.NavigationCase;
+import jakarta.faces.context.FacesContext;
+import lombok.Getter;
+import org.apache.myfaces.test.mock.MockExternalContext;
+
+import java.io.IOException;
+import java.util.*;
+
 import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
 import static java.util.Objects.requireNonNull;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.NavigationCase;
-import javax.faces.context.FacesContext;
-
-import org.apache.myfaces.test.mock.MockExternalContext;
-
-import de.cuioss.tools.logging.CuiLogger;
-import de.cuioss.tools.string.Joiner;
-import lombok.Getter;
-
 /**
  * Simulate {@link ConfigurableNavigationHandler}
- *
  */
 public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigationHandler {
 
@@ -62,6 +54,10 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     @Getter
     private String calledOutcome;
 
+    private static String calculateKey(final String fromAction, final String outcome) {
+        return Joiner.on("|").skipNulls().join(fromAction, outcome);
+    }
+
     @Override
     public NavigationCase getNavigationCase(final FacesContext context, final String fromAction, final String outcome) {
 
@@ -74,14 +70,12 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
     @Override
     public void handleNavigation(final FacesContext context, final String fromAction, final String outcome) {
 
-        if (!(context.getExternalContext() instanceof MockExternalContext)) {
+        if (!(context.getExternalContext() instanceof MockExternalContext externalContext)) {
 
             throw new UnsupportedOperationException("handleNavigation is working only with MockExternalContext");
 
         }
         final var navigationCase = getNavigationCase(context, fromAction, outcome);
-
-        final var externalContext = (MockExternalContext) context.getExternalContext();
 
         var newViewId = outcome;
         try {
@@ -109,7 +103,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
      * @return the create {@link NavigationCase}
      */
     public CuiMockConfigurableNavigationHandler addNavigationCase(final String outcome,
-            final NavigationCase navigationCase) {
+                                                                  final NavigationCase navigationCase) {
 
         this.addNavigationCase(null, outcome, navigationCase);
         addNavigationCalled = true;
@@ -125,13 +119,13 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
      * @return fluent api style
      */
     public CuiMockConfigurableNavigationHandler addNavigationCase(final String fromAction, final String outcome,
-            final NavigationCase navigationCase) {
+                                                                  final NavigationCase navigationCase) {
 
         final var key = calculateKey(fromAction, outcome);
 
         navigationCases.remove(key);
 
-        navigationCases.put(key, new HashSet<>(Arrays.asList(navigationCase)));
+        navigationCases.put(key, new HashSet<>(Collections.singletonList(navigationCase)));
         addNavigationWithFromActionCalled = true;
         return this;
     }
@@ -144,16 +138,12 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
         }
 
         log.warn(
-                """
-                        Could not find requested navigation case '{}'.\
-                         You can programmatically register the navigation case using ApplicationConfigDecorator#registerNavigationCase.\
-                        """,
-                key);
+            """
+                Could not find requested navigation case '{}'.\
+                 You can programmatically register the navigation case using ApplicationConfigDecorator#registerNavigationCase.\
+                """,
+            key);
         return null;
-    }
-
-    private static String calculateKey(final String fromAction, final String outcome) {
-        return Joiner.on("|").skipNulls().join(fromAction, outcome);
     }
 
 }

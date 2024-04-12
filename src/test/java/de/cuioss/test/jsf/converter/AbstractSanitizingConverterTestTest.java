@@ -15,10 +15,10 @@
  */
 package de.cuioss.test.jsf.converter;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
 
 class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTest<FakeSanitizingConverter, String> {
 
@@ -34,6 +34,7 @@ class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTes
     }
 
     @Override
+    @Test
     protected void shouldSanitizeJavaScript() {
         // ignore, the tests are separate;
     }

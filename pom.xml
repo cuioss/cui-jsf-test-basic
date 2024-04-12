@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.cuioss</groupId>
         <artifactId>cui-java-parent</artifactId>
-        <version>0.4.9</version>
-        <relativePath />
+        <version>0.6.0</version>
+        <relativePath/>
     </parent>
     <groupId>de.cuioss.test</groupId>
     <artifactId>cui-jsf-test-basic</artifactId>
     <name>cui jsf test basic</name>
-    <version>3.0-SNAPSHOT</version>
-    <description> Provides classes and structures for testing of jsf components
+    <version>4.0-SNAPSHOT</version>
+    <description>Provides classes and structures for testing of jsf components
         / structures.
     </description>
     <packaging>jar</packaging>
@@ -20,7 +21,8 @@
         <url>https://github.com/cuioss/cui-jsf-test-basic/</url>
         <connection>scm:git:https://github.com/cuioss/cui-jsf-test-basic.git</connection>
         <developerConnection>
-            scm:git:https://github.com/cuioss/cui-jsf-test-basic/</developerConnection>
+            scm:git:https://github.com/cuioss/cui-jsf-test-basic/
+        </developerConnection>
         <tag>HEAD</tag>
     </scm>
     <issueManagement>
@@ -28,24 +30,16 @@
         <system>GitHub Issues</system>
     </issueManagement>
     <properties>
-        <!-- JCL is sadly needed by myfaces-test. Defining it should isolate it -->
-        <version.jcl.logging>1.3.1</version.jcl.logging>
         <maven.jar.plugin.automatic.module.name>de.cuioss.test.jsf</maven.jar.plugin.automatic.module.name>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>de.cuioss</groupId>
-                <artifactId>java-ee-8-bom</artifactId>
-                <version>0.4.9</version>
+                <artifactId>java-ee-10-bom</artifactId>
+                <version>0.6.0</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>${version.jcl.logging}</version>
-                <scope>runtime</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -60,32 +54,26 @@
             <artifactId>myfaces-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.servlet-api -->
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.websocket-api -->
             <groupId>jakarta.websocket</groupId>
             <artifactId>jakarta.websocket-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.validation:validation-api -->
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.el:javax.el-api -->
             <groupId>jakarta.el</groupId>
             <artifactId>jakarta.el-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.inject:javax.inject -->
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
-            <!-- replaces javax.enterprise:cdi-api -->
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
         </dependency>
@@ -95,21 +83,9 @@
             <artifactId>jdom2</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.myfaces.test</groupId>
-            <artifactId>myfaces-test23</artifactId>
+            <groupId>org.apache.myfaces.core</groupId>
+            <artifactId>myfaces-test</artifactId>
             <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- JCL is sadly needed by myfaces-test. Defining it in this module
-        should isolate it -->
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.easymock</groupId>

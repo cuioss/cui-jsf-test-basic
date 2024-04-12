@@ -15,8 +15,7 @@
  */
 package de.cuioss.test.jsf.renderer;
 
-import javax.faces.component.UIComponent;
-
+import jakarta.faces.component.UIComponent;
 import org.jdom2.Element;
 
 /**
