@@ -111,10 +111,10 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     }
 
     /**
-     * Helper method that extracts all queued events from {@link UIViewRoot}. In
-     * order to use this method the corresponding test must ensure, that the
-     * component under test is child of {@link UIViewRoot}. Otherwise the events can
-     * not be extracted
+     * Helper method that extracts all queued events from {@link UIViewRoot}.
+     * To use this method, the corresponding test must ensure that the
+     * component under test is child of {@link UIViewRoot}.
+     * Otherwise, the events cannot be extracted
      *
      * @return the plain list of events available at {@link UIViewRoot} at this
      * time.

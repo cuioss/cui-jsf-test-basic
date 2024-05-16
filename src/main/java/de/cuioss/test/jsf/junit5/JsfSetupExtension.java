@@ -57,7 +57,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, AfterEachCa
     @SuppressWarnings("squid:S3655")
     public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
         var setup = new JsfRuntimeSetup();
-        LOGGER.info(() -> "Starting JSF-Environment");
+        LOGGER.debug(() -> "Starting JSF-Environment");
         setup.setUp();
         put(setup, context);
 
