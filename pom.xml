@@ -10,7 +10,7 @@
     <groupId>de.cuioss.test</groupId>
     <artifactId>cui-jsf-test-basic</artifactId>
     <name>cui jsf test basic</name>
-    <version>4.0.1</version>
+    <version>4.0-SNAPSHOT</version>
     <description>Provides classes and structures for testing of jsf components
         / structures.
     </description>
@@ -22,7 +22,7 @@
         <developerConnection>
             scm:git:https://github.com/cuioss/cui-jsf-test-basic/
         </developerConnection>
-        <tag>4.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <url>https://github.com/cuioss/cui-jsf-test-basic/issues</url>
