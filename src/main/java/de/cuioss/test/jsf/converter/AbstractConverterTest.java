@@ -86,9 +86,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * &#64;Override
  * public void populate(final TestItems&lt;Integer&gt; testItems) {
  * testItems.addRoundtripValues("1", "122", "2132121").addInvalidString("a")
- * .addInvalidStringWithMessage("a", "javax.faces.converter.IntegerConverter.INTEGER")
+ * .addInvalidStringWithMessage("a", "jakarta.faces.converter.IntegerConverter.INTEGER")
  * .addInvalidObject(Boolean.TRUE)
- * .addInvalidObjectWithMessage(Boolean.FALSE, "javax.faces.converter.STRING")
+ * .addInvalidObjectWithMessage(Boolean.FALSE, "jakarta.faces.converter.STRING")
  * .addValidString("13").addValidStringWithObjectResult("17", Integer.valueOf(17))
  * .addValidObject(Integer.valueOf(2))
  * .addValidObjectWithStringResult(Integer.valueOf(14), "14");

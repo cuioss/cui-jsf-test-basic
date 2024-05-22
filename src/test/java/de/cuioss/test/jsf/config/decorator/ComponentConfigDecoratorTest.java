@@ -130,18 +130,18 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
     @Test
     void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
         assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID);
+                ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
         assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECTBOOLEAN_RENDERER_ID));
+                ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID));
     }
 
     @Test
     void shouldRegisterMockRendererForHtmlSelectOneRadio() {
-        assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY, ComponentConfigDecorator.SELECTONE_RENDERER_ID);
+        assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY, ComponentConfigDecorator.SELECT_ONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
         assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECTONE_RENDERER_ID));
+                ComponentConfigDecorator.SELECT_ONE_RENDERER_ID));
     }
 
     // Converter related methods

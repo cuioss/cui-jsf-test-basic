@@ -1,6 +1,6 @@
 /**
  * Provides utilities for testing / asserting
- * {@link javax.faces.render.Renderer}
+ * {@link jakarta.faces.render.Renderer}
  *
  * @author Oliver Wolff
  */

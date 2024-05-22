@@ -44,9 +44,9 @@ import static java.util.Objects.requireNonNull;
 @RequiredArgsConstructor
 public class ConfigurableApplication extends ApplicationWrapper {
 
-    private static final String COMPONENT_CONTAINER_DEFAULT_RENDERER = "javax.faces.Text";
+    private static final String COMPONENT_CONTAINER_DEFAULT_RENDERER = "jakarta.faces.Text";
 
-    private static final String COMPONENT_RESOURCE_CONTAINER_COMPONENT = "javax.faces.ComponentResourceContainer";
+    private static final String COMPONENT_RESOURCE_CONTAINER_COMPONENT = "jakarta.faces.ComponentResourceContainer";
 
     @Getter
     private final Application wrapped;

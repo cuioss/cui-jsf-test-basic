@@ -135,7 +135,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
         eventField = FieldWrapper.from(UIViewRoot.class, "events");
         if (eventField.isEmpty()) {
             throw new AssertionError(
-                "javax.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
+                "jakarta.faces.component.UIViewRoot provides neither the field 'events' nor '_events'");
         }
         var events = eventField.get().readValue(uiViewRoot);
         if (events.isPresent()) {
