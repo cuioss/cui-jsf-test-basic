@@ -19,11 +19,13 @@ import static de.cuioss.tools.string.MoreStrings.emptyToNull;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.XMLConstants;
 
+import de.cuioss.tools.io.ClassPathLoader;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -110,4 +112,22 @@ public class DomUtils {
         return filterForAttribute(element, attributeName).stream()
                 .filter(a -> a.getValue().contains(attributeValuePart)).toList();
     }
+
+
+    /**
+     * Load the expected document from the given resource name.
+     *
+     * @param resourceName the name of the resource to load, must not be null nor empty.
+     * @return the loaded document if no exception occurred.
+     */
+    public static Document loadExpectedDocument(String resourceName) {
+        try {
+            InputStream inputStream = new ClassPathLoader(resourceName).inputStream();
+            String content = IOStreams.toString(inputStream);
+            return htmlStringToDocument(content);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Unable to parse given String, due to ", e);
+        }
+    }
+
 }

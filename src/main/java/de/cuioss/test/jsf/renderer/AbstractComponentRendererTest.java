@@ -56,12 +56,11 @@ import lombok.Getter;
  * @author Oliver Wolff
  * @param <R> The renderer being tested
  */
+@Getter
 public abstract class AbstractComponentRendererTest<R extends Renderer> extends AbstractRendererTestBase<R> {
 
-    @Getter
     private Set<RendererAttributeAssert> activeAsserts;
 
-    @Getter
     private boolean wrapComponentInForm = false;
 
     /**

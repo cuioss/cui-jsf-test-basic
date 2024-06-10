@@ -15,14 +15,14 @@
  */
 package de.cuioss.test.jsf.renderer.util;
 
-import static de.cuioss.test.jsf.renderer.util.DomUtils.filterForAttribute;
-import static de.cuioss.test.jsf.renderer.util.DomUtils.filterForAttributeContainingValue;
-import static de.cuioss.test.jsf.renderer.util.DomUtils.htmlStringToDocument;
+import static de.cuioss.test.jsf.renderer.util.DomUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
 
 class DomUtilsTest {
@@ -75,8 +75,23 @@ class DomUtilsTest {
 
     @Test
     void shouldFailOnInvalidString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            htmlStringToDocument("<a></b>");
-        });
+        assertThrows(IllegalArgumentException.class, () -> htmlStringToDocument("<a></b>"));
+    }
+
+    @Test
+    void shouldLoadExpectedDocument() {
+        var expected = createDocumentWithDivChild();
+        var loaded = loadExpectedDocument("/expectedHtml/simpleHtmlStructure.html");
+        assertNotNull(loaded);
+        HtmlTreeAsserts.assertHtmlTreeEquals(expected, loaded);
+    }
+
+    private static Document createDocumentWithDivChild() {
+        var document = new Document(new Element(HtmlTreeAssertsTest.ROOT));
+        var div = new Element("div");
+        var h1 = new Element("h1").addContent("Simple HTML structure");
+        div.getChildren().add(h1);
+        document.getRootElement().getChildren().add(div);
+        return document;
     }
 }
