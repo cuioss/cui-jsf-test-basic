@@ -19,10 +19,12 @@ import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
 import de.cuioss.tools.property.PropertyUtil;
 import jakarta.faces.component.html.HtmlInputText;
+import org.jdom2.Element;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -70,16 +72,32 @@ class CommonRendererAssertsTest {
     }
 
     @Test
-    void shouldHandlePassthroughAttribute() {
-        var component = new HtmlInputText();
+    void componentContainsPassThroughAttribute() {
+        HtmlInputText component = new HtmlInputText();
+
         CommonRendererAsserts.PASSTHROUGH.applyAttribute(component);
+
         assertEquals(CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue(),
-                component.getPassThroughAttributes().get(CommonRendererAsserts.PASSTHROUGH.getAttributeName()));
-        // Should detect missing attribute
-        var result = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
-        assertThrows(AssertionError.class, () -> CommonRendererAsserts.PASSTHROUGH.assertAttributeSet(result));
-        CommonRendererAsserts.PASSTHROUGH
-                .assertAttributeSet(DomUtils.htmlStringToDocument(NESTED_DIV_WITH_PT_ATTRIBUTE).getRootElement());
+            component.getPassThroughAttributes()
+                .get(CommonRendererAsserts.PASSTHROUGH.getAttributeName()));
+    }
+
+    @Test
+    void detectMissingPassThroughAttribute() {
+        Element docRoot = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
+
+        AssertionError ex = assertThrows(AssertionError.class, () ->
+            CommonRendererAsserts.PASSTHROUGH.assertAttributeSet(docRoot));
+
+        assertEquals("The expected attribute with name=data-passthrough-test and traceValue=passthroughTraceValue " +
+            "was not found in the resulting dom-tree. ==> expected: <false> but was: <true>", ex.getMessage());
+    }
+
+    @Test
+    void detectExistingPassThroughAttribute() {
+        Element nestedDiv = DomUtils.htmlStringToDocument(NESTED_DIV_WITH_PT_ATTRIBUTE).getRootElement();
+
+        assertDoesNotThrow(() -> CommonRendererAsserts.PASSTHROUGH.assertAttributeSet(nestedDiv));
     }
 
     private static void verifyContract(final RendererAttributeAssert attributeAssert, final String positiveHtml,
