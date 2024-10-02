@@ -31,13 +31,14 @@
     </issueManagement>
     <properties>
         <maven.jar.plugin.automatic.module.name>de.cuioss.test.jsf</maven.jar.plugin.automatic.module.name>
+        <version.cui.parent>0.8.0</version.cui.parent>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>de.cuioss</groupId>
                 <artifactId>java-ee-10-bom</artifactId>
-                <version>0.8.0</version>
+                <version>${version.cui.parent}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
