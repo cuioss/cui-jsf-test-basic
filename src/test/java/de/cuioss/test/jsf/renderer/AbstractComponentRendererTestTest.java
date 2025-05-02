@@ -25,10 +25,12 @@ import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.FacesListener;
 import org.junit.jupiter.api.Test;
 
+import java.io.Serial;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-@VetoRenderAttributeAssert({ CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
-        CommonRendererAsserts.STYLE_CLASS })
+@VetoRenderAttributeAssert({CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
+    CommonRendererAsserts.STYLE_CLASS})
 class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<CuiMockRenderer> {
 
     @Test
@@ -63,10 +65,12 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
         assertTrue(extractEventsFromViewRoot().isEmpty());
         component.queueEvent(new FacesEvent(component) {
 
+            @Serial
             private static final long serialVersionUID = 591161343873329974L;
 
             @Override
             public void processListener(final FacesListener faceslistener) {
+                // Noop, for test purposes
             }
 
             @Override

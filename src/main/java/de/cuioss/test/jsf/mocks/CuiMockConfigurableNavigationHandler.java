@@ -103,7 +103,7 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
      * @return the create {@link NavigationCase}
      */
     public CuiMockConfigurableNavigationHandler addNavigationCase(final String outcome,
-                                                                  final NavigationCase navigationCase) {
+        final NavigationCase navigationCase) {
 
         this.addNavigationCase(null, outcome, navigationCase);
         addNavigationCalled = true;
@@ -119,13 +119,13 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
      * @return fluent api style
      */
     public CuiMockConfigurableNavigationHandler addNavigationCase(final String fromAction, final String outcome,
-                                                                  final NavigationCase navigationCase) {
+        final NavigationCase navigationCase) {
 
         final var key = calculateKey(fromAction, outcome);
 
         navigationCases.remove(key);
 
-        navigationCases.put(key, new HashSet<>(Collections.singletonList(navigationCase)));
+        navigationCases.put(key, new HashSet<>(List.of(navigationCase)));
         addNavigationWithFromActionCalled = true;
         return this;
     }

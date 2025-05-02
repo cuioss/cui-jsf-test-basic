@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -33,6 +34,7 @@ import java.util.Arrays;
 @ToString
 public class CuiMockMethodExpression extends MethodExpression {
 
+    @Serial
     private static final long serialVersionUID = 2692860324272056192L;
 
     /**

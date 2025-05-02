@@ -51,7 +51,7 @@ public final class ComponentTestHelper {
      * @return the filtered list with {@link ComponentPropertyMetadata}
      */
     public static List<ComponentPropertyMetadata> filterPropertyMetadata(final Class<?> annotated,
-                                                                         final UIComponent instance) {
+        final UIComponent instance) {
         requireNonNull(annotated);
         requireNonNull(instance);
 
@@ -94,7 +94,7 @@ public final class ComponentTestHelper {
      * @return {@link PropertyMetadata} instance with the corresponding attributes.
      */
     public static PropertyMetadata resolvePropertyForConfiguredName(final UIComponent instance,
-                                                                    final String configuredName) {
+        final String configuredName) {
         Class<?> propertyType = null;
         var collectionType = CollectionType.NO_ITERABLE;
         propertyType = PropertyHolder.from(instance.getClass(), configuredName)

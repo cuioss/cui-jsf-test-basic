@@ -27,10 +27,10 @@ class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiVal
     @Test
     void shouldTestGoodCase() {
         var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
-                new MultiValuedComponent());
+            new MultiValuedComponent());
 
         var instantiator = new CallbackAwareInstantiator<>(new BeanInstantiator<>(
-                new DefaultInstantiator<>(MultiValuedComponent.class), new RuntimeProperties(properties)), this);
+            new DefaultInstantiator<>(MultiValuedComponent.class), new RuntimeProperties(properties)), this);
 
         ValueExpressionPropertyContract<MultiValuedComponent> contract;
         contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());

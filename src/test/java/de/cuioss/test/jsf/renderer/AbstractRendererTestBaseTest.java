@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
 
     public static final String RENDER_RESULT = "<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>"
-            .formatted("__v_0", "__v_0");
+        .formatted("__v_0", "__v_0");
 
     @Getter
     private HtmlInputText component;

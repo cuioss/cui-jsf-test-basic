@@ -102,7 +102,7 @@ public class DomUtils {
      * empty.
      */
     public static List<Attribute> filterForAttributeContainingValue(final Element element, final String attributeName,
-                                                                    final String attributeValuePart) {
+        final String attributeValuePart) {
         requireNonNull(emptyToNull(attributeValuePart));
 
         return filterForAttribute(element, attributeName).stream()

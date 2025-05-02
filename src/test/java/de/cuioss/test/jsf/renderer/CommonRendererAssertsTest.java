@@ -24,9 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableJsfEnvironment
 class CommonRendererAssertsTest {
@@ -34,41 +32,41 @@ class CommonRendererAssertsTest {
     public static final String NESTED_DIV = "<div><div /></div>";
 
     public static final String NESTED_DIV_WITH_ID_ATTRIBUTE = "<div id=\""
-            + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
+        + CommonRendererAsserts.ID.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_STYLE_ATTRIBUTE = "<div style=\""
-            + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
+        + CommonRendererAsserts.STYLE.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_STYLE_CLASS_ATTRIBUTE = "<div class=\""
-            + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
+        + CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String NESTED_DIV_WITH_PT_ATTRIBUTE = "<div data-passthrough-test=\""
-            + CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue() + "\"><div /></div>";
+        + CommonRendererAsserts.PASSTHROUGH.getAttributeTraceValue() + "\"><div /></div>";
 
     public static final String EMPTY_ELEMENT = "";
 
     @Test
     void shouldHandleIdAttribute() {
         verifyContract(CommonRendererAsserts.ID, NESTED_DIV_WITH_ID_ATTRIBUTE,
-                CommonRendererAsserts.ID.getAttributeTraceValue());
+            CommonRendererAsserts.ID.getAttributeTraceValue());
     }
 
     @Test
     void shouldHandleStyleAttribute() {
         verifyContract(CommonRendererAsserts.STYLE, NESTED_DIV_WITH_STYLE_ATTRIBUTE,
-                CommonRendererAsserts.STYLE.getAttributeTraceValue());
+            CommonRendererAsserts.STYLE.getAttributeTraceValue());
     }
 
     @Test
     void shouldHandleStyleClassAttribute() {
         verifyContract(CommonRendererAsserts.STYLE_CLASS, NESTED_DIV_WITH_STYLE_CLASS_ATTRIBUTE,
-                CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue());
+            CommonRendererAsserts.STYLE_CLASS.getAttributeTraceValue());
     }
 
     @Test
     void shouldHandleRenderedAttribute() {
         verifyContract(CommonRendererAsserts.RENDERED, EMPTY_ELEMENT,
-                CommonRendererAsserts.RENDERED.getAttributeTraceValue());
+            CommonRendererAsserts.RENDERED.getAttributeTraceValue());
     }
 
     @Test
@@ -101,7 +99,7 @@ class CommonRendererAssertsTest {
     }
 
     private static void verifyContract(final RendererAttributeAssert attributeAssert, final String positiveHtml,
-            final Serializable traceAttributeValue) {
+        final Serializable traceAttributeValue) {
         var component = new HtmlInputText();
         attributeAssert.applyAttribute(component);
         assertEquals(traceAttributeValue, PropertyUtil.readProperty(component, attributeAssert.getAttributeName()));

@@ -202,7 +202,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     private TestItems<T> addValidObjectTestItem(final T value, final String converterResult, final Severity level,
-                                                final String message) {
+        final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
@@ -228,7 +228,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     private TestItems<T> addinValidObjectTestItem(final T value, final String converterResult, final Severity level,
-                                                  final String message) {
+        final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
@@ -254,7 +254,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     private TestItems<T> addStringTestItem(final boolean valid, final T value, final String converterResult,
-                                           final Severity level, final String message) {
+        final Severity level, final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);

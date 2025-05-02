@@ -18,7 +18,7 @@ package de.cuioss.test.jsf.support.componentproperty;
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 import jakarta.faces.component.html.HtmlInputText;
 
-@VerifyComponentProperties(of = { "rendered", "styleClass", "style" })
+@VerifyComponentProperties(of = {"rendered", "styleClass", "style"})
 public class MultiValuedComponent extends HtmlInputText {
 
 }

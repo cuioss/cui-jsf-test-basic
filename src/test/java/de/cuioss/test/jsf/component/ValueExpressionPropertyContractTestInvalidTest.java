@@ -26,23 +26,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValueExpressionPropertyContractTestInvalidTest
-        extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {
+    extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {
 
     @Test
     void shouldTestGoodCase() {
         var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponentWithInvalidELHandling.class,
-                new MultiValuedComponentWithInvalidELHandling());
+            new MultiValuedComponentWithInvalidELHandling());
 
         var instantiator = new CallbackAwareInstantiator<>(
-                new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
-                        new RuntimeProperties(properties)),
-                this);
+            new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
+                new RuntimeProperties(properties)),
+            this);
 
         ValueExpressionPropertyContract<MultiValuedComponentWithInvalidELHandling> contract;
         contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
 
-        assertThrows(AssertionError.class, () -> {
-            contract.assertContract();
-        });
+        assertThrows(AssertionError.class, contract::assertContract);
     }
 }

@@ -61,9 +61,8 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     @Test
     void shouldFailForNoNavigationOutcome() {
         // No Navigation took place -> Assertion Error
-        assertThrows(AssertionError.class, () -> {
-            assertNavigatedWithOutcome(OUTCOME);
-        });
+        assertThrows(AssertionError.class, () ->
+            assertNavigatedWithOutcome(OUTCOME));
     }
 
     @Test
@@ -76,9 +75,8 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     @Test
     void shouldFailForNoRedirect() {
         // No Navigation took place -> Assertion Error
-        assertThrows(AssertionError.class, () -> {
-            assertRedirect(TO_VIEW_JSF);
-        });
+        assertThrows(AssertionError.class, () ->
+            assertRedirect(TO_VIEW_JSF));
     }
 
     @Test

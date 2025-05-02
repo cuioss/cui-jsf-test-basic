@@ -88,7 +88,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void resolveComponent(SearchExpressionContext searchExpressionContext, String expression,
-                                 ContextCallback callback) {
+        ContextCallback callback) {
         if (MoreStrings.isEmpty(expression)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expression);
         }
@@ -102,7 +102,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void resolveComponents(SearchExpressionContext searchExpressionContext, String expressions,
-                                  ContextCallback callback) {
+        ContextCallback callback) {
         requireNonNull(resolvedComponents);
         if (MoreStrings.isEmpty(expressions)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);
@@ -122,7 +122,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
 
     @Override
     public void invokeOnComponent(SearchExpressionContext searchExpressionContext, UIComponent previous,
-                                  String expression, ContextCallback topCallback) {
+        String expression, ContextCallback topCallback) {
         throw new UnsupportedOperationException(NOT_IMPLEMENTED);
     }
 

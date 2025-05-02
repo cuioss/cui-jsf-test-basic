@@ -20,7 +20,7 @@ import jakarta.faces.component.html.HtmlInputText;
 
 import java.util.List;
 
-@VerifyComponentProperties(of = { "stringList" })
+@VerifyComponentProperties(of = {"stringList"})
 public class ComponentWithCollection extends HtmlInputText {
 
     public static final String STRING_LIST_KEY = "stringList";

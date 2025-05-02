@@ -80,7 +80,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerValidator(final String validatorId,
-                                                      final Class<? extends Validator> validator) {
+        final Class<? extends Validator> validator) {
         requireNonNull(validator, VALIDATOR_MUST_NOT_BE_NULL);
         requireNonNull(validatorId, VALIDATOR_ID_MUST_NOT_BE_NULL);
         application.addValidator(validatorId, validator.getName());
@@ -115,7 +115,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerConverter(final Class<? extends Converter> converter,
-                                                      final Class<?> targetClass) {
+        final Class<?> targetClass) {
         requireNonNull(targetClass, TARGET_CLASS_MUST_NOT_BE_NULL);
         requireNonNull(converter, CONVERTER_MUST_NOT_BE_NULL);
         application.addConverter(targetClass, converter.getName());
@@ -155,7 +155,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerConverter(final Class<? extends Converter> converter,
-                                                      final String converterId) {
+        final String converterId) {
         requireNonNull(converterId, CONVERTER_ID_MUST_NOT_BE_NULL);
         requireNonNull(converter, CONVERTER_MUST_NOT_BE_NULL);
         application.addConverter(converterId, converter.getName());
@@ -171,7 +171,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerUIComponent(final String componentType,
-                                                        final Class<? extends UIComponent> component) {
+        final Class<? extends UIComponent> component) {
         requireNonNull(componentType, COMPONENT_TYPE_NOT_BE_NULL);
         requireNonNull(component, COMPONENT_MUST_NOT_BE_NULL);
         application.addComponent(componentType, component.getName());
@@ -308,7 +308,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerRenderer(final String family, final String rendererType,
-                                                     final Renderer renderer) {
+        final Renderer<?> renderer) {
         requireNonNull(family, FAMILY_MUST_NOT_BE_NULL);
         requireNonNull(rendererType, RENDERER_TYPE_MUST_NOT_BE_NULL);
         requireNonNull(renderer, RENDERER_MUST_NOT_BE_NULL);
@@ -331,9 +331,10 @@ public class ComponentConfigDecorator {
         checkArgument(renderer.isAnnotationPresent(FacesRenderer.class),
             "In order to work this method needs a Renderer annotated with 'jakarta.faces.render.FacesRenderer', renderer:"
                 + renderer.getName());
-        final Renderer instance;
+        final Renderer<?> instance;
         instance = new DefaultInstantiator<>(renderer).newInstance();
         final var config = renderer.getAnnotation(FacesRenderer.class);
+        //noinspection DataFlowIssue: owolff: The annotation is checked before
         return registerRenderer(config.componentFamily(), config.rendererType(), instance);
     }
 
@@ -348,7 +349,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerBehavior(final String behaviorId,
-                                                     final Class<? extends ClientBehavior> behaviorClass) {
+        final Class<? extends ClientBehavior> behaviorClass) {
         requireNonNull(behaviorId, BEHAVIOR_ID_MUST_NOT_BE_NULL);
         requireNonNull(behaviorClass, BEHAVIOR_CLASS_MUST_NOT_BE_NULL);
         application.addBehavior(behaviorId, behaviorClass.getName());
@@ -385,7 +386,7 @@ public class ComponentConfigDecorator {
      * fluent-api style usage
      */
     public ComponentConfigDecorator registerCompositeComponent(final String libraryName, final String tagName,
-                                                               final UIComponent uiComponent) {
+        final UIComponent uiComponent) {
         if (!(application.getViewHandler() instanceof CuiMockViewHandler)) {
             application.setViewHandler(new CuiMockViewHandler());
         }

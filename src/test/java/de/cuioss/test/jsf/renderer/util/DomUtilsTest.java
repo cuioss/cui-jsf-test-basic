@@ -48,30 +48,29 @@ class DomUtilsTest {
         assertTrue(filterForAttribute(htmlStringToDocument(NESTED_DIV).getRootElement(), STYLE).isEmpty());
         assertEquals(2, filterForAttribute(htmlStringToDocument(NESTED_DIV_WITH_STYLE).getRootElement(), STYLE).size());
         assertEquals(2,
-                filterForAttribute(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(), STYLE).size());
+            filterForAttribute(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(), STYLE).size());
         assertEquals(1,
-                filterForAttribute(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(), CLASS).size());
+            filterForAttribute(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(), CLASS).size());
     }
 
     @Test
     void shouldFilterAttributesWithGivenContentPart() {
         assertTrue(
-                filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV).getRootElement(), STYLE, FIRST_PART)
-                        .isEmpty());
+            filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV).getRootElement(), STYLE, FIRST_PART)
+                .isEmpty());
         assertEquals(1, filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV_WITH_STYLE).getRootElement(),
-                STYLE, FIRST_PART).size());
+            STYLE, FIRST_PART).size());
         assertEquals(1,
-                filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(),
-                        STYLE, FIRST_PART).size());
+            filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(),
+                STYLE, FIRST_PART).size());
         assertEquals(0,
-                filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(),
-                        STYLE, "not.there").size());
+            filterForAttributeContainingValue(htmlStringToDocument(NESTED_DIV_WITH_MULITPLE).getRootElement(),
+                STYLE, "not.there").size());
     }
 
     @Test
     void shouldFailOnInvalidString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            htmlStringToDocument("<a></b>");
-        });
+        assertThrows(IllegalArgumentException.class, () ->
+            htmlStringToDocument("<a></b>"));
     }
 }

@@ -62,7 +62,7 @@ public class CuiMockRenderer extends Renderer {
     }
 
     private static void writeAttributeIfPresent(final FacesContext context, final UIComponent component,
-                                                final String propertyName, final String attributeName) throws IOException {
+        final String propertyName, final String attributeName) throws IOException {
         var holder = PropertyHolder.from(component.getClass(), propertyName);
         if (holder.isPresent() && holder.get().getReadWrite().isReadable()) {
             var propertyValue = holder.get().readFrom(component);

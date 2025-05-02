@@ -24,7 +24,6 @@ import jakarta.faces.context.FacesContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.myfaces.test.mock.MockExternalContext;
 
 /**
  * Produces a

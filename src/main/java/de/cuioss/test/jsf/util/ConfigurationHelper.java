@@ -72,7 +72,7 @@ public final class ConfigurationHelper {
      *                       but may be empty.
      */
     public static void configureComponents(final Object testClass, final ComponentConfigDecorator registry,
-                                           final Collection<JsfTestConfiguration> configurations) {
+        final Collection<JsfTestConfiguration> configurations) {
         requireNonNull(testClass);
         requireNonNull(registry);
         requireNonNull(configurations);
@@ -97,7 +97,7 @@ public final class ConfigurationHelper {
      *                       but may be empty.
      */
     public static void configureApplication(final Object testClass, final ApplicationConfigDecorator registry,
-                                            final Collection<JsfTestConfiguration> configurations) {
+        final Collection<JsfTestConfiguration> configurations) {
         requireNonNull(testClass);
         requireNonNull(registry);
         requireNonNull(configurations);
@@ -122,7 +122,7 @@ public final class ConfigurationHelper {
      *                       but may be empty.
      */
     public static void configureRequestConfig(final Object testClass, final RequestConfigDecorator registry,
-                                              final Collection<JsfTestConfiguration> configurations) {
+        final Collection<JsfTestConfiguration> configurations) {
         requireNonNull(testClass);
         requireNonNull(registry);
         requireNonNull(configurations);

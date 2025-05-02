@@ -63,7 +63,7 @@ public class CuiMockSearchExpressionContextFactory extends SearchExpressionConte
 
     @Override
     public SearchExpressionContext getSearchExpressionContext(FacesContext context, UIComponent source,
-                                                              Set<SearchExpressionHint> expressionHints, Set<VisitHint> visitHints) {
+        Set<SearchExpressionHint> expressionHints, Set<VisitHint> visitHints) {
         if (null != searchExpressionContext) {
             return searchExpressionContext;
         }

@@ -59,7 +59,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerUIComponent(UiComponentWithAnnotation.class);
         assertNotNull(getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE));
         assertEquals(UiComponentWithAnnotation.class,
-                getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE).getClass());
+            getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE).getClass());
     }
 
     // Renderer related methods
@@ -67,10 +67,10 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
     void shouldRegisterRendererByFamilyAndId() {
         assertRendererIsNotRegistered(RendererWithAnnotation.COMPONENT_FAMILY, RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.COMPONENT_FAMILY, RendererWithAnnotation.RENDERER_TYPE,
-                new RendererWithAnnotation());
+            new RendererWithAnnotation());
 
         final var renderer = getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
-                RendererWithAnnotation.RENDERER_TYPE);
+            RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
     }
@@ -81,7 +81,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerRenderer(RendererWithAnnotation.class);
 
         final var renderer = getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
-                RendererWithAnnotation.RENDERER_TYPE);
+            RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
     }
@@ -100,10 +100,10 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         assertRendererIsNotRegistered(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
         decorator.registerCuiMockComponentWithRenderer();
         assertNotNull(
-                getFacesContext().getRenderKit().getRenderer(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE));
+            getFacesContext().getRenderKit().getRenderer(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE));
         assertNotNull(getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE));
         assertEquals(CuiMockComponent.class,
-                getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
+            getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
     }
 
     @Test
@@ -130,10 +130,10 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
     @Test
     void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
         assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID);
+            ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
         assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID));
+            ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID));
     }
 
     @Test
@@ -141,7 +141,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY, ComponentConfigDecorator.SELECT_ONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
         assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
-                ComponentConfigDecorator.SELECT_ONE_RENDERER_ID));
+            ComponentConfigDecorator.SELECT_ONE_RENDERER_ID));
     }
 
     // Converter related methods
@@ -151,7 +151,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerConverter(ReverseConverter.class, ReverseConverter.CONVERTER_ID);
         assertNotNull(getApplication().createConverter(ReverseConverter.CONVERTER_ID));
         assertEquals(ReverseConverter.class,
-                getApplication().createConverter(ReverseConverter.CONVERTER_ID).getClass());
+            getApplication().createConverter(ReverseConverter.CONVERTER_ID).getClass());
     }
 
     @Test
@@ -160,7 +160,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerConverter(ConverterWithTypeAnnotation.class, Serializable.class);
         assertNotNull(getApplication().createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-                getApplication().createConverter(Serializable.class).getClass());
+            getApplication().createConverter(Serializable.class).getClass());
     }
 
     @Test
@@ -169,7 +169,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerConverter(ConverterWithTypeAnnotation.class);
         assertNotNull(getApplication().createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-                getApplication().createConverter(Serializable.class).getClass());
+            getApplication().createConverter(Serializable.class).getClass());
     }
 
     @Test
@@ -178,7 +178,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerConverter(ConverterWithConverterIdAnnotation.class);
         assertNotNull(getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
         assertEquals(ConverterWithConverterIdAnnotation.class,
-                getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID).getClass());
+            getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID).getClass());
     }
 
     // Validator related methods
@@ -196,7 +196,7 @@ class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
         decorator.registerValidator(ValidatorWithAnnotation.class);
         assertNotNull(getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
         assertEquals(ValidatorWithAnnotation.class,
-                getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
+            getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
     }
 
     @Test

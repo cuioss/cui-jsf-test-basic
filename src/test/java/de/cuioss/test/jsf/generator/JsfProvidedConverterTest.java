@@ -27,7 +27,7 @@ class JsfProvidedConverterTest extends ConfigurableFacesTest {
     void shouldRegisterConverter() {
         for (ConverterDescriptor descriptor : JsfProvidedConverter.JSF_CONVERTER) {
             assertEquals(descriptor.getConverterClass(),
-                    getApplication().createConverter(descriptor.getConverterId()).getClass());
+                getApplication().createConverter(descriptor.getConverterId()).getClass());
         }
     }
 

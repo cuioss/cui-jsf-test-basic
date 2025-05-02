@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@PropertyReflectionConfig(defaultValued = { MediumComplexityBean.STRING_WITH_DEFAULT_VALUE })
+@PropertyReflectionConfig(defaultValued = {MediumComplexityBean.STRING_WITH_DEFAULT_VALUE})
 @ObjectTestConfig(equalsAndHashCodeExclude = MediumComplexityBean.ATTRIBUTE_NO_OBJECT_IDENTITY_STRING)
 class AbstractBeanTestTest extends AbstractBeanTest<MediumComplexityBean> {
 

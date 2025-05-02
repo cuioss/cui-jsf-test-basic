@@ -37,7 +37,7 @@ class RequestConfigDecoratorTest extends ConfigurableFacesTest {
     @BeforeEach
     void before() {
         decorator = new RequestConfigDecorator((MockFacesContext) getFacesContext(),
-                (MockExternalContext) getExternalContext());
+            (MockExternalContext) getExternalContext());
     }
 
     @Test

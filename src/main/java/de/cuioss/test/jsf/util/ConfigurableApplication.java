@@ -100,7 +100,7 @@ public class ConfigurableApplication extends ApplicationWrapper {
      */
     @Override
     public UIComponent createComponent(final FacesContext context, final String componentType,
-                                       final String rendererType) {
+        final String rendererType) {
         //
         if (COMPONENT_RESOURCE_CONTAINER_COMPONENT.equals(componentType) && isEmpty(rendererType)) {
             return wrapped.createComponent(context, componentType, COMPONENT_CONTAINER_DEFAULT_RENDERER);

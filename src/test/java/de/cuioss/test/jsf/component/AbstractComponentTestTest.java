@@ -18,7 +18,7 @@ package de.cuioss.test.jsf.component;
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 import jakarta.faces.component.html.HtmlInputText;
 
-@VerifyComponentProperties(of = { "rendered", "styleClass", "style" })
+@VerifyComponentProperties(of = {"rendered", "styleClass", "style"})
 class AbstractComponentTestTest extends AbstractComponentTest<HtmlInputText> {
 
 }

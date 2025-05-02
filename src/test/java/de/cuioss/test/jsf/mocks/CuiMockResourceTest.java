@@ -21,7 +21,7 @@ import de.cuioss.test.valueobjects.api.object.ObjectTestContracts;
 import de.cuioss.test.valueobjects.api.object.VetoObjectTestContract;
 
 @VerifyBeanProperty
-@VetoObjectTestContract({ ObjectTestContracts.SERIALIZABLE, ObjectTestContracts.EQUALS_AND_HASHCODE })
+@VetoObjectTestContract({ObjectTestContracts.SERIALIZABLE, ObjectTestContracts.EQUALS_AND_HASHCODE})
 class CuiMockResourceTest extends ValueObjectTest<CuiMockResource> {
 
 }

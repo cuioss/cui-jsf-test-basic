@@ -35,7 +35,7 @@ class ComponentTestHelperTest {
     @Test
     void shouldHandleSimpleProperties() {
         var filterPropertyMetadata = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
-                new MultiValuedComponent());
+            new MultiValuedComponent());
         assertNotNull(filterPropertyMetadata);
         assertEquals(3, filterPropertyMetadata.size());
     }
@@ -43,9 +43,7 @@ class ComponentTestHelperTest {
     @Test
     void shouldFailOnCollectionType() {
         var component = new ComponentWithCollection();
-        assertThrows(IllegalStateException.class, () -> {
-            ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, component);
-
-        });
+        assertThrows(IllegalStateException.class, () ->
+            ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, component));
     }
 }

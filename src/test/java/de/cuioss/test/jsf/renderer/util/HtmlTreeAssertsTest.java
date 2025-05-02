@@ -80,9 +80,8 @@ class HtmlTreeAssertsTest {
         expectedAttribute.add(new Attribute(ID, SOME_ID));
         var actualAttributes = actual.getRootElement().getChild(DIV).getAttributes();
         actualAttributes.add(new Attribute(ID, SOME_NAME));
-        assertThrows(AssertionError.class, () -> {
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-        });
+        assertThrows(AssertionError.class, () ->
+            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
     }
 
     @Test
@@ -91,9 +90,8 @@ class HtmlTreeAssertsTest {
         var actual = createDocumentWithDivChild();
         expected.getRootElement().getChildren().add(createDivElement());
         actual.getRootElement().getChildren().add(createSpanElement());
-        assertThrows(AssertionError.class, () -> {
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-        });
+        assertThrows(AssertionError.class, () ->
+            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
     }
 
     @Test
@@ -106,9 +104,8 @@ class HtmlTreeAssertsTest {
         var actualChildren = actual.getRootElement().getChild(DIV).getChildren();
         actualChildren.add(createSpanElement());
         actualChildren.add(createDivElement());
-        assertThrows(AssertionError.class, () -> {
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-        });
+        assertThrows(AssertionError.class, () ->
+            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
     }
 
     @Test
@@ -126,9 +123,8 @@ class HtmlTreeAssertsTest {
         var actual = createDocumentWithDivChild();
         expected.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
         actual.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT + "hey");
-        assertThrows(AssertionError.class, () -> {
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-        });
+        assertThrows(AssertionError.class, () ->
+            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
     }
 
     private static Document createDocumentWithRoot() {

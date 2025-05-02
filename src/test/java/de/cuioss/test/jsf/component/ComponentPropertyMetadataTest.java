@@ -30,15 +30,15 @@ import de.cuioss.tools.property.PropertyReadWrite;
 @PropertyReflectionConfig(skip = true)
 @PropertyConfig(name = "delegate", propertyClass = PropertyMetadata.class, required = true, propertyReadWrite = PropertyReadWrite.WRITE_ONLY)
 @PropertyConfig(name = "ignoreOnValueExpresssion", propertyClass = boolean.class)
-@VerifyConstructor(of = { "delegate", "ignoreOnValueExpresssion" })
+@VerifyConstructor(of = {"delegate", "ignoreOnValueExpresssion"})
 @VetoObjectTestContract(ObjectTestContracts.SERIALIZABLE)
 class ComponentPropertyMetadataTest extends ValueObjectTest<ComponentPropertyMetadata>
-        implements TypedGenerator<PropertyMetadata> {
+    implements TypedGenerator<PropertyMetadata> {
 
     @Override
     public PropertyMetadata next() {
         return PropertyMetadataImpl.builder().name(Generators.letterStrings(2, 5).next()).propertyClass(String.class)
-                .generator(Generators.nonEmptyStrings()).build();
+            .generator(Generators.nonEmptyStrings()).build();
     }
 
     @Override

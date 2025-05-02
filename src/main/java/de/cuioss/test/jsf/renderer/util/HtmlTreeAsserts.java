@@ -62,7 +62,7 @@ public final class HtmlTreeAsserts {
      * @param pointer  String based path identifier
      */
     public static void assertElementWithChildrenEquals(final Element expected, final Element actual,
-                                                       final String pointer) {
+        final String pointer) {
         var currentPointer = pointer + ">" + expected.getName();
         assertElementEquals(expected, actual, currentPointer);
         var expectedChildren = expected.getChildren();

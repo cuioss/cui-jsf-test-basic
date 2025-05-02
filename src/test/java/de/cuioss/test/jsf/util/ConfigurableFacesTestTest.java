@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
 class ConfigurableFacesTestTest extends ConfigurableFacesTest
-        implements ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
+    implements ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
 
     public static final String TO_VIEW_JSF = "/to/view.jsf";
     public static final String OUTCOME = "outcome";

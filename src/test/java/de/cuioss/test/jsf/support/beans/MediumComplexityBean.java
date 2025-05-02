@@ -23,15 +23,17 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 import static de.cuioss.test.valueobjects.generator.JavaTypesGenerator.*;
 
-@EqualsAndHashCode(exclude = { "noObjectIdentitiyString" })
-@ToString(exclude = { "noObjectIdentitiyString" })
+@EqualsAndHashCode(exclude = {"noObjectIdentitiyString"})
+@ToString(exclude = {"noObjectIdentitiyString"})
 public class MediumComplexityBean implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2547385591383571419L;
     public static final String ATTRIBUTE_STRING = "string";
     public static final String ATTRIBUTE_TRANSIENT_STRING = "transientString";
@@ -97,16 +99,16 @@ public class MediumComplexityBean implements Serializable {
         metadata.add(STRINGS.metadata(ATTRIBUTE_STRING_LIST, CollectionType.LIST));
         metadata.add(STRINGS.metadata(ATTRIBUTE_STRING_SET, CollectionType.SET));
         metadata.add(
-                STRINGS.metadataBuilder(ATTRIBUTE_STRING_SORTED_SET).collectionType(CollectionType.SORTED_SET).build());
+            STRINGS.metadataBuilder(ATTRIBUTE_STRING_SORTED_SET).collectionType(CollectionType.SORTED_SET).build());
         metadata.add(
-                STRINGS.metadataBuilder(ATTRIBUTE_STRING_COLLECTION).collectionType(CollectionType.COLLECTION).build());
+            STRINGS.metadataBuilder(ATTRIBUTE_STRING_COLLECTION).collectionType(CollectionType.COLLECTION).build());
         metadata.add(BOOLEANS.metadata(ATTRIBUTE_BOOLEAN_OBJECT));
         metadata.add(BOOLEANS_PRIMITIVE.metadata(ATTRIBUTE_BOOLEAN_PRIMITIVE));
         metadata.add(STRINGS.metadataBuilder(ATTRIBUTE_STRING_WITH_DEFAULT).defaultValue(true).build());
         metadata.add(STRINGS.metadataBuilder(ATTRIBUTE_TRANSIENT_STRING)
-                .propertyMemberInfo(PropertyMemberInfo.TRANSIENT).build());
+            .propertyMemberInfo(PropertyMemberInfo.TRANSIENT).build());
         metadata.add(STRINGS.metadataBuilder(ATTRIBUTE_NO_OBJECT_IDENTITY_STRING)
-                .propertyMemberInfo(PropertyMemberInfo.NO_IDENTITY).build());
+            .propertyMemberInfo(PropertyMemberInfo.NO_IDENTITY).build());
         return metadata;
     }
 }

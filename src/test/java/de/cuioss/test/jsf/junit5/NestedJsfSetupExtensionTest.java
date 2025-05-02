@@ -31,6 +31,6 @@ class NestedJsfSetupExtensionTest extends JsfSetupExtensionTest {
     @Test
     void shouldProvideBasicInformation() {
         assertEquals(BasicApplicationConfiguration.FIREFOX,
-                getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
+            getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
     }
 }

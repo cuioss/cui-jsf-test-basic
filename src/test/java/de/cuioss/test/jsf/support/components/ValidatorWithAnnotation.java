@@ -28,8 +28,8 @@ public class ValidatorWithAnnotation implements Validator {
 
     @Override
     public void validate(final FacesContext context, final UIComponent component, final Object value)
-            throws ValidatorException {
-
+        throws ValidatorException {
+        //No-op for test
     }
 
 }

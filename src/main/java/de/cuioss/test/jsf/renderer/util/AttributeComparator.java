@@ -17,6 +17,7 @@ package de.cuioss.test.jsf.renderer.util;
 
 import org.jdom2.Attribute;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -27,6 +28,7 @@ import java.util.Comparator;
  */
 public class AttributeComparator implements Comparator<Attribute>, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2093668555465640881L;
 
     @Override

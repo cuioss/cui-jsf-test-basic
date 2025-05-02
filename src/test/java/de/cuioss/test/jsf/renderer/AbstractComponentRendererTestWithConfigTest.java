@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@VetoRenderAttributeAssert({ CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
-        CommonRendererAsserts.STYLE_CLASS })
+@VetoRenderAttributeAssert({CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
+    CommonRendererAsserts.STYLE_CLASS})
 @VerifyComponentRendererConfig(wrapComponentInForm = true)
 class AbstractComponentRendererTestWithConfigTest extends AbstractComponentRendererTest<CuiMockRenderer> {
 
