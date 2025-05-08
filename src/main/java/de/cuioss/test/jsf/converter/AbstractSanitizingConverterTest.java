@@ -15,6 +15,7 @@
  */
 package de.cuioss.test.jsf.converter;
 
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import org.junit.jupiter.api.Test;
 
@@ -40,9 +41,9 @@ public abstract class AbstractSanitizingConverterTest<C extends Converter<T>, T>
     protected abstract T createTestObjectWithMaliciousContent(String content);
 
     @Test
-    protected void shouldSanitizeJavaScript() {
+    protected void shouldSanitizeJavaScript(FacesContext facesContext) {
         var toConvert = createTestObjectWithMaliciousContent("<script>");
-        var result = getConverter().getAsString(getFacesContext(), getComponent(), toConvert);
+        var result = getConverter().getAsString(facesContext, getComponent(), toConvert);
         assertFalse(result.contains("<script"));
     }
 

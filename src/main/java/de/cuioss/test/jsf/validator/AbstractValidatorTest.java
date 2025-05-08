@@ -17,7 +17,6 @@ package de.cuioss.test.jsf.validator;
 
 import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
-import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
@@ -56,16 +55,16 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  * <h3>Test-Methods</h3>
  * <p>
- * The core test-methods are {@link #shouldFailOnInvalidTestdata()} and
- * {@link #shouldHandleValidTestdata()}. They call {@link #populate(TestItems)}
+ * The core test-methods are {@link #shouldFailOnInvalidTestdata(FacesContext)} and
+ * {@link #shouldHandleValidTestdata(FacesContext)}. They call {@link #populate(TestItems)}
  * in oder to create corresponding test-data. The implementation is in the
  * actual test-class.
  * </p>
  * <h3>API-Test</h3>
  * <p>
  * The api as defined within {@link Validator} is tested with the methods
- * {@link #shouldFailOnNullComponent()}, {@link #shouldFailOnNullFacesContext()}
- * and {@link #shouldHandleNullValue()}
+ * {@link #shouldFailOnNullComponent(FacesContext)}, {@link #shouldFailOnNullFacesContext()}
+ * and {@link #shouldHandleNullValue(FacesContext)}
  * </p>
  * <h3>Example</h3>
  *
@@ -94,7 +93,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"rawtypes", "unchecked"}) // owolff we need to migrate this aspect later
 @EnableGeneratorController
-public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfEnabledTestEnvironment
+@EnableJsfEnvironment
+public abstract class AbstractValidatorTest<V extends Validator, T>
     implements ConfigurationCallBackHandler<V> {
 
     @Getter
@@ -108,8 +108,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      */
     @BeforeEach
     void initValidator() {
-        final Class<V> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        validator = new DefaultInstantiator<>(klazz).newInstance();
+        final Class<V> clazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
+        validator = new DefaultInstantiator<>(clazz).newInstance();
         configure(validator);
     }
 
@@ -119,8 +119,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link Validator#validate(jakarta.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
-    void shouldFailOnNullComponent() {
-        assertThrows(NullPointerException.class, () -> getValidator().validate(getFacesContext(), null, null));
+    void shouldFailOnNullComponent(FacesContext facesContext) {
+        assertThrows(NullPointerException.class, () -> getValidator().validate(facesContext, null, null));
     }
 
     /**
@@ -139,8 +139,8 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link Validator#validate(jakarta.faces.context.FacesContext, UIComponent, Object)}
      */
     @Test
-    void shouldHandleNullValue() {
-        getValidator().validate(getFacesContext(), getComponent(), null);
+    void shouldHandleNullValue(FacesContext facesContext) {
+        getValidator().validate(facesContext, getComponent(), null);
     }
 
     /**
@@ -148,10 +148,10 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * {@link ValidatorException}
      */
     @Test
-    void shouldHandleValidTestdata() {
+    void shouldHandleValidTestdata(FacesContext facesContext) {
         final var items = new TestItems<T>();
         populate(items);
-        items.allValid().forEach(item -> validator.validate(getFacesContext(), getComponent(), item.getTestValue()));
+        items.allValid().forEach(item -> validator.validate(facesContext, getComponent(), item.getTestValue()));
     }
 
     /**
@@ -160,12 +160,12 @@ public abstract class AbstractValidatorTest<V extends Validator, T> extends JsfE
      * message, it will be compared as well.
      */
     @Test
-    void shouldFailOnInvalidTestdata() {
+    void shouldFailOnInvalidTestdata(FacesContext facesContext) {
         final var items = new TestItems<T>();
         populate(items);
         for (final TestItem<T> item : items.allInvalid()) {
             try {
-                validator.validate(getFacesContext(), getComponent(), item.getTestValue());
+                validator.validate(facesContext, getComponent(), item.getTestValue());
                 fail("Validation should have thrown a ValidatorException for testValue" + item);
             } catch (final ValidatorException e) {
                 assertEquals(FacesMessage.SEVERITY_ERROR, e.getFacesMessage().getSeverity());

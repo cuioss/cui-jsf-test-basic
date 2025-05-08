@@ -15,8 +15,8 @@
  */
 package de.cuioss.test.jsf.renderer;
 
+import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
-import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
 import de.cuioss.test.jsf.renderer.util.HtmlTreeAsserts;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
@@ -69,22 +69,23 @@ import static org.junit.jupiter.api.Assertions.*;
  * </ul>
  * <h3>Contracts</h3>
  * <ul>
- * <li>{@link #assertRenderResult(UIComponent, Document)} and
- * {@link #assertRenderResult(UIComponent, String)} are the main 'business'
+ * <li>{@link #assertRenderResult(UIComponent, Document, FacesContext)} and
+ * {@link #assertRenderResult(UIComponent, String, FacesContext)} are the main 'business'
  * methods for explicit testing</li>
  * </ul>
  *
  * @param <R> The renderer being tested
  * @author Oliver Wolff
  */
-public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEnabledTestEnvironment
+@EnableJsfEnvironment(useIdentityResourceBundle = true)
+public abstract class AbstractRendererTestBase<R extends Renderer>
     implements ConfigurationCallBackHandler<R> {
 
     private static final String NPE_ON_MISSING_CLIENT_ID_EXPECTED = "NullPointerException expected on missing ClientId parameter. Use inheritance or implement own check.";
 
     private static final String NPE_ON_MISSING_PARAMETER_EXPECTED = "NullPointerException expected on missing UIComponent parameter. Use inheritance or implement own check.";
 
-    private static final String NPE_ON_MISSING_FACESCONTEXT_EXPECTED = "NullPointerException expected on missing FacesContext. Use inheritance or implement own check.";
+    private static final String NPE_ON_MISSING_FACES_CONTEXT_EXPECTED = "NullPointerException expected on missing FacesContext. Use inheritance or implement own check.";
 
     @Getter
     private R renderer;
@@ -93,12 +94,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * Instantiates and initially configures a concrete {@link Renderer}
      */
     @BeforeEach
-    void initRenderer() {
-        final Class<R> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        renderer = new DefaultInstantiator<>(klazz).newInstance();
+    void initRenderer(ComponentConfigDecorator decorator) {
+        final Class<R> clazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
+        renderer = new DefaultInstantiator<>(clazz).newInstance();
         configure(renderer);
-        if (klazz.isAnnotationPresent(FacesRenderer.class)) {
-            getComponentConfigDecorator().registerRenderer(klazz);
+        if (clazz.isAnnotationPresent(FacesRenderer.class)) {
+            decorator.registerRenderer(clazz);
         }
     }
 
@@ -116,14 +117,14 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @return the String-result of the rendering
      * @throws IOException
      */
-    public String renderToString(final UIComponent toBeRendered) throws IOException {
+    public String renderToString(final UIComponent toBeRendered, FacesContext facesContext) throws IOException {
         requireNonNull(toBeRendered);
         var output = new StringWriter();
-        getFacesContext().setResponseWriter(new MockResponseWriter(output));
+        facesContext.setResponseWriter(new MockResponseWriter(output));
         final Renderer testRenderer = getRenderer();
-        testRenderer.encodeBegin(getFacesContext(), toBeRendered);
-        testRenderer.encodeChildren(getFacesContext(), toBeRendered);
-        testRenderer.encodeEnd(getFacesContext(), toBeRendered);
+        testRenderer.encodeBegin(facesContext, toBeRendered);
+        testRenderer.encodeChildren(facesContext, toBeRendered);
+        testRenderer.encodeEnd(facesContext, toBeRendered);
         return output.toString();
     }
 
@@ -135,23 +136,23 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      *                     null
      * @param expected     must not be null
      */
-    public void assertRenderResult(final UIComponent toBeRendered, final Document expected) {
-        var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered));
+    public void assertRenderResult(final UIComponent toBeRendered, final Document expected, FacesContext facesContext) throws IOException {
+        var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered, facesContext));
         assertNotNull(emptyToNull(rendered), "Render result must not be empty.");
         HtmlTreeAsserts.assertHtmlTreeEquals(expected, DomUtils.htmlStringToDocument(rendered));
     }
 
     /**
-     * Shorthand for {@link #assertRenderResult(UIComponent, Document)} and
+     * Shorthand for {@link #assertRenderResult(UIComponent, Document, FacesContext)} and
      * {@link DomUtils#htmlStringToDocument(String)}
      *
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
      * @param expected     must not be null
      */
-    public void assertRenderResult(final UIComponent toBeRendered, final String expected) {
+    public void assertRenderResult(final UIComponent toBeRendered, final String expected, FacesContext facesContext) throws IOException {
         assertNotNull(emptyToNull(expected), "Render result must not be empty.");
-        assertRenderResult(toBeRendered, DomUtils.htmlStringToDocument(expected));
+        assertRenderResult(toBeRendered, DomUtils.htmlStringToDocument(expected), facesContext);
     }
 
     /**
@@ -160,48 +161,48 @@ public abstract class AbstractRendererTestBase<R extends Renderer> extends JsfEn
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
      */
-    public void assertEmptyRenderResult(final UIComponent toBeRendered) {
-        var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered));
+    public void assertEmptyRenderResult(final UIComponent toBeRendered, FacesContext facesContext) {
+        var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered, facesContext));
         assertNull(MoreStrings.emptyToNull(rendered), "Render result must be empty, but is:\n" + rendered);
     }
 
     // API tests
     @Test
-    void shouldThrowNPEOnMissingParameterForDecode() {
+    void shouldThrowNPEOnMissingParameterForDecode(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.decode(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.decode(getFacesContext(), null),
+            NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.decode(facesContext, null),
             NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
     @Test
-    void shouldThrowNPEOnMissingParameterForEncodeBegin() {
+    void shouldThrowNPEOnMissingParameterForEncodeBegin(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(getFacesContext(), null));
+            NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(facesContext, null));
     }
 
     @Test
-    void shouldThrowNPEOnMissingParameterForEncodeChildren() {
+    void shouldThrowNPEOnMissingParameterForEncodeChildren(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeChildren(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.encodeChildren(getFacesContext(), null),
+            NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeChildren(facesContext, null),
             NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
     @Test
-    void shouldThrowNPEOnMissingParameterForConvertClientId() {
+    void shouldThrowNPEOnMissingParameterForConvertClientId(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.convertClientId(null, "SomeId"),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.convertClientId(getFacesContext(), null),
+            NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.convertClientId(facesContext, null),
             NPE_ON_MISSING_CLIENT_ID_EXPECTED);
     }
 
     @Test
-    void shouldThrowNPEOnMissingParameterForEncodeEnd() {
+    void shouldThrowNPEOnMissingParameterForEncodeEnd(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeEnd(null, getComponent()),
-            NPE_ON_MISSING_FACESCONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.encodeEnd(getFacesContext(), null),
+            NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
+        assertThrows(NullPointerException.class, () -> renderer.encodeEnd(facesContext, null),
             NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 }

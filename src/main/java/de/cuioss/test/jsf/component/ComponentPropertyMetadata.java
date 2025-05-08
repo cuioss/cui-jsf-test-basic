@@ -27,7 +27,7 @@ import lombok.*;
 
 /**
  * Implements {@link PropertyMetadata} but in addition provides the attribute
- * ignoreOnValueExpresssion
+ * ignoreOnValueExpression
  *
  * @author Oliver Wolff
  */

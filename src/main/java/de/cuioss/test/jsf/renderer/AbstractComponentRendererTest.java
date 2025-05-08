@@ -23,6 +23,7 @@ import de.cuioss.tools.reflect.MoreReflection;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.component.html.HtmlForm;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.PostAddToViewEvent;
 import jakarta.faces.render.Renderer;
@@ -86,12 +87,12 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      * accordingly
      */
     @Test
-    public void shouldHandleRendererAttributeAsserts() {
+    public void shouldHandleRendererAttributeAsserts(FacesContext facesContext) {
         for (RendererAttributeAssert attributeAssert : activeAsserts) {
             var component = getWrappedComponent();
             attributeAssert.applyAttribute(component);
             component.processEvent(new PostAddToViewEvent(component));
-            var document = DomUtils.htmlStringToDocument(assertDoesNotThrow(() -> super.renderToString(component)));
+            var document = DomUtils.htmlStringToDocument(assertDoesNotThrow(() -> super.renderToString(component, facesContext)));
             attributeAssert.assertAttributeSet(document.getRootElement());
         }
     }
@@ -121,9 +122,9 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      */
     // owolff: Sonar false-positive
     @SuppressWarnings({"unchecked"})
-    public List<FacesEvent> extractEventsFromViewRoot() {
+    public List<FacesEvent> extractEventsFromViewRoot(FacesContext facesContext) {
         final List<FacesEvent> found = new ArrayList<>();
-        final var uiViewRoot = getFacesContext().getViewRoot();
+        final var uiViewRoot = facesContext.getViewRoot();
         // Hacky: Private field of myfaces
         var eventField = FieldWrapper.from(UIViewRoot.class, "_events");
         if (eventField.isPresent()) {

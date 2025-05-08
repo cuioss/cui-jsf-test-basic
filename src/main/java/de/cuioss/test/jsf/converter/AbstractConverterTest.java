@@ -16,10 +16,8 @@
 package de.cuioss.test.jsf.converter;
 
 import de.cuioss.test.generator.junit.EnableGeneratorController;
-import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
-import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
@@ -41,16 +39,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * context
  * <h3>Setup</h3>
  * <p>
- * The actual test must provide {@link EnableJsfEnvironment}, for the basic
- * test-infrastructure. See the class-documentation for details.
- * </p>
- * <p>
  * {@link #initConverter()}: Instantiates the concrete {@link Converter} using
  * reflection. After this the method calls {@link #configure(Object)} that can
  * be used for further configuration of the {@link Converter}
  * </p>
  * <p>
- * In case you want you want to create the {@link Converter} yourself you can
+ * In case you want to create the {@link Converter} yourself you can
  * overwrite {@link #getConverter()}
  * </p>
  * <p>
@@ -59,22 +53,22 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  * <h3>Test-Methods</h3> The core test-methods are:
  * <ul>
- * <li>{@link #shouldFailOnInvalidObjects()}</li>
- * <li>{@link #shouldFailOnInvalidStrings()}</li>
- * <li>{@link #shouldPassOnValidObjects()}</li>
- * <li>{@link #shouldPassOnValidStrings()}</li>
- * <li>{@link #shouldRoundTripValidData()}</li>
+ * <li>{@link #shouldFailOnInvalidObjects(FacesContext facesContext)}</li>
+ * <li>{@link #shouldFailOnInvalidStrings(FacesContext facesContext)}</li>
+ * <li>{@link #shouldPassOnValidObjects(FacesContext facesContext)}</li>
+ * <li>{@link #shouldPassOnValidStrings(FacesContext facesContext)}</li>
+ * <li>{@link #shouldRoundTripValidData(FacesContext facesContext)}</li>
  * </ul>
  * They call {@link #populate(TestItems)} in oder to create corresponding
  * test-data. The implementation is in the actual test-class.
  * <h3>API-Test</h3> The api as defined within {@link Converter} is tested with
  * the methods
  * <ul>
- * <li>{@link #shouldFailOnNullComponentOnGetAsObject()}</li>
- * <li>{@link #shouldFailOnNullComponentOnGetAsString()}</li>
- * <li>{@link #shouldFailOnNullFacesContextOnGetAsObject()}</li>
+ * <li>{@link #shouldFailOnNullComponentOnGetAsObject(FacesContext facesContext)}</li>
+ * <li>{@link #shouldFailOnNullComponentOnGetAsString(FacesContext facesContext)}</li>
+ * <li>{@link #shouldFailOnNullFacesContextOnGetAsObject(FacesContext facesContext)}</li>
  * <li>{@link #shouldFailOnNullFacesContextOnGetAsString()}</li>
- * <li>{@link #shouldReturnEmptyStringOnNullValue()}</li>
+ * <li>{@link #shouldReturnEmptyStringOnNullValue(FacesContext facesContext)}</li>
  * </ul>
  * <h3>Example</h3> Shows all variants of dealing with {@link TestItems}
  *
@@ -103,8 +97,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @SuppressWarnings({"rawtypes", "unchecked"}) // owolff we need to migrate this aspect later
 @EnableGeneratorController
-public abstract class AbstractConverterTest<C extends Converter, T> extends JsfEnabledTestEnvironment
-    implements ConfigurationCallBackHandler<C>, ComponentConfigurator {
+@EnableJsfEnvironment
+public abstract class AbstractConverterTest<C extends Converter, T>
+    implements ConfigurationCallBackHandler<C> {
 
     private static final String SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION = "Should have thrown ConverterException for invalid Value: ";
 
@@ -123,8 +118,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      */
     @BeforeEach
     protected void initConverter() {
-        final Class<C> klazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
-        converter = new DefaultInstantiator<>(klazz).newInstance();
+        final Class<C> clazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
+        converter = new DefaultInstantiator<>(clazz).newInstance();
         configure(converter);
         testItems = new TestItems<>();
         populate(testItems);
@@ -140,7 +135,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
     /**
      * Callback method for interacting with the {@link ComponentConfigDecorator} at
      * the correct time.<br>
-     * This method provide <b>extension point</b> to prepare needed test environment
+     * This method provides <b>extension point</b> to prepare needed test environment
      * for your converter test. For example :
      *
      * <pre>
@@ -152,8 +147,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      *
      * @param decorator {@link ComponentConfigDecorator} is never null
      */
-    @Override
-    public void configureComponents(final ComponentConfigDecorator decorator) {
+    protected void configureComponents(final ComponentConfigDecorator decorator) {
         decorator.registerMockRenderer(HtmlInputText.COMPONENT_FAMILY, "jakarta.faces.Text");
     }
 
@@ -163,8 +157,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
-    void shouldFailOnNullComponentOnGetAsObject() {
-        assertThrows(NullPointerException.class, () -> getConverter().getAsObject(getFacesContext(), null, null));
+    void shouldFailOnNullComponentOnGetAsObject(FacesContext facesContext) {
+        assertThrows(NullPointerException.class, () -> getConverter().getAsObject(facesContext, null, null));
     }
 
     /**
@@ -173,7 +167,7 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsObject(FacesContext, UIComponent, String)}
      */
     @Test
-    void shouldFailOnNullFacesContextOnGetAsObject() {
+    void shouldFailOnNullFacesContextOnGetAsObject(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> getConverter().getAsObject(null, getComponent(), null));
     }
 
@@ -183,8 +177,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
-    void shouldFailOnNullComponentOnGetAsString() {
-        assertThrows(NullPointerException.class, () -> getConverter().getAsString(getFacesContext(), null, null));
+    void shouldFailOnNullComponentOnGetAsString(FacesContext facesContext) {
+        assertThrows(NullPointerException.class, () -> getConverter().getAsString(facesContext, null, null));
     }
 
     /**
@@ -202,8 +196,8 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * value, see {@link Converter#getAsString(FacesContext, UIComponent, Object)}
      */
     @Test
-    void shouldReturnEmptyStringOnNullValue() {
-        assertEquals("", getConverter().getAsString(getFacesContext(), getComponent(), null));
+    void shouldReturnEmptyStringOnNullValue(FacesContext facesContext) {
+        assertEquals("", getConverter().getAsString(facesContext, getComponent(), null));
     }
 
     /**
@@ -216,10 +210,10 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with the result being checked against the initial value.
      */
     @Test
-    void shouldRoundTripValidData() {
+    void shouldRoundTripValidData(FacesContext facesContext) {
         for (final String value : getTestItems().getRoundtripValues()) {
-            final var converted = (T) getConverter().getAsObject(getFacesContext(), getComponent(), value);
-            final var roundTripped = getConverter().getAsString(getFacesContext(), getComponent(), converted);
+            final var converted = (T) getConverter().getAsObject(facesContext, getComponent(), value);
+            final var roundTripped = getConverter().getAsString(facesContext, getComponent(), converted);
             assertEquals(value, roundTripped);
         }
     }
@@ -230,10 +224,10 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
-    void shouldFailOnInvalidObjects() {
+    void shouldFailOnInvalidObjects(FacesContext facesContext) {
         for (final ConverterTestItem<T> item : getTestItems().getInvalidObjectTestItems()) {
             try {
-                getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
+                getConverter().getAsString(facesContext, getComponent(), item.getTestValue());
                 fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item);
             } catch (final ConverterException e) {
                 verifyExpectedErrorMessage(item, e);
@@ -255,9 +249,9 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with valid objects, derived by {@link TestItems}
      */
     @Test
-    void shouldPassOnValidObjects() {
+    void shouldPassOnValidObjects(FacesContext facesContext) {
         for (final ConverterTestItem<T> item : getTestItems().getValidObjectTestItems()) {
-            final var result = getConverter().getAsString(getFacesContext(), getComponent(), item.getTestValue());
+            final var result = getConverter().getAsString(facesContext, getComponent(), item.getTestValue());
             if (null != item.getStringValue()) {
                 assertEquals(item.getStringValue(), result, item.toString());
             }
@@ -270,10 +264,10 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with invalid objects, derived by {@link TestItems}
      */
     @Test
-    void shouldFailOnInvalidStrings() {
+    void shouldFailOnInvalidStrings(FacesContext facesContext) {
         for (final ConverterTestItem<T> item : getTestItems().getInvalidStringTestItems()) {
             try {
-                getConverter().getAsObject(getFacesContext(), getComponent(), item.getStringValue());
+                getConverter().getAsObject(facesContext, getComponent(), item.getStringValue());
                 fail(SHOULD_HAVE_THROWN_CONVERTER_EXCEPTION + item);
             } catch (final ConverterException e) {
                 verifyExpectedErrorMessage(item, e);
@@ -287,9 +281,9 @@ public abstract class AbstractConverterTest<C extends Converter, T> extends JsfE
      * with valid String, derived by {@link TestItems}
      */
     @Test
-    void shouldPassOnValidStrings() {
+    void shouldPassOnValidStrings(FacesContext facesContext) {
         for (final ConverterTestItem<T> item : getTestItems().getValidStringTestItems()) {
-            final var result = (T) getConverter().getAsObject(getFacesContext(), getComponent(), item.getStringValue());
+            final var result = (T) getConverter().getAsObject(facesContext, getComponent(), item.getStringValue());
             if (null != item.getTestValue()) {
                 assertEquals(item.getTestValue(), result, item.toString());
             }

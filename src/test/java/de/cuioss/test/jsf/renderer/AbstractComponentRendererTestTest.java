@@ -21,6 +21,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UIForm;
 import jakarta.faces.component.html.HtmlForm;
 import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.FacesListener;
 import org.junit.jupiter.api.Test;
@@ -46,10 +47,10 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
     }
 
     @Test
-    void shouldHandleConfigAnnotation() {
+    void shouldHandleConfigAnnotation(FacesContext facesContext) {
         assertFalse(super.isWrapComponentInForm());
         assertEquals(HtmlInputText.class, getWrappedComponent().getClass());
-        assertNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
+        assertNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
     }
 
     @Test
@@ -58,11 +59,11 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
     }
 
     @Test
-    void shouldHandleExtractEventsFromViewRoot() {
-        assertTrue(extractEventsFromViewRoot().isEmpty());
+    void shouldHandleExtractEventsFromViewRoot(FacesContext facesContext) {
+        assertTrue(extractEventsFromViewRoot(facesContext).isEmpty());
         var component = new HtmlInputText();
-        component.setParent(getFacesContext().getViewRoot());
-        assertTrue(extractEventsFromViewRoot().isEmpty());
+        component.setParent(facesContext.getViewRoot());
+        assertTrue(extractEventsFromViewRoot(facesContext).isEmpty());
         component.queueEvent(new FacesEvent(component) {
 
             @Serial
@@ -78,6 +79,6 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
                 return false;
             }
         });
-        assertEquals(1, extractEventsFromViewRoot().size());
+        assertEquals(1, extractEventsFromViewRoot(facesContext).size());
     }
 }

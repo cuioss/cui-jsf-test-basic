@@ -17,6 +17,8 @@ package de.cuioss.test.jsf.junit5;
 
 import de.cuioss.test.jsf.support.beans.MediumComplexityBean;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,13 +32,13 @@ class AbstractPropertyAwareFacesTestTest extends AbstractPropertyAwareFacesTest<
     }
 
     @Test
-    void shouldSetupJsfEnvironment() {
-        assertNotNull(getFacesContext());
+    void shouldSetupJsfEnvironment(FacesContext facesContext) {
+        assertNotNull(facesContext);
     }
 
     @Test
-    void shouldInheritUseIdentityBundle() {
-        assertEquals(ConfigurableApplication.class, getApplication().getClass());
-        assertTrue(((ConfigurableApplication) getApplication()).isUseIdentityResourceBundle());
+    void shouldInheritUseIdentityBundle(Application application) {
+        assertInstanceOf(ConfigurableApplication.class, application);
+        assertTrue(((ConfigurableApplication) application).isUseIdentityResourceBundle());
     }
 }

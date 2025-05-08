@@ -34,30 +34,30 @@ import java.util.List;
 import java.util.SortedSet;
 
 /**
- * Extension to {@link JsfEnabledTestEnvironment} that is capable of dealing
+ * Base class for JSF-tests that is capable of dealing
  * with properties and generator like {@link ValueObjectTest}.
+ * It is annotated with EnableJsfEnvironment
  * <h3>Supported Contracts / Configurations</h3>
  * <ul>
- * <li>Faces Mock configuration as defined within
- * {@link EnableJsfEnvironment}</li>
  * <li>Handling of Property Generators using annotations, see
  * {@link de.cuioss.test.valueobjects.api.generator}</li>
- * <li>Reflection and annotation based property handling, see
+ * <li>Reflection and annotation-based property handling, see
  * {@link de.cuioss.test.valueobjects.api.property}</li>
  * <li>EnableGeneratorController</li>
  * </ul>
  * <p>
  * In case the actual test-class implements {@link TypedGenerator} itself it
- * will implicitly registered as {@link TypedGenerator} at
+ * will implicitly register as {@link TypedGenerator} at
  * {@link TypedGeneratorRegistry}
  * </p>
  *
  * @param <T> identifying the concrete type to be tested
  * @author Oliver Wolff
  */
+@EnableJsfEnvironment(useIdentityResourceBundle = true)
 @EnableGeneratorController
 @EnableGeneratorRegistry
-public abstract class AbstractPropertyAwareFacesTest<T> extends JsfEnabledTestEnvironment
+public abstract class AbstractPropertyAwareFacesTest<T>
     implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
 
     @Getter

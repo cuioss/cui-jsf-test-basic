@@ -15,6 +15,7 @@
  */
 package de.cuioss.test.jsf.converter;
 
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -29,26 +30,26 @@ class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTes
 
     @Override
     public void populate(TestItems<String> testItems) {
-        // TODO Auto-generated method stub
+        // Not testing this
 
     }
 
     @Override
     @Test
-    protected void shouldSanitizeJavaScript() {
+    protected void shouldSanitizeJavaScript(FacesContext facesContext) {
         // ignore, the tests are separate;
     }
 
     @Test
-    void shouldDetectInvalidEscaping() {
+    void shouldDetectInvalidEscaping(FacesContext facesContext) {
         super.getConverter().setFakeEscaping(false);
-        assertThrows(AssertionError.class, super::shouldSanitizeJavaScript);
+        assertThrows(AssertionError.class, () -> super.shouldSanitizeJavaScript(facesContext));
     }
 
     @Test
-    void shouldDetectValidEscaping() {
+    void shouldDetectValidEscaping(FacesContext facesContext) {
         super.getConverter().setFakeEscaping(true);
-        assertDoesNotThrow(super::shouldSanitizeJavaScript);
+        assertDoesNotThrow(() -> super.shouldSanitizeJavaScript(facesContext));
     }
 
 }

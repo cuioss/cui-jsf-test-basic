@@ -16,7 +16,7 @@
 package de.cuioss.test.jsf.component;
 
 import de.cuioss.test.generator.junit.EnableGeneratorController;
-import de.cuioss.test.jsf.junit5.JsfEnabledTestEnvironment;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.valueobjects.contract.BeanPropertyContractImpl;
 import de.cuioss.test.valueobjects.junit5.EnableGeneratorRegistry;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
@@ -30,6 +30,7 @@ import de.cuioss.test.valueobjects.util.PropertyHelper;
 import de.cuioss.tools.reflect.MoreReflection;
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,26 +44,27 @@ import java.util.List;
  * <ul>
  * <li>Handling of Property Generators using annotations, see
  * {@link de.cuioss.test.valueobjects.api.generator}</li>
- * <li>Reflection and annotation based property handling, see
+ * <li>Reflection and annotation-based property handling, see
  * {@link de.cuioss.test.valueobjects.api.property}</li>
  * </ul>
  * <p>
  * It acts as an {@link ConfigurationCallBackHandler}, saying after
  * initialization and prior to testing the method {@link #configure(Object)}
  * will be called allowing the concrete test-class to do some specific
- * configuration e.g. calling init-methods and such.
+ * configuration e.g., calling init-methods and such.
  * </p>
  * <p>
- * You can easily access pre-configured instance by calling
+ * You can access pre-configured instance by calling
  * {@link #anyComponent()}.
  * </p>
  *
  * @param <T> identifying the type to be tested, at least an {@link UIComponent}
  * @author Oliver Wolff
  */
+@EnableJsfEnvironment
 @EnableGeneratorController
 @EnableGeneratorRegistry
-public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEnabledTestEnvironment
+public abstract class AbstractComponentTest<T extends UIComponent>
     implements ConfigurationCallBackHandler<T>, GeneratorRegistry {
 
     @Getter
@@ -103,8 +105,8 @@ public abstract class AbstractComponentTest<T extends UIComponent> extends JsfEn
      * Tests the individual properties accessed using {@link ValueExpression}s
      */
     @Test
-    void shouldHandleValueExpressions() {
-        new ValueExpressionPropertyContract<>(instantiator, filteredMetadata, getFacesContext()).assertContract();
+    void shouldHandleValueExpressions(FacesContext facesContext) {
+        new ValueExpressionPropertyContract<>(instantiator, filteredMetadata, facesContext).assertContract();
     }
 
     /**

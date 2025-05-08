@@ -24,6 +24,7 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -36,6 +37,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @EnableJsfEnvironment
 class JsfParameterResolverTest {
+
+    @BeforeEach
+    void shouldSetupJsfEnvironment(JsfEnvironmentHolder holder) {
+        assertNotNull(holder);
+    }
 
     /**
      * Test that {@link JsfEnvironmentHolder} can be resolved as a parameter.

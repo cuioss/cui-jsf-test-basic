@@ -48,7 +48,7 @@ import java.util.Set;
  * {@link #shouldImplementObjectContracts()}
  * </p>
  * <p>
- * Documentation on how to setup the generator can be found at
+ * Documentation on how to set up the generator can be found at
  * {@link AbstractPropertyAwareFacesTest}
  * </p>
  * <p>
@@ -59,10 +59,10 @@ import java.util.Set;
  * It acts as an {@link ConfigurationCallBackHandler}, saying after
  * initialization and prior to testing the method {@link #configure(Object)}
  * will be called allowing the concrete test-class to do some specific
- * configuration e.g. calling init-methods and such.
+ * configuration e.g., calling init-methods and such.
  * </p>
  * <p>
- * You can easily access pre-configured instance by calling {@link #anyBean()}.
+ * You can access pre-configured instance by calling {@link #anyBean()}.
  * </p>
  *
  * @param <T> identifying the type to be tested is usually but not necessarily
