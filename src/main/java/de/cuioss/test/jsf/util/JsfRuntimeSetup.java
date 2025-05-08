@@ -33,8 +33,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /**
- * Replacement for MyFaces
- * {@link org.apache.myfaces.test.base.junit4.AbstractJsfTestCase}, where the
+ * Replacement for MyFaces AbstractJsfTestCase class from the
+ * org.apache.myfaces.test.base.junit4 package, where the
  * code is initially taken from
  *
  * @author Oliver Wolff

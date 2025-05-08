@@ -27,7 +27,7 @@ import java.util.*;
 /**
  * TestData Store for Test Items which will be used by
  * {@link AbstractConverterTest}<br>
- * Class is prepared to be used as Fluent Interface
+ * Class is prepared to be used as a Fluent Interface
  *
  * @param <T> type of Test Item value
  */
@@ -66,8 +66,8 @@ public class TestItems<T> {
     private final Set<String> roundtripValues = new HashSet<>();
 
     /**
-     * Adds roundtrip String values to be tested. See
-     * {@link AbstractConverterTest#shouldRoundTripValidData()}
+     * Adds roundtrip String values to be tested. These values are used in the
+     * shouldRoundTripValidData() method of AbstractConverterTest.
      *
      * @param roundtripValue the values to be roundtrip converted
      * @return TestItems reference to this object
@@ -86,7 +86,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     public TestItems<T> addInvalidObject(final T value) {
-        return this.addinValidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR, null);
+        return this.addInvalidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR, null);
     }
 
     /**
@@ -100,7 +100,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     public TestItems<T> addInvalidObjectWithMessage(final T value, final String message) {
-        return this.addinValidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR, message);
+        return this.addInvalidObjectTestItem(value, null, FacesMessage.SEVERITY_ERROR, message);
     }
 
     /**
@@ -227,8 +227,8 @@ public class TestItems<T> {
      *                        {@link ConverterException}
      * @return TestItems reference to this object
      */
-    private TestItems<T> addinValidObjectTestItem(final T value, final String converterResult, final Severity level,
-        final String message) {
+    private TestItems<T> addInvalidObjectTestItem(final T value, final String converterResult, final Severity level,
+                                                  final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);

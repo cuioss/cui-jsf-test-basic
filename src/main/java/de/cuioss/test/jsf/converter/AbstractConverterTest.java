@@ -45,11 +45,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  * <p>
  * In case you want to create the {@link Converter} yourself you can
- * overwrite {@link #getConverter()}
+ * overwrite the getConverter() method
  * </p>
  * <p>
  * In case you want a pass another {@link UIComponent} as parameter to the
- * {@link Converter} you can overwrite {@link #getComponent()}
+ * {@link Converter} you can overwrite the getComponent() method
  * </p>
  * <h3>Test-Methods</h3> The core test-methods are:
  * <ul>

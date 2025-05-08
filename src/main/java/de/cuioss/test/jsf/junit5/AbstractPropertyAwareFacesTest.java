@@ -39,10 +39,10 @@ import java.util.SortedSet;
  * It is annotated with EnableJsfEnvironment
  * <h3>Supported Contracts / Configurations</h3>
  * <ul>
- * <li>Handling of Property Generators using annotations, see
- * {@link de.cuioss.test.valueobjects.api.generator}</li>
- * <li>Reflection and annotation-based property handling, see
- * {@link de.cuioss.test.valueobjects.api.property}</li>
+ * <li>Handling of Property Generators using annotations from the
+ * de.cuioss.test.valueobjects.api.generator package</li>
+ * <li>Reflection and annotation-based property handling from the
+ * de.cuioss.test.valueobjects.api.property package</li>
  * <li>EnableGeneratorController</li>
  * </ul>
  * <p>

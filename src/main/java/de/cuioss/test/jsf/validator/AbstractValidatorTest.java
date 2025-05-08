@@ -47,11 +47,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  * <p>
  * In case you want you want to create the {@link Validator} yourself you can
- * overwrite {@link #getValidator()}
+ * overwrite the getValidator() method
  * </p>
  * <p>
  * In case you want a pass another {@link UIComponent} as parameter to the
- * {@link Validator} you can overwrite {@link #getComponent()}
+ * {@link Validator} you can overwrite the getComponent() method
  * </p>
  * <h3>Test-Methods</h3>
  * <p>

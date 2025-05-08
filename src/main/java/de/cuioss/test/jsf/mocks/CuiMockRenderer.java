@@ -36,7 +36,7 @@ import static de.cuioss.tools.string.MoreStrings.isEmpty;
  * {@link UIInput} or the attribute {@link UIComponent#getId()} is set, the
  * 'styleClass' and 'style' attributes and reacts to the 'rendered'-attribute.
  * It can be configured to use a certain tagname to be rendered by using
- * {@link #CuiMockRenderer(String)}. Otherwise the simple-name of the component
+ * the constructor with a String parameter. Otherwise the simple-name of the component
  * will be used.
  *
  * @author Oliver Wolff

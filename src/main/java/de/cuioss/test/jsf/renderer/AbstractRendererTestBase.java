@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * </p>
  * <p>
  * You can easily access pre-configured instance by calling
- * {@link #getRenderer()}.
+ * the getRenderer() method.
  * </p>
  * <h3>API-Tests</h3> Base {@linkplain Renderer} Test. Verify API contract of
  * Renderer for
