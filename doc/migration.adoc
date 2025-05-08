@@ -13,6 +13,7 @@ Key changes include:
 * Implementation of a `JsfParameterResolver` that supports resolution of common JSF objects
 * Integration of parameter resolution with the existing `JsfSetupExtension`
 * Deprecation of the `JsfEnvironmentConsumer` interface and related methods
+* Deprecation of the configurator interfaces (`ApplicationConfigurator`, `ComponentConfigurator`, `RequestConfigurator`)
 * Creation of a new `NavigationAsserts` class for simplified navigation testing with parameter resolution
 * Maintenance of backward compatibility to ensure existing tests continue to work
 
@@ -132,7 +133,57 @@ class MyTest {
 }
 ----
 
-=== Step 5: Update Utility Method Calls
+=== Step 5: Migrate from Configurator Interfaces
+
+If your test classes implement any of the configurator interfaces (`ApplicationConfigurator`, `ComponentConfigurator`, `RequestConfigurator`), you should migrate to the parameter resolution approach.
+
+==== Before Migration (using ComponentConfigurator)
+
+[source,java]
+----
+@EnableJsfEnvironment
+class MyComponentTest implements ComponentConfigurator {
+
+    @Test
+    void testComponent() {
+        // Test code
+    }
+
+    @Override
+    public void configureComponents(ComponentConfigDecorator decorator) {
+        decorator.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+    }
+}
+----
+
+==== After Migration (using parameter resolution)
+
+[source,java]
+----
+@EnableJsfEnvironment
+class MyComponentTest {
+
+    @Test
+    void testComponent(ComponentConfigDecorator componentConfig) {
+        componentConfig.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+
+        // Test code
+    }
+}
+----
+
+The same approach applies to the other configurator interfaces:
+
+* Replace `ApplicationConfigurator.configureApplication(ApplicationConfigDecorator)` with `ApplicationConfigDecorator` parameter
+* Replace `RequestConfigurator.configureRequest(RequestConfigDecorator)` with `RequestConfigDecorator` parameter
+
+This approach has several advantages:
+* Configuration is done directly in the test method, making it more explicit and visible
+* Only the tests that need configuration receive the configurator
+* The test class doesn't need to implement any interface
+* The configuration is scoped to the test method, not the entire class
+
+=== Step 6: Update Utility Method Calls
 
 If your tests use utility methods from `JsfEnvironmentConsumer` or `JsfEnabledTestEnvironment`, update them to use the `NavigationAsserts` parameter type.
 

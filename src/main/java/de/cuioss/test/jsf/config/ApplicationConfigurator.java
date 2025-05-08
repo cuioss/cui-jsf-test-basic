@@ -22,7 +22,23 @@ import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
  * initial setup is done.
  *
  * @author Oliver Wolff
+ * @deprecated As of 1.0.0, replaced by parameter resolution approach. Instead of implementing this interface,
+ * use {@link ApplicationConfigDecorator} as a parameter in your test methods.
+ * Example:
+ * <pre>
+ * {@code
+ * @Test
+ * void testApplicationConfiguration(ApplicationConfigDecorator applicationConfig) {
+ *     // Configure the application
+ *     applicationConfig.registerNavigationCase("outcome", "targetViewId");
+ *
+ *     // Test code using the configured application
+ * }
+ * }
+ * </pre>
+ * See the migration guide for more details.
  */
+@Deprecated
 public interface ApplicationConfigurator extends JsfTestContextConfigurator {
 
     /**

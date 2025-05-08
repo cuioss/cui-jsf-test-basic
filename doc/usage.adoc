@@ -64,11 +64,13 @@ class AccordionRendererTest
 
 The framework takes care of calling the callback methods at the correct time prior to each test
 
-Available Extension-Types:
+Available Extension-Types (Deprecated):
 
-* `de.cuioss.test.jsf.config.ApplicationConfigurator`
-* `de.cuioss.test.jsf.config.ComponentConfigurator`
-* `de.cuioss.test.jsf.config.RequestConfigurator`
+NOTE: The following interfaces are deprecated in favor of the parameter resolution approach described in the next section.
+
+* `de.cuioss.test.jsf.config.ApplicationConfigurator` (deprecated)
+* `de.cuioss.test.jsf.config.ComponentConfigurator` (deprecated)
+* `de.cuioss.test.jsf.config.RequestConfigurator` (deprecated)
 
 Corresponding Configurator-Types:
 
@@ -76,7 +78,7 @@ Corresponding Configurator-Types:
 * `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
-See the javadoc-documentation for the actual usage
+See the javadoc-documentation for the actual usage and the migration guide for details on how to migrate to the parameter resolution approach.
 
 
 === Parameter Resolution

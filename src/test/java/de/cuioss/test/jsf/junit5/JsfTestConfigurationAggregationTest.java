@@ -42,7 +42,7 @@ class JsfTestConfigurationAggregationTest {
 
     @Test
     void clearAppliedConfigs() {
-       assertDoesNotThrow(APPLIED_CONFIGS::clear);
+        assertDoesNotThrow(APPLIED_CONFIGS::clear);
     }
 
     @Test
