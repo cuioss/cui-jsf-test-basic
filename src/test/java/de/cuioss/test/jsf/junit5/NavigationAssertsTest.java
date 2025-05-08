@@ -40,9 +40,9 @@ class NavigationAssertsTest {
      */
     @Test
     void shouldAssertNavigationOutcome(
-            FacesContext facesContext,
-            ApplicationConfigDecorator applicationConfig,
-            NavigationAsserts navigationAsserts) {
+        FacesContext facesContext,
+        ApplicationConfigDecorator applicationConfig,
+        NavigationAsserts navigationAsserts) {
         // Set up navigation
         applicationConfig.registerNavigationCase("testOutcome", "targetViewId");
 
@@ -59,9 +59,9 @@ class NavigationAssertsTest {
      */
     @Test
     void shouldFailWhenOutcomeDoesntMatch(
-            FacesContext facesContext,
-            ApplicationConfigDecorator applicationConfig,
-            NavigationAsserts navigationAsserts) {
+        FacesContext facesContext,
+        ApplicationConfigDecorator applicationConfig,
+        NavigationAsserts navigationAsserts) {
         // Set up navigation
         applicationConfig.registerNavigationCase("testOutcome", "targetViewId");
 
@@ -79,8 +79,8 @@ class NavigationAssertsTest {
      */
     @Test
     void shouldAssertRedirect(
-            ExternalContext externalContext,
-            NavigationAsserts navigationAsserts) throws IOException {
+        ExternalContext externalContext,
+        NavigationAsserts navigationAsserts) throws IOException {
         // Perform redirect
         externalContext.redirect("/test/url");
 
@@ -94,8 +94,8 @@ class NavigationAssertsTest {
      */
     @Test
     void shouldFailWhenRedirectUrlDoesntMatch(
-            ExternalContext externalContext,
-            NavigationAsserts navigationAsserts) throws IOException {
+        ExternalContext externalContext,
+        NavigationAsserts navigationAsserts) throws IOException {
         // Perform redirect
         externalContext.redirect("/test/url");
 

@@ -28,7 +28,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 * Tooling for generating (partial-)HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
-* Baseline is JSF 4.0
+* Baseline is JSF 4.1
 
 == Versions
 
@@ -42,6 +42,8 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
     <dependency>
         <groupId>de.cuioss.test</groupId>
         <artifactId>cui-jsf-test-basic</artifactId>
+        <version>4.1.0</version>
+        <scope>test</scope>
     </dependency>
 ----
 

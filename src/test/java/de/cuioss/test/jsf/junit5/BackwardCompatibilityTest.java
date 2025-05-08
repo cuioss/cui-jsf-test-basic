@@ -81,7 +81,7 @@ class BackwardCompatibilityTest implements JsfEnvironmentConsumer {
 
         // Verify they are the same objects
         assertEquals(getFacesContext(), facesContext,
-                "FacesContext from consumer should be the same as from parameter resolution");
+            "FacesContext from consumer should be the same as from parameter resolution");
 
         // Note: ComponentConfigDecorator is created on demand, so we can't compare instances directly
         // Instead, verify they both work by registering a mock component

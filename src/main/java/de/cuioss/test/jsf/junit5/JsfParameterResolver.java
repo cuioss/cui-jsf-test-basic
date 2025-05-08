@@ -18,7 +18,6 @@ package de.cuioss.test.jsf.junit5;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
-import de.cuioss.test.jsf.junit5.NavigationAsserts;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.ExternalContext;
@@ -109,7 +108,7 @@ public class JsfParameterResolver implements ParameterResolver {
      */
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+        throws ParameterResolutionException {
         return SUPPORTED_TYPES.contains(parameterContext.getParameter().getType());
     }
 
@@ -126,7 +125,7 @@ public class JsfParameterResolver implements ParameterResolver {
      */
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
-            throws ParameterResolutionException {
+        throws ParameterResolutionException {
         Class<?> parameterType = parameterContext.getParameter().getType();
 
         if (JsfEnvironmentHolder.class.equals(parameterType)) {

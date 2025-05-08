@@ -18,7 +18,6 @@ package de.cuioss.test.jsf.junit5;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
-import de.cuioss.test.jsf.junit5.NavigationAsserts;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import jakarta.faces.application.Application;
 import jakarta.faces.context.ExternalContext;
@@ -107,9 +106,9 @@ class JsfParameterResolverTest {
      */
     @Test
     void shouldResolveMultipleParameters(
-            FacesContext facesContext,
-            Application application,
-            ComponentConfigDecorator componentConfigDecorator) {
+        FacesContext facesContext,
+        Application application,
+        ComponentConfigDecorator componentConfigDecorator) {
         assertNotNull(facesContext, "FacesContext should be resolved");
         assertNotNull(application, "Application should be resolved");
         assertNotNull(componentConfigDecorator, "ComponentConfigDecorator should be resolved");
