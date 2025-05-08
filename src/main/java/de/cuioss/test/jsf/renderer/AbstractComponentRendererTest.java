@@ -84,7 +84,9 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
 
     /**
      * Iterates through all active RendererAttributeAssert and tests them
-     * accordingly
+     * accordingly.
+     * 
+     * @param facesContext the FacesContext to be used for rendering
      */
     @Test
     public void shouldHandleRendererAttributeAsserts(FacesContext facesContext) {
@@ -100,7 +102,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     /**
      * @return the {@link UIComponent} derived by {@link #getComponent()} or the
      * same wrapped in an {@link HtmlForm} in case
-     * {@link #isWrapComponentInForm()} is {@code true}
+     * {@link #wrapComponentInForm} is {@code true}
      */
     protected UIComponent getWrappedComponent() {
         var component = getComponent();
@@ -117,6 +119,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
      * component under test is child of {@link UIViewRoot}.
      * Otherwise, the events cannot be extracted
      *
+     * @param facesContext the FacesContext containing the UIViewRoot from which to extract events
      * @return the plain list of events available at {@link UIViewRoot} at this
      * time.
      */

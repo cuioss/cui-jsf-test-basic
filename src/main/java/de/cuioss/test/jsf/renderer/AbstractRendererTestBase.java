@@ -114,8 +114,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
+     * @param facesContext the FacesContext to be used for rendering
      * @return the String-result of the rendering
-     * @throws IOException
+     * @throws IOException if an error occurs during rendering
      */
     public String renderToString(final UIComponent toBeRendered, FacesContext facesContext) throws IOException {
         requireNonNull(toBeRendered);
@@ -134,7 +135,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
-     * @param expected     must not be null
+     * @param expected     the expected DOM document, must not be null
+     * @param facesContext the FacesContext to be used for rendering
+     * @throws IOException if an error occurs during rendering
      */
     public void assertRenderResult(final UIComponent toBeRendered, final Document expected, FacesContext facesContext) throws IOException {
         var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered, facesContext));
@@ -148,7 +151,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
-     * @param expected     must not be null
+     * @param expected     the expected HTML string, must not be null
+     * @param facesContext the FacesContext to be used for rendering
+     * @throws IOException if an error occurs during rendering
      */
     public void assertRenderResult(final UIComponent toBeRendered, final String expected, FacesContext facesContext) throws IOException {
         assertNotNull(emptyToNull(expected), "Render result must not be empty.");
@@ -160,6 +165,7 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *
      * @param toBeRendered the component to be passed to the renderer, must not be
      *                     null
+     * @param facesContext the FacesContext to be used for rendering
      */
     public void assertEmptyRenderResult(final UIComponent toBeRendered, FacesContext facesContext) {
         var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered, facesContext));
@@ -167,6 +173,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
     }
 
     // API tests
+    /**
+     * Tests that the renderer's decode method properly throws NullPointerException
+     * when null parameters are passed.
+     *
+     * @param facesContext the FacesContext to be used for testing
+     */
     @Test
     void shouldThrowNPEOnMissingParameterForDecode(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.decode(null, getComponent()),
@@ -175,6 +187,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
             NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
+    /**
+     * Tests that the renderer's encodeBegin method properly throws NullPointerException
+     * when null parameters are passed.
+     *
+     * @param facesContext the FacesContext to be used for testing
+     */
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeBegin(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(null, getComponent()),
@@ -182,6 +200,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(facesContext, null));
     }
 
+    /**
+     * Tests that the renderer's encodeChildren method properly throws NullPointerException
+     * when null parameters are passed.
+     *
+     * @param facesContext the FacesContext to be used for testing
+     */
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeChildren(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeChildren(null, getComponent()),
@@ -190,6 +214,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
             NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
+    /**
+     * Tests that the renderer's convertClientId method properly throws NullPointerException
+     * when null parameters are passed.
+     *
+     * @param facesContext the FacesContext to be used for testing
+     */
     @Test
     void shouldThrowNPEOnMissingParameterForConvertClientId(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.convertClientId(null, "SomeId"),
@@ -198,6 +228,12 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
             NPE_ON_MISSING_CLIENT_ID_EXPECTED);
     }
 
+    /**
+     * Tests that the renderer's encodeEnd method properly throws NullPointerException
+     * when null parameters are passed.
+     *
+     * @param facesContext the FacesContext to be used for testing
+     */
     @Test
     void shouldThrowNPEOnMissingParameterForEncodeEnd(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeEnd(null, getComponent()),
