@@ -16,7 +16,7 @@ https://cuioss.github.io/cui-jsf-test-basic/about.html[Generated Documentation o
 == What is it?
 
 Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses the mock-based infrastructure and adds certain aspects in order to simplify its usage in the portal-context:
- 
+
 * Convenient programmatic configuration of JSF-context
 * Specific base-classes for conveniently testing aspects like
 ** `AbstractBeanTest`
@@ -47,5 +47,4 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 
 == Documentation
 
-link:src/site/asciidoc/about.adoc[Documentation]
-
+link:doc/usage.adoc[Usage Documentation]
