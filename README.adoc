@@ -50,3 +50,5 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 == Documentation
 
 link:doc/usage.adoc[Usage Documentation]
+
+link:doc/migration.adoc[Migration Guide]
