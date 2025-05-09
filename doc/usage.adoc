@@ -13,7 +13,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 * Tooling for generating (partial-)HTML-trees including the corresponding Assertions
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
-* Baseline is JSF 4.0
+* Baseline is Jakarta Faces (part of Jakarta EE 10)
 
 == How To use it
 
@@ -35,9 +35,11 @@ class FacesTestEnabledTest {
 
 The corresponding extension takes care for handling the JSF-Setup including resetting it for each test.
 
-=== Add Configuration
+=== Configuration Options
 
-As a next step you can add additional configuration. This can be done either by type
+==== Configuration by Type
+
+You can add additional configuration by specifying a configuration class:
 
 [source,java]
 ----
@@ -47,7 +49,29 @@ class FacesTestEnabledTest {
 }
 ----
 
-Or via callback interface
+==== Configuration via Parameter Resolution (Recommended)
+
+The recommended approach is to use parameter resolution, which allows you to directly access configuration objects in your test methods:
+
+[source,java]
+----
+@EnableJsfEnvironment
+class MyTest {
+
+    @Test
+    void testWithConfiguration(ComponentConfigDecorator componentConfig) {
+        componentConfig.registerRenderer(BootstrapPanelRenderer.class);
+
+        // Test code
+    }
+}
+----
+
+==== Configuration via Callback Interface (Deprecated)
+
+NOTE: The following approach is deprecated in favor of the parameter resolution approach described above.
+
+You can also configure the JSF environment using callback interfaces:
 
 [source,java]
 ----
@@ -62,97 +86,48 @@ class AccordionRendererTest
 }
 ----
 
-The framework takes care of calling the callback methods at the correct time prior to each test
+The framework takes care of calling the callback methods at the correct time prior to each test.
 
-Available Extension-Types (Deprecated):
+===== Deprecated Configurator Interfaces
 
-NOTE: The following interfaces are deprecated in favor of the parameter resolution approach described in the next section.
+The following interfaces are deprecated:
 
-* `de.cuioss.test.jsf.config.ApplicationConfigurator` (deprecated)
-* `de.cuioss.test.jsf.config.ComponentConfigurator` (deprecated)
-* `de.cuioss.test.jsf.config.RequestConfigurator` (deprecated)
+* `de.cuioss.test.jsf.config.ApplicationConfigurator`
+* `de.cuioss.test.jsf.config.ComponentConfigurator`
+* `de.cuioss.test.jsf.config.RequestConfigurator`
 
-Corresponding Configurator-Types:
+===== Configurator Types
+
+The following decorator types are available for configuration:
 
 * `de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
-See the javadoc-documentation for the actual usage and the migration guide for details on how to migrate to the parameter resolution approach.
+For details on how to migrate from the deprecated callback interfaces to the parameter resolution approach, see the link:migration.adoc[Migration Guide].
 
 
-=== Parameter Resolution
+=== Parameter Resolution (Recommended Approach)
 
-For cases where you want to modify the tests more fine grained or want to have access to `FacesContext`, `ExternalContext` and other JSF objects, you can use parameter resolution. This allows you to directly declare the JSF objects you need as parameters in your test methods.
+Parameter resolution is the recommended approach for accessing JSF objects in your tests. It allows you to directly declare the JSF objects you need as parameters in your test methods, making your tests more concise and focused.
 
-[source,java]
-----
-@EnableJsfEnvironment
-class FacesTestEnabledTest {
+==== Basic Usage
 
-    @Test
-    void shouldProvideJsfObjects(
-            JsfEnvironmentHolder environmentHolder,
-            FacesContext facesContext,
-            Application application,
-            ExternalContext externalContext,
-            ComponentConfigDecorator componentConfig,
-            ApplicationConfigDecorator applicationConfig,
-            RequestConfigDecorator requestConfig,
-            MockHttpServletResponse response,
-            MockHttpServletRequest request,
-            NavigationAsserts navigationAsserts) {
-
-        assertNotNull(environmentHolder);
-        assertNotNull(facesContext);
-        assertNotNull(application);
-        assertNotNull(externalContext);
-        assertNotNull(componentConfig);
-        assertNotNull(applicationConfig);
-        assertNotNull(requestConfig);
-        assertNotNull(response);
-        assertNotNull(request);
-        assertNotNull(navigationAsserts);
-    }
-}
-----
-
-For navigation testing, you can use the `NavigationAsserts` parameter type:
+Simply declare the JSF objects you need as parameters in your test methods:
 
 [source,java]
 ----
 @EnableJsfEnvironment
-class NavigationTest {
+class MyTest {
 
     @Test
-    void shouldAssertNavigationOutcome(
-            FacesContext facesContext, 
-            ApplicationConfigDecorator applicationConfig,
-            NavigationAsserts navigationAsserts) {
-        // Set up navigation
-        applicationConfig.registerNavigationCase(OUTCOME, TO_VIEW_JSF);
-
-        // Perform navigation
-        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, OUTCOME);
-
-        // Assert navigation outcome
-        navigationAsserts.assertNavigatedWithOutcome(OUTCOME);
-    }
-
-    @Test
-    void shouldAssertRedirect(
-            ExternalContext externalContext,
-            NavigationAsserts navigationAsserts) throws IOException {
-        // Perform redirect
-        externalContext.redirect(TO_VIEW_JSF);
-
-        // Assert redirect
-        navigationAsserts.assertRedirect(TO_VIEW_JSF);
+    void testWithJsfObjects(FacesContext facesContext, ExternalContext externalContext) {
+        // Test code using facesContext and externalContext
     }
 }
 ----
 
-=== Resolved Parameters for @EnableJsfEnvironment
+==== Available Parameters
 
 The following parameters can be resolved in test methods when using the `@EnableJsfEnvironment` annotation:
 
@@ -171,7 +146,45 @@ The following parameters can be resolved in test methods when using the `@Enable
 | `NavigationAsserts` | Provides utilities for asserting navigation outcomes and redirects
 |===
 
-For more information about parameter resolution, including common patterns and examples, see the link:migration.adoc[Migration Guide].
+==== Testing Navigation
+
+For navigation testing, you can use the `NavigationAsserts` parameter type:
+
+[source,java]
+----
+@EnableJsfEnvironment
+class NavigationTest {
+
+    @Test
+    void shouldAssertNavigationOutcome(
+            FacesContext facesContext, 
+            ApplicationConfigDecorator applicationConfig,
+            NavigationAsserts navigationAsserts) {
+        // Set up navigation
+        applicationConfig.registerNavigationCase(OUTCOME, TO_VIEW_JSF);
+
+        // Perform navigation
+        facesContext.getApplication().getNavigationHandler()
+            .handleNavigation(facesContext, null, OUTCOME);
+
+        // Assert navigation outcome
+        navigationAsserts.assertNavigatedWithOutcome(OUTCOME);
+    }
+
+    @Test
+    void shouldAssertRedirect(
+            ExternalContext externalContext,
+            NavigationAsserts navigationAsserts) throws IOException {
+        // Perform redirect
+        externalContext.redirect(TO_VIEW_JSF);
+
+        // Assert redirect
+        navigationAsserts.assertRedirect(TO_VIEW_JSF);
+    }
+}
+----
+
+For more detailed information about parameter resolution, including common patterns, examples, and migration from deprecated approaches, see the link:migration.adoc[Migration Guide].
 
 
 == Testing a Validator
