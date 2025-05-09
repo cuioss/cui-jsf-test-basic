@@ -228,7 +228,7 @@ public class TestItems<T> {
      * @return TestItems reference to this object
      */
     private TestItems<T> addInvalidObjectTestItem(final T value, final String converterResult, final Severity level,
-                                                  final String message) {
+        final String message) {
         final var item = new ConverterTestItem<T>();
         item.setTestValue(value);
         item.setStringValue(converterResult);
