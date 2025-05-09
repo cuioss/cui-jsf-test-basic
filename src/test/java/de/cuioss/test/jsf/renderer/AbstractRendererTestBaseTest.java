@@ -18,9 +18,12 @@ package de.cuioss.test.jsf.renderer;
 import de.cuioss.test.jsf.mocks.CuiMockRenderer;
 import de.cuioss.test.jsf.renderer.util.DomUtils;
 import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,22 +41,22 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
     }
 
     @Test
-    void shouldRenderGoodCase() {
-        assertEquals(RENDER_RESULT, assertDoesNotThrow(() -> renderToString(component)));
-        assertRenderResult(component, RENDER_RESULT);
-        assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT));
+    void shouldRenderGoodCase(FacesContext facesContext) throws IOException {
+        assertEquals(RENDER_RESULT, assertDoesNotThrow(() -> renderToString(component, facesContext)));
+        assertRenderResult(component, RENDER_RESULT, facesContext);
+        assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT), facesContext);
     }
 
     @Test
-    void assertEmptyRenderResult() {
+    void assertEmptyRenderResult(FacesContext facesContext) {
         component.setRendered(false);
 
-        assertEmptyRenderResult(component);
+        assertEmptyRenderResult(component, facesContext);
     }
 
     @Test
-    void assertFailOnNonEmptyResult() {
+    void assertFailOnNonEmptyResult(FacesContext facesContext) {
         component.setRendered(true);
-        assertThrows(AssertionError.class, () -> assertEmptyRenderResult(component));
+        assertThrows(AssertionError.class, () -> assertEmptyRenderResult(component, facesContext));
     }
 }

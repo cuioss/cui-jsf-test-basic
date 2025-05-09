@@ -82,26 +82,68 @@ import static org.junit.jupiter.api.Assertions.*;
  * }
  * </code>
  * </pre>
+ * <p>
+ * <strong>Deprecation Notice:</strong> This interface is deprecated in favor of using parameter resolution
+ * for JSF-related objects in test methods. Instead of implementing this interface and accessing JSF objects
+ * through getter methods, you can now directly declare the JSF objects you need as parameters in your test methods.
+ * <p>
+ * Migration example:
+ * <pre>
+ * <code>
+ * // Old approach (deprecated)
+ * &#64;EnableJsfEnvironment
+ * class MyTest implements JsfEnvironmentConsumer {
+ *
+ *     &#64;Setter
+ *     &#64;Getter
+ *     private JsfEnvironmentHolder environmentHolder;
+ *
+ *     &#64;Test
+ *     void testSomething() {
+ *         FacesContext facesContext = getFacesContext();
+ *         // Test code using facesContext
+ *     }
+ * }
+ *
+ * // New approach (recommended)
+ * &#64;EnableJsfEnvironment
+ * class MyTest {
+ *
+ *     &#64;Test
+ *     void testSomething(FacesContext facesContext) {
+ *         // Test code using facesContext
+ *     }
+ * }
+ * </code>
+ * </pre>
  *
  * @author Oliver Wolff
+ * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
  */
+@Deprecated(since = "4.1", forRemoval = true)
 public interface JsfEnvironmentConsumer {
 
     /**
      * @return holder set by {@link #setEnvironmentHolder(JsfEnvironmentHolder)}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     JsfEnvironmentHolder getEnvironmentHolder();
 
     /**
      * @param holder to be set, is never null. Will be called from
      *               {@link TestInstancePostProcessor#postProcessTestInstance(Object, org.junit.jupiter.api.extension.ExtensionContext)}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     void setEnvironmentHolder(JsfEnvironmentHolder holder);
 
     /**
      * @return an {@link ComponentConfigDecorator} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default ComponentConfigDecorator getComponentConfigDecorator() {
         return getEnvironmentHolder().getComponentConfigDecorator();
     }
@@ -109,7 +151,9 @@ public interface JsfEnvironmentConsumer {
     /**
      * @return an {@link ApplicationConfigDecorator} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default ApplicationConfigDecorator getApplicationConfigDecorator() {
         return getEnvironmentHolder().getApplicationConfigDecorator();
     }
@@ -117,7 +161,9 @@ public interface JsfEnvironmentConsumer {
     /**
      * @return an {@link RequestConfigDecorator} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default RequestConfigDecorator getRequestConfigDecorator() {
         return getEnvironmentHolder().getRequestConfigDecorator();
     }
@@ -125,14 +171,18 @@ public interface JsfEnvironmentConsumer {
     /**
      * @return an {@link FacesContext} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default FacesContext getFacesContext() {
         return getEnvironmentHolder().getFacesContext();
     }
 
     /**
      * @return an {@link Application} for the contained {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default Application getApplication() {
         return getEnvironmentHolder().getApplication();
     }
@@ -140,7 +190,9 @@ public interface JsfEnvironmentConsumer {
     /**
      * @return an {@link ExternalContext} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default ExternalContext getExternalContext() {
         return getEnvironmentHolder().getExternalContext();
     }
@@ -148,7 +200,9 @@ public interface JsfEnvironmentConsumer {
     /**
      * @return an {@link MockHttpServletResponse} for the contained
      * {@link JsfEnvironmentHolder}
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default MockHttpServletResponse getResponse() {
         return getEnvironmentHolder().getResponse();
     }
@@ -158,7 +212,9 @@ public interface JsfEnvironmentConsumer {
      * {@link NavigationHandler#handleNavigation(jakarta.faces.context.FacesContext, String, String)}
      *
      * @param outcome must not be null
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default void assertNavigatedWithOutcome(final String outcome) {
         assertNotNull(emptyToNull(outcome), "Outcome must not be null");
         assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");
@@ -172,7 +228,9 @@ public interface JsfEnvironmentConsumer {
      * {@link ExternalContext#redirect(String)}
      *
      * @param redirectUrl must not be null
+     * @deprecated since 4.1 - Use parameter resolution instead. See class documentation for migration examples.
      */
+    @Deprecated(since = "4.1", forRemoval = true)
     default void assertRedirect(final String redirectUrl) {
         assertNotNull(emptyToNull(redirectUrl), "redirectUrl must not be null");
         assertTrue(getFacesContext().getExternalContext().isResponseCommitted(), "Response is not committed");

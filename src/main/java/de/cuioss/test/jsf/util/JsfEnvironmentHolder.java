@@ -25,6 +25,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.myfaces.test.mock.MockExternalContext;
 import org.apache.myfaces.test.mock.MockFacesContext;
+import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
 
 /**
@@ -93,6 +94,14 @@ public class JsfEnvironmentHolder {
      */
     public MockHttpServletResponse getResponse() {
         return runtimeSetup.getResponse();
+    }
+
+    /**
+     * @return an {@link MockHttpServletRequest} for the contained
+     * {@link JsfRuntimeSetup}
+     */
+    public MockHttpServletRequest getRequest() {
+        return runtimeSetup.getRequest();
     }
 
 }

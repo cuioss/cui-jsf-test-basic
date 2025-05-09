@@ -21,6 +21,7 @@ import de.cuioss.test.valueobjects.objects.RuntimeProperties;
 import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,7 +30,7 @@ class ValueExpressionPropertyContractTestInvalidTest
     extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {
 
     @Test
-    void shouldTestGoodCase() {
+    void shouldTestGoodCase(FacesContext facesContext) {
         var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponentWithInvalidELHandling.class,
             new MultiValuedComponentWithInvalidELHandling());
 
@@ -39,7 +40,7 @@ class ValueExpressionPropertyContractTestInvalidTest
             this);
 
         ValueExpressionPropertyContract<MultiValuedComponentWithInvalidELHandling> contract;
-        contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
+        contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
 
         assertThrows(AssertionError.class, contract::assertContract);
     }

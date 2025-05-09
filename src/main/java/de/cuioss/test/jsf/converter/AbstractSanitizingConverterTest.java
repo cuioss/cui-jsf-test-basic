@@ -15,6 +15,7 @@
  */
 package de.cuioss.test.jsf.converter;
 
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import org.junit.jupiter.api.Test;
 
@@ -34,15 +35,22 @@ public abstract class AbstractSanitizingConverterTest<C extends Converter<T>, T>
      * Create an instance of the object containing a given malicious content that is
      * to be converted into a string by this converter.
      *
-     * @param content
-     * @return
+     * @param content The malicious content to be included in the test object
+     * @return An instance of type T containing the malicious content
      */
     protected abstract T createTestObjectWithMaliciousContent(String content);
 
+    /**
+     * Tests that the converter properly sanitizes JavaScript content.
+     * This test creates an object with a script tag and verifies that
+     * the converter removes or escapes it during conversion.
+     *
+     * @param facesContext The FacesContext to be used for conversion
+     */
     @Test
-    protected void shouldSanitizeJavaScript() {
+    protected void shouldSanitizeJavaScript(FacesContext facesContext) {
         var toConvert = createTestObjectWithMaliciousContent("<script>");
-        var result = getConverter().getAsString(getFacesContext(), getComponent(), toConvert);
+        var result = getConverter().getAsString(facesContext, getComponent(), toConvert);
         assertFalse(result.contains("<script"));
     }
 

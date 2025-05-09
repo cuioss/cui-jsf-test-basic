@@ -29,11 +29,12 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Using this annotations at type-level of a junit 5 test enable the
+ * Using this annotations at type-level or method-level of a junit 5 test enables the
  * myfaces-test-based test-framework for unit-tests. The configuration is
  * implemented using some kind of decorator pattern (roughly). The actual
  * configuration relies on two sources:
@@ -79,6 +80,83 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  *
  * <p>
+ * Method-level annotation: You can also apply the annotation to individual test methods.
+ * This allows you to have different JSF environment configurations for different test methods
+ * within the same test class.
+ * </p>
+ *
+ * <pre>
+ * <code>
+ * class JsfMethodLevelTest {
+ *
+ *     &#64;Test
+ *     &#64;EnableJsfEnvironment
+ *     &#64;JsfTestConfiguration(CustomConfiguration.class)
+ *     void testWithCustomConfig() {
+ *         // Test with custom configuration
+ *     }
+ *
+ *     &#64;Test
+ *     &#64;EnableJsfEnvironment(useIdentityResourceBundle = false)
+ *     void testWithoutIdentityResourceBundle() {
+ *         // Test without identity resource bundle
+ *     }
+ * }
+ * </code>
+ * </pre>
+ *
+ * <p>
+ * Nested class support: The annotation can also be applied to nested test classes.
+ * This allows you to have different JSF environment configurations for different
+ * groups of tests within the same test class.
+ * </p>
+ *
+ * <pre>
+ * <code>
+ * class JsfNestedTest {
+ *
+ *     &#64;Nested
+ *     &#64;EnableJsfEnvironment
+ *     &#64;JsfTestConfiguration(CustomConfiguration.class)
+ *     class NestedTestWithCustomConfig {
+ *
+ *         &#64;Test
+ *         void test1() {
+ *             // Test with custom configuration
+ *         }
+ *
+ *         &#64;Test
+ *         void test2() {
+ *             // Test with custom configuration
+ *         }
+ *     }
+ *
+ *     &#64;Nested
+ *     &#64;EnableJsfEnvironment(useIdentityResourceBundle = false)
+ *     class NestedTestWithoutIdentityResourceBundle {
+ *
+ *         &#64;Test
+ *         void test() {
+ *             // Test without identity resource bundle
+ *         }
+ *     }
+ * }
+ * </code>
+ * </pre>
+ *
+ * <p>
+ * Annotation priority: When multiple annotations are present at different levels
+ * (method, nested class, parent class), the following priority rules apply:
+ * <ol>
+ * <li>Method-level annotation takes highest priority</li>
+ * <li>Nested class annotation takes second priority</li>
+ * <li>Parent class annotation takes lowest priority</li>
+ * </ol>
+ * This means that a method-level annotation will override a class-level annotation,
+ * and a nested class annotation will override a parent class annotation.
+ *
+ *
+ * <p>
  * In addition there is a new way of dealing with localized messages for
  * unit-tests. In essence there is the {@link IdentityResourceBundle}
  * configured: This is helpful for tests where you want to ensure that a certain
@@ -95,13 +173,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Documented
 @Retention(RUNTIME)
-@Target(TYPE)
+@Target({TYPE, METHOD})
 @ExtendWith(JsfSetupExtension.class)
 @Repeatable(EnableJsfEnvironments.class)
 public @interface EnableJsfEnvironment {
 
     /**
-     * @return boolean
+     * Determines whether to use the IdentityResourceBundle for this test environment.
+     * When true, the IdentityResourceBundle will be used which returns the message key
+     * itself instead of looking up the actual message. This is useful for testing
+     * that the correct message key is used without testing the ResourceBundle mechanism.
+     * 
+     * @return true if the IdentityResourceBundle should be used, false otherwise
      */
     boolean useIdentityResourceBundle() default true;
 

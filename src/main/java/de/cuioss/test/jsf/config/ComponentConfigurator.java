@@ -22,7 +22,23 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
  * initial setup is done.
  *
  * @author Oliver Wolff
+ * @deprecated As of 1.0.0, replaced by parameter resolution approach. Instead of implementing this interface,
+ * use {@link ComponentConfigDecorator} as a parameter in your test methods.
+ * Example:
+ * <pre>
+ * {@code
+ * @Test
+ * void testComponentConfiguration(ComponentConfigDecorator componentConfig) {
+ *     // Register a mock component
+ *     componentConfig.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+ *
+ *     // Test code using the configured component
+ * }
+ * }
+ * </pre>
+ * See the migration guide for more details.
  */
+@Deprecated
 public interface ComponentConfigurator extends JsfTestContextConfigurator {
 
     /**

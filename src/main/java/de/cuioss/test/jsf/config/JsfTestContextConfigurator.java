@@ -20,7 +20,10 @@ package de.cuioss.test.jsf.config;
  * like {@link ApplicationConfigurator},{@link ComponentConfigurator} and {@link RequestConfigurator}
  *
  * @author Oliver Wolff
+ * @deprecated As of 1.0.0, all sub-interfaces are deprecated in favor of the parameter resolution approach.
+ * See the migration guide for more details on how to migrate to the parameter resolution approach.
  */
+@Deprecated
 public interface JsfTestContextConfigurator {
 
 }

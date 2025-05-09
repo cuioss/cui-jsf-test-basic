@@ -20,12 +20,13 @@ import de.cuioss.test.valueobjects.objects.RuntimeProperties;
 import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
 class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiValuedComponent> {
 
     @Test
-    void shouldTestGoodCase() {
+    void shouldTestGoodCase(FacesContext facesContext) {
         var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
             new MultiValuedComponent());
 
@@ -33,7 +34,7 @@ class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiVal
             new DefaultInstantiator<>(MultiValuedComponent.class), new RuntimeProperties(properties)), this);
 
         ValueExpressionPropertyContract<MultiValuedComponent> contract;
-        contract = new ValueExpressionPropertyContract<>(instantiator, properties, getFacesContext());
+        contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
 
         contract.assertContract();
     }

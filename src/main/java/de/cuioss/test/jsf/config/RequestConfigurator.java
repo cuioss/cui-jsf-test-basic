@@ -22,7 +22,23 @@ import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
  * initial setup is done.
  *
  * @author Oliver Wolff
+ * @deprecated As of 1.0.0, replaced by parameter resolution approach. Instead of implementing this interface,
+ * use {@link RequestConfigDecorator} as a parameter in your test methods.
+ * Example:
+ * <pre>
+ * {@code
+ * @Test
+ * void testRequestConfiguration(RequestConfigDecorator requestConfig) {
+ *     // Configure the request
+ *     requestConfig.setRequestParameter("param", "value");
+ *
+ *     // Test code using the configured request
+ * }
+ * }
+ * </pre>
+ * See the migration guide for more details.
  */
+@Deprecated
 public interface RequestConfigurator extends JsfTestContextConfigurator {
 
     /**

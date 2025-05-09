@@ -32,7 +32,7 @@ import static jakarta.faces.FactoryFinder.SEARCH_EXPRESSION_CONTEXT_FACTORY;
 /**
  * Mock for {@link SearchExpressionContextFactory}. It can be used by accessing
  * the instance of the mock by using {@link #retrieve()} and setting a concrete
- * {@link #setSearchExpressionContext(SearchExpressionContext)} that is used for
+ * SearchExpressionContext using the setSearchExpressionContext method that is used for
  * the actual test. If not an instance of {@link CuiMockSearchExpressionContext}
  * will be returned.
  *

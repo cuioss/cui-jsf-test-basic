@@ -19,6 +19,7 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -30,11 +31,23 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * {@link RequestConfigurator}. The base-class will
  * ensure that the corresponding methods will be called at setup-time. This is
  * useful for cases, where there is no need to reuse a certain configuration.
+ * 
+ * <p>
+ * This annotation can be applied at both the type level (class) and method level.
+ * When applied at the method level, the configuration will only be applied for that
+ * specific test method. When applied at both levels, the method-level configuration
+ * takes precedence over the class-level configuration.
+ * </p>
+ * 
+ * <p>
+ * For nested test classes, the annotation can be applied to the nested class,
+ * and it will take precedence over any annotation on the parent class.
+ * </p>
  *
  * @author Oliver Wolff
  */
 @Retention(RUNTIME)
-@Target(TYPE)
+@Target({TYPE, METHOD})
 @Repeatable(JsfTestConfigurations.class)
 public @interface JsfTestConfiguration {
 
