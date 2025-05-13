@@ -157,13 +157,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  *
  * <p>
- * In addition there is a new way of dealing with localized messages for
+ * In addition, there is a new way of dealing with localized messages for
  * unit-tests. In essence there is the {@link IdentityResourceBundle}
  * configured: This is helpful for tests where you want to ensure that a certain
  * message key is used to create a message but do not want to test the actual
  * ResourceBundle mechanism itself. It will always return the given key itself.
  * As default this mechanism is active, you can change this by setting
- * {@link #useIdentityResourceBundle()}. If it is active it is used as well for
+ * {@link #useIdentityResourceBundle()}. If it is active, it is used as well for
  * resolving the MessageBundle. In case of many annotations of
  * {@link EnableJsfEnvironment} are in the type hierarchy, the one on the most
  * concrete Type will be chosen, usually on the actual unit-test.
