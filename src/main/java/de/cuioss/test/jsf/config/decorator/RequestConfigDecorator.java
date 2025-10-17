@@ -1,12 +1,12 @@
 /*
- * Copyright 2023 the original author or authors.
- * <p>
+ * Copyright © 2025 CUI-OpenSource-Software (info@cuioss.de)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * https://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@ import org.apache.myfaces.test.mock.MockHttpServletRequest;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -144,10 +145,10 @@ public class RequestConfigDecorator {
      */
     public RequestConfigDecorator setRequestLocale(final Locale... requestLocale) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();
-        List<Locale> localeList = Arrays.asList(requestLocale);
+        List<Locale> localeList = requestLocale == null ? Collections.emptyList() : Arrays.asList(requestLocale);
         Locale locale = null;
         if (!localeList.isEmpty()) {
-            locale = localeList.iterator().next();
+            locale = localeList.getFirst();
         }
         request.setLocale(locale);
         request.setRequestLocales(localeList);

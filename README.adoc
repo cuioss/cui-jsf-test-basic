@@ -51,4 +51,4 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 
 link:doc/usage.adoc[Usage Documentation]
 
-link:doc/migration.adoc[Migration Guide]
+link:doc/migration/4.1.adoc[Migration Guide to 4.1]

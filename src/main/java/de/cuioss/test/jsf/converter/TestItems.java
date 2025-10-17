@@ -1,12 +1,12 @@
 /*
- * Copyright 2023 the original author or authors.
- * <p>
+ * Copyright © 2025 CUI-OpenSource-Software (info@cuioss.de)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * https://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ public class TestItems<T> {
      * Items that are used for testing
      * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> validObjectTestItems = new ArrayList<>();
 
     /**
@@ -45,24 +45,24 @@ public class TestItems<T> {
      * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * but are invalid {@link Object}s
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> invalidObjectTestItems = new ArrayList<>();
 
     /**
      * Items that are used for testing
      * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> validStringTestItems = new ArrayList<>();
 
     /**
      * Items that are used for testing
      * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> invalidStringTestItems = new ArrayList<>();
 
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final Set<String> roundtripValues = new HashSet<>();
 
     /**
