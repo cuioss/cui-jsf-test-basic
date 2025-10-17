@@ -2,6 +2,8 @@
 
 == Introduction
 
+This document describes the migration from previous versions to *4.1x*
+
 This document provides guidance for migrating from the legacy approach of using `JsfEnvironmentConsumer` to the new parameter resolution approach in the JSF testing framework. The framework has been enhanced to leverage JUnit 5's parameter resolution capabilities, making tests more concise and easier to write.
 
 == Overview of Changes

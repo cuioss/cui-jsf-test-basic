@@ -1,12 +1,12 @@
 /*
- * Copyright 2023 the original author or authors.
- * <p>
+ * Copyright © 2025 CUI-OpenSource-Software (info@cuioss.de)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * https://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,6 +36,7 @@ import static java.util.Objects.requireNonNull;
  * @param <T> The Rule does not apply to annotations: There is no inheritance
  * @author Oliver Wolff
  */
+// cui-rewrite:disable CuiLogRecordPatternRecipe
 public class ValueExpressionPropertyContract<T extends UIComponent> implements TestContract<T> {
 
     /**
@@ -48,7 +49,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
      */
     @SuppressWarnings("el-syntax")
     public static final String EL_START = "#{";
-    private static final CuiLogger log = new CuiLogger(ValueExpressionPropertyContract.class);
+    private static final CuiLogger LOGGER = new CuiLogger(ValueExpressionPropertyContract.class);
     private static final String NAME_MUST_NOT_BE_NULL = "Name must not be null";
     @Getter
     private final ParameterizedInstantiator<T> instantiator;
@@ -87,7 +88,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     @Override
     public void assertContract() {
         var names = filteredMetadata.stream().map(ComponentPropertyMetadata::getName).toList();
-        log.info("Verifying " + getClass().getName() + "\nWith properties: " + String.join(" ", names));
+        LOGGER.info("Verifying " + getClass().getName() + "\nWith properties: " + String.join(" ", names));
 
         checkGetterAndSetterContract();
     }
