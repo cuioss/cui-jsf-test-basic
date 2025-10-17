@@ -37,7 +37,7 @@ public class TestItems<T> {
      * Items that are used for testing
      * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> validObjectTestItems = new ArrayList<>();
 
     /**
@@ -45,24 +45,24 @@ public class TestItems<T> {
      * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * but are invalid {@link Object}s
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> invalidObjectTestItems = new ArrayList<>();
 
     /**
      * Items that are used for testing
      * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> validStringTestItems = new ArrayList<>();
 
     /**
      * Items that are used for testing
      * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      */
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> invalidStringTestItems = new ArrayList<>();
 
-    @Getter(AccessLevel.MODULE)
+    @Getter(AccessLevel.PACKAGE)
     private final Set<String> roundtripValues = new HashSet<>();
 
     /**
