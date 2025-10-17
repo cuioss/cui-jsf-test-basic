@@ -317,34 +317,6 @@ The JSF testing framework maintains backward compatibility with the existing app
 
 However, it is recommended to migrate to the new parameter resolution approach for all new tests and to gradually migrate existing tests as time permits.
 
-== Future Enhancements
-
-Future enhancements to the parameter resolution support include:
-
-=== Extended Parameter Resolution Support
-
-* Support for additional JSF objects:
-** `NavigationHandler` - for testing navigation logic
-** `UIComponent` instances - for testing component behavior
-** `ELContext` - for testing expression language evaluation
-** `ViewHandler` - for testing view handling logic
-** `RenderKit` - for testing rendering logic
-** `UIViewRoot` - for testing view root functionality
-** `ResourceHandler` - for testing resource handling
-** Custom beans from the JSF context - for testing application-specific beans
-
-* Custom annotations for specific injection scenarios:
-** `@JsfInject` annotation for more specific injection control
-** Qualification of injected objects (e.g., by name or type)
-** Injection of custom beans from the JSF context
-** Injection of mock objects for testing
-
-=== Performance Optimization
-
-* Evaluation of performance impact of parameter resolution vs. manual injection
-* Optimization of the parameter resolution mechanism
-* Implementation of caching for frequently resolved parameters
-
 == Conclusion
 
 Migrating to the parameter resolution approach will make your JSF tests more concise, readable, and maintainable. The migration process is straightforward and can be done incrementally, allowing you to migrate tests at your own pace while maintaining backward compatibility.
