@@ -131,7 +131,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         setup.setApplication(environment.getFacesContext().getApplication());
 
         LOGGER.debug(() -> "Registering Decorators");
-        Set<JsfTestConfiguration> decoratorAnnotations = new LinkedHashSet<>(16);
+        Set<JsfTestConfiguration> decoratorAnnotations = LinkedHashSet.newLinkedHashSet(16);
 
         retrieveDecoratorAnnotations(testInstance.getClass(), decoratorAnnotations);
         decoratorAnnotations = decoratorAnnotations.stream().filter(Objects::nonNull).collect(Collectors.toSet());
@@ -280,7 +280,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         retrieveEnableJSFAnnotations(testClass, methodAnnotations, testMethod.get());
 
         // Check for method-level JsfTestConfiguration annotations
-        Set<JsfTestConfiguration> decoratorAnnotations = new LinkedHashSet<>(16);
+        Set<JsfTestConfiguration> decoratorAnnotations = LinkedHashSet.newLinkedHashSet(16);
         retrieveDecoratorAnnotations(testClass, decoratorAnnotations, testMethod.get());
         decoratorAnnotations = decoratorAnnotations.stream().filter(Objects::nonNull).collect(Collectors.toSet());
 
