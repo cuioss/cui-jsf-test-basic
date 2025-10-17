@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,7 +118,7 @@ public class CuiMockResourceHandler extends ResourceHandler {
             @Override
             public URL getURL() {
                 try {
-                    return new URL(DUMMY_URL + resourceName);
+                    return URI.create(DUMMY_URL + resourceName).toURL();
                 } catch (MalformedURLException e) {
                     throw new IllegalStateException(e);
                 }
