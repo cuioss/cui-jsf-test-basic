@@ -11,3 +11,7 @@ sonar:
 
 pages:
   reference: cui-jsf-test-basic
+
+github-automation:
+  auto-merge-build-versions: true
+  auto-merge-build-timeout: 300
