@@ -1,6 +1,13 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/cuioss/cuioss-organization/main/.github/actions/read-project-config/schema.json
 name: cui-jsf-test-basic
-pages-reference: cui-jsf-test-basic
-sonar-project-key: cuioss_cui-jsf-test-basic
+
 release:
   current-version: 4.1.1
   next-version: 4.0-SNAPSHOT
+  create-github-release: true
+
+sonar:
+  project-key: cuioss_cui-jsf-test-basic
+
+pages:
+  reference: cui-jsf-test-basic
