@@ -2,7 +2,7 @@
 name: cui-jsf-test-basic
 
 release:
-  current-version: 4.1.1
+  current-version: 4.1.2
   next-version: 4.0-SNAPSHOT
   create-github-release: true
 
