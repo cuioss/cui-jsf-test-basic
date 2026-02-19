@@ -15,3 +15,11 @@ pages:
 github-automation:
   auto-merge-build-versions: true
   auto-merge-build-timeout: 300
+
+consumers:
+  - cuioss-parent-pom:version.cui.test.jsf.basic
+
+dependency-propagation:
+  group-id: de.cuioss.test
+  artifact-id: cui-jsf-test-basic
+  scope: dependency
