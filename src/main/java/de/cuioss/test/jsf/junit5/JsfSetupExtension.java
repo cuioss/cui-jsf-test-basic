@@ -140,6 +140,12 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         configureComponents(testInstance, environment.getComponentConfigDecorator(), decoratorAnnotations);
         configureRequestConfig(testInstance, environment.getRequestConfigDecorator(), decoratorAnnotations);
 
+        // Install default CuiMock implementations, matching ConfigurableFacesTest (issue #104)
+        var appConfig = environment.getApplicationConfigDecorator();
+        appConfig.getMockNavigationHandler();
+        appConfig.getMockSearchExpressionHandler();
+        appConfig.getMockResourceHandler();
+
         if (testInstance instanceof JsfEnvironmentConsumer consumer) {
             consumer.setEnvironmentHolder(environment);
         }

@@ -71,8 +71,15 @@ public class ConfigurableApplication extends ApplicationWrapper {
     public static ConfigurableApplication createWrapAndRegister(final MockFacesContext facesContext) {
         requireNonNull(facesContext);
         final var factory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
-        final var old = factory.getApplication();
-        final var application = new ConfigurableApplication(old);
+        final var current = factory.getApplication();
+        // Idempotent: avoid stacking ConfigurableApplication wrappers across
+        // postProcessTestInstance / beforeEach — the outer wrapper would otherwise
+        // shadow state configured on the inner one (issue #104).
+        if (current instanceof ConfigurableApplication existing) {
+            facesContext.setApplication(existing);
+            return existing;
+        }
+        final var application = new ConfigurableApplication(current);
         factory.setApplication(application);
         facesContext.setApplication(application);
         return application;
