@@ -114,10 +114,12 @@ public class ApplicationConfigDecorator {
      * instance
      */
     public CuiMockConfigurableNavigationHandler getMockNavigationHandler() {
-        if (!(application.getNavigationHandler() instanceof CuiMockConfigurableNavigationHandler)) {
-            application.setNavigationHandler(new CuiMockConfigurableNavigationHandler());
+        if (application.getNavigationHandler() instanceof CuiMockConfigurableNavigationHandler existing) {
+            return existing;
         }
-        return (CuiMockConfigurableNavigationHandler) application.getNavigationHandler();
+        var handler = new CuiMockConfigurableNavigationHandler();
+        application.setNavigationHandler(handler);
+        return handler;
     }
 
     /**
@@ -125,10 +127,12 @@ public class ApplicationConfigDecorator {
      * application does not yet hold such an instance a new one will be installed.
      */
     public CuiMockSearchExpressionHandler getMockSearchExpressionHandler() {
-        if (!(application.getSearchExpressionHandler() instanceof CuiMockSearchExpressionHandler)) {
-            application.setSearchExpressionHandler(new CuiMockSearchExpressionHandler());
+        if (application.getSearchExpressionHandler() instanceof CuiMockSearchExpressionHandler existing) {
+            return existing;
         }
-        return (CuiMockSearchExpressionHandler) application.getSearchExpressionHandler();
+        var handler = new CuiMockSearchExpressionHandler();
+        application.setSearchExpressionHandler(handler);
+        return handler;
     }
 
     /**
@@ -136,10 +140,12 @@ public class ApplicationConfigDecorator {
      * does not yet hold such an instance a new one will be installed.
      */
     public CuiMockResourceHandler getMockResourceHandler() {
-        if (!(application.getResourceHandler() instanceof CuiMockResourceHandler)) {
-            application.setResourceHandler(new CuiMockResourceHandler());
+        if (application.getResourceHandler() instanceof CuiMockResourceHandler existing) {
+            return existing;
         }
-        return (CuiMockResourceHandler) application.getResourceHandler();
+        var handler = new CuiMockResourceHandler();
+        application.setResourceHandler(handler);
+        return handler;
     }
 
     /**
