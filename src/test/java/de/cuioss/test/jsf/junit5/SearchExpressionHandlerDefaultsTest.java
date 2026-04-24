@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.junit5;
 
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
+import de.cuioss.test.jsf.mocks.CuiMockResourceHandler;
 import de.cuioss.test.jsf.mocks.CuiMockSearchExpressionHandler;
 import jakarta.faces.application.Application;
 import jakarta.faces.component.search.SearchExpressionHandler;
@@ -59,5 +60,13 @@ class SearchExpressionHandlerDefaultsTest {
         application.setSearchExpressionHandler(custom);
         assertSame(custom, facesContext.getApplication().getSearchExpressionHandler(),
             "Setting a handler on the injected Application must be visible via facesContext.getApplication()");
+    }
+
+    @Test
+    void defaultResourceHandlerIsProvided(FacesContext facesContext, ApplicationConfigDecorator appConfig) {
+        assertInstanceOf(CuiMockResourceHandler.class,
+            facesContext.getApplication().getResourceHandler(),
+            "Default ResourceHandler must be a CuiMockResourceHandler");
+        assertNotNull(appConfig.getMockResourceHandler());
     }
 }

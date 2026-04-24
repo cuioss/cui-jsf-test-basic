@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.config.decorator;
 
 import de.cuioss.test.jsf.mocks.CuiMockConfigurableNavigationHandler;
+import de.cuioss.test.jsf.mocks.CuiMockResourceHandler;
 import de.cuioss.test.jsf.mocks.CuiMockSearchExpressionHandler;
 import de.cuioss.tools.reflect.FieldWrapper;
 import jakarta.faces.application.*;
@@ -128,6 +129,17 @@ public class ApplicationConfigDecorator {
             application.setSearchExpressionHandler(new CuiMockSearchExpressionHandler());
         }
         return (CuiMockSearchExpressionHandler) application.getSearchExpressionHandler();
+    }
+
+    /**
+     * @return an instance of {@link CuiMockResourceHandler}. If the application
+     * does not yet hold such an instance a new one will be installed.
+     */
+    public CuiMockResourceHandler getMockResourceHandler() {
+        if (!(application.getResourceHandler() instanceof CuiMockResourceHandler)) {
+            application.setResourceHandler(new CuiMockResourceHandler());
+        }
+        return (CuiMockResourceHandler) application.getResourceHandler();
     }
 
     /**

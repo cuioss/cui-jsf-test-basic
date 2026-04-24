@@ -114,8 +114,10 @@ public class ConfigurableFacesTest {
         componentConfigDecorator.registerConverter(EnumConverter.class, EnumConverter.CONVERTER_ID);
         componentConfigDecorator.registerConverter(EnumConverter.class, Enum.class);
 
-        // Enable CuiMockConfigurableNavigationHandler to be used
+        // Enable default CuiMock implementations (issue #104)
         getApplicationConfigDecorator().getMockNavigationHandler();
+        getApplicationConfigDecorator().getMockSearchExpressionHandler();
+        getApplicationConfigDecorator().getMockResourceHandler();
     }
 
     protected FacesContext getFacesContext() {

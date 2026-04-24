@@ -144,6 +144,7 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         var appConfig = environment.getApplicationConfigDecorator();
         appConfig.getMockNavigationHandler();
         appConfig.getMockSearchExpressionHandler();
+        appConfig.getMockResourceHandler();
 
         if (testInstance instanceof JsfEnvironmentConsumer consumer) {
             consumer.setEnvironmentHolder(environment);
