@@ -16,7 +16,7 @@
     },
     "phase-2-refine": {
       "confidence_threshold": 95,
-      "compatibility": "breaking",
+      "compatibility": "deprecation",
       "simplicity": "lean",
       "effort": "level-3",
       "revalidation": "auto"
@@ -61,9 +61,9 @@
       "drop_review_on_scope_gate": false,
       "steps": [
         "default:pre-push-quality-gate",
-        "default:finalize-step-simplify",
         "default:finalize-step-whole-tree-gate",
         "default:commit-push",
+        "default:finalize-step-simplify",
         "default:create-pr",
         "default:ci-verify",
         "default:automated-review",

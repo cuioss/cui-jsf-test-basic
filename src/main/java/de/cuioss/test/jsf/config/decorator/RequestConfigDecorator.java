@@ -28,7 +28,6 @@ import org.apache.myfaces.test.mock.MockHttpServletRequest;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -145,7 +144,7 @@ public class RequestConfigDecorator {
      */
     public RequestConfigDecorator setRequestLocale(final Locale... requestLocale) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();
-        List<Locale> localeList = requestLocale == null ? Collections.emptyList() : Arrays.asList(requestLocale);
+        List<Locale> localeList = requestLocale == null ? List.of() : Arrays.asList(requestLocale);
         Locale locale = null;
         if (!localeList.isEmpty()) {
             locale = localeList.getFirst();

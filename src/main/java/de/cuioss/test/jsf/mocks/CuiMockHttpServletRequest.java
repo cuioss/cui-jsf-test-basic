@@ -74,7 +74,7 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
 
     @Override
     public Collection<Part> getParts() {
-        return Collections.emptyList();
+        return List.of();
     }
 
     @Override

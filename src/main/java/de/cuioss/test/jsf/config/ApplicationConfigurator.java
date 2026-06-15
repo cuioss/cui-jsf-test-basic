@@ -39,7 +39,7 @@ import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
  * See the migration guide for more details.
  */
 @Deprecated
-public interface ApplicationConfigurator extends JsfTestContextConfigurator {
+public interface ApplicationConfigurator extends JsfTestSetup {
 
     /**
      * Callback method for interacting with the {@link ApplicationConfigDecorator}
@@ -47,5 +47,6 @@ public interface ApplicationConfigurator extends JsfTestContextConfigurator {
      *
      * @param decorator is never null
      */
+    @Override
     void configureApplication(ApplicationConfigDecorator decorator);
 }

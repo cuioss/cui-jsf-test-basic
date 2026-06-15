@@ -25,12 +25,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * This annotation can be used to configure certain aspects of the
- * configuration of the jsf-runtime for unit-testing. For simple cases the
- * test-class can implement the corresponding interfaces itself:
- * {@link ApplicationConfigurator}, {@link ComponentConfigurator},
- * {@link RequestConfigurator}. The base-class will
- * ensure that the corresponding methods will be called at setup-time. This is
- * useful for cases, where there is no need to reuse a certain configuration.
+ * configuration of the jsf-runtime for unit-testing. Configuration classes
+ * should implement {@link JsfTestSetup} and override only the methods they
+ * need. This is useful for cases where a certain configuration is reused
+ * across multiple test classes.
  * 
  * <p>
  * This annotation can be applied at both the type level (class) and method level.
@@ -52,8 +50,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface JsfTestConfiguration {
 
     /**
-     * @return one or more concrete instances of {@link JsfTestContextConfigurator}
+     * @return one or more concrete instances of {@link JsfTestSetup}
      */
-    Class<? extends JsfTestContextConfigurator>[] value();
+    Class<? extends JsfTestSetup>[] value();
 
 }

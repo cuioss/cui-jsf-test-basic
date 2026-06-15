@@ -1,0 +1,83 @@
+= JSF Testing Framework Migration Guide to 4.3
+
+== Introduction
+
+This document describes the migration to *4.3* for reusable `@JsfTestConfiguration` configuration classes.
+
+In *4.3* the JSF testing framework introduces `JsfTestSetup`, a new non-deprecated interface that replaces the deprecated `JsfTestContextConfigurator` hierarchy as the configuration target for `@JsfTestConfiguration`. This change removes the need to suppress deprecation warnings purely to reference the configurator types in the annotation.
+
+No dependency-version change is required to adopt the new target: the release is already `4.3-SNAPSHOT`, and the next release is `4.3.0`.
+
+== Overview of Changes
+
+The annotation bound of `@JsfTestConfiguration` has changed:
+
+* `@JsfTestConfiguration.value()` now accepts `Class<? extends JsfTestSetup>[]` (previously `Class<? extends JsfTestContextConfigurator>[]`).
+* `JsfTestSetup` is the new, non-deprecated configuration target.
+
+Key changes include:
+
+* Introduction of the non-deprecated `de.cuioss.test.jsf.config.JsfTestSetup` interface.
+* Re-parenting of the legacy configurator sub-interfaces (`ApplicationConfigurator`, `ComponentConfigurator`, `RequestConfigurator`) onto `JsfTestSetup`.
+* Retargeting of `@JsfTestConfiguration.value()` to `Class<? extends JsfTestSetup>[]`.
+* Broadening of the configuration dispatch so a bare `JsfTestSetup` implementor has all three configure methods invoked.
+* Maintenance of backward compatibility so existing configuration classes continue to work unchanged.
+
+== The Three Default Methods
+
+`JsfTestSetup` declares three `default` no-op methods, so an implementor overrides only the aspects it needs and is no longer required to chain through a deprecated sub-interface:
+
+* `configureApplication(ApplicationConfigDecorator)` — navigation cases, resource bundles, and other application-level settings.
+* `configureComponents(ComponentConfigDecorator)` — registration of components, renderers, converters, and validators.
+* `configureRequest(RequestConfigDecorator)` — request- and response-level configuration.
+
+Because every method has an empty default implementation, a configuration class is free to implement just one, two, or all three callbacks.
+
+== Migration Guide
+
+To migrate a reusable configuration class from a deprecated configurator sub-interface to `JsfTestSetup`:
+
+1. Change the `implements` clause from the legacy sub-interface to `JsfTestSetup`.
+2. Keep the existing `configure*` method bodies and their `@Override` annotations — they now override the `JsfTestSetup` defaults.
+3. Remove the legacy sub-interface import and the `@SuppressWarnings("java:S1874")` annotation that was added purely to reference the deprecated type.
+
+=== Before Migration
+
+[source,java]
+----
+@SuppressWarnings("java:S1874")
+public class MyApplicationConfiguration implements ApplicationConfigurator {
+
+    @Override
+    public void configureApplication(ApplicationConfigDecorator decorator) {
+        decorator.registerNavigationCase("outcome", "targetViewId");
+    }
+}
+----
+
+=== After Migration
+
+[source,java]
+----
+public class MyApplicationConfiguration implements JsfTestSetup {
+
+    @Override
+    public void configureApplication(ApplicationConfigDecorator decorator) {
+        decorator.registerNavigationCase("outcome", "targetViewId");
+    }
+}
+----
+
+The `@SuppressWarnings("java:S1874")` annotation is no longer needed because `JsfTestSetup` is not deprecated. The `configureComponents` and `configureRequest` callbacks are inherited as no-op defaults and need not be implemented.
+
+== Backward Compatibility
+
+The change is a backward-compatible API extension:
+
+* The legacy sub-interfaces (`ApplicationConfigurator`, `ComponentConfigurator`, `RequestConfigurator`) are re-parented onto `JsfTestSetup` and retained as `@Deprecated`.
+* Because they are now sub-types of `JsfTestSetup`, existing `@JsfTestConfiguration(SomeConfigurator.class)` usages continue to satisfy the new `Class<? extends JsfTestSetup>[]` bound and compile unchanged.
+* Migration to `JsfTestSetup` is recommended but not required; existing code continues to work without modification.
+
+== Conclusion
+
+Adopting `JsfTestSetup` removes the deprecation-warning suppression that the legacy configurator hierarchy forced on every `@JsfTestConfiguration` consumer, while leaving all existing configuration classes working unchanged. Migration is a small, mechanical change that can be done incrementally.

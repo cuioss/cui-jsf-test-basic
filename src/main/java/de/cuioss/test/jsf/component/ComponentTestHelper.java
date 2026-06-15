@@ -75,8 +75,8 @@ public final class ComponentTestHelper {
             map.put(configuredName, resolvePropertyForConfiguredName(instance, configuredName));
         }
 
-        var filtered = AnnotationHelper.modifyPropertyMetadata(map, defaultValued, Collections.emptyList(),
-            Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), unorderedCollection);
+        var filtered = AnnotationHelper.modifyPropertyMetadata(map, defaultValued, List.of(),
+            List.of(), List.of(), List.of(), unorderedCollection);
 
         List<ComponentPropertyMetadata> found = new ArrayList<>();
         for (Entry<String, PropertyMetadata> entry : filtered.entrySet()) {

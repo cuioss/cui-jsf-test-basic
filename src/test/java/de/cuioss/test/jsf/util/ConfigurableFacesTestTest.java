@@ -26,8 +26,6 @@ import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,7 +89,7 @@ class ConfigurableFacesTestTest extends ConfigurableFacesTest
     }
 
     @Test
-    void shouldHandleRedirect() throws IOException {
+    void shouldHandleRedirect() throws Exception {
         getExternalContext().redirect(TO_VIEW_JSF);
         assertRedirect(TO_VIEW_JSF);
     }

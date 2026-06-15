@@ -39,7 +39,7 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
  * See the migration guide for more details.
  */
 @Deprecated
-public interface ComponentConfigurator extends JsfTestContextConfigurator {
+public interface ComponentConfigurator extends JsfTestSetup {
 
     /**
      * Callback method for interacting with the {@link ComponentConfigDecorator} at
@@ -47,5 +47,6 @@ public interface ComponentConfigurator extends JsfTestContextConfigurator {
      *
      * @param decorator is never null
      */
+    @Override
     void configureComponents(ComponentConfigDecorator decorator);
 }

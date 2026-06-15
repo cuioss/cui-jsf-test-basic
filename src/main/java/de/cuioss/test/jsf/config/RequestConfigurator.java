@@ -39,7 +39,7 @@ import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
  * See the migration guide for more details.
  */
 @Deprecated
-public interface RequestConfigurator extends JsfTestContextConfigurator {
+public interface RequestConfigurator extends JsfTestSetup {
 
     /**
      * Callback method for interacting with the {@link RequestConfigDecorator} at
@@ -47,5 +47,6 @@ public interface RequestConfigurator extends JsfTestContextConfigurator {
      *
      * @param decorator is never null
      */
+    @Override
     void configureRequest(RequestConfigDecorator decorator);
 }

@@ -23,8 +23,6 @@ import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
@@ -41,7 +39,7 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
     }
 
     @Test
-    void shouldRenderGoodCase(FacesContext facesContext) throws IOException {
+    void shouldRenderGoodCase(FacesContext facesContext) throws Exception {
         assertEquals(RENDER_RESULT, assertDoesNotThrow(() -> renderToString(component, facesContext)));
         assertRenderResult(component, RENDER_RESULT, facesContext);
         assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT), facesContext);

@@ -18,7 +18,7 @@ package de.cuioss.test.jsf.mocks;
 import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -35,7 +35,7 @@ class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
         var factory = CuiMockSearchExpressionContextFactory.retrieve();
 
         var inlineCreated = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
-            Collections.emptySet(), Collections.emptySet());
+            Set.of(), Set.of());
 
         assertNotNull(inlineCreated.getVisitHints());
 
@@ -43,7 +43,7 @@ class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
             new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(), null, null));
 
         var preconfigured = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
-            Collections.emptySet(), Collections.emptySet());
+            Set.of(), Set.of());
 
         assertNull(preconfigured.getVisitHints());
     }
