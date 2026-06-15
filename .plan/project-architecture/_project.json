@@ -1,0 +1,13 @@
+{
+  "description": "JSF testing framework extending MyFaces-Test with mock-based infrastructure for testing JSF components, validators, converters, and renderers in Jakarta EE 10 (JSF 4.1+); provides base test classes, HTML tree generation/assertion tools, and JUnit 5 integration.",
+  "description_reasoning": "Derived from CLAUDE.md Project Overview",
+  "extensions_used": [
+    "plan-marshall",
+    "pm-documents"
+  ],
+  "modules": {
+    "cui-jsf-test-basic": {},
+    "documentation": {}
+  },
+  "name": "cui-jsf-test-basic"
+}

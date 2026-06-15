@@ -308,3 +308,12 @@ See `doc/migration.adoc` for detailed migration guide.
 - JSF 4+ support: main branch (4.x releases)
 - JSF 2.3 support: Release 2.0.2 on v2 branch
 - Parent POM: `de.cuioss:cui-java-parent:0.9.9.6`
+
+## Temporary Files
+
+Use `.plan/temp/` for ALL temporary and generated files (covered by `Write(.plan/**)` permission — avoids permission prompts).
+
+## Tool Usage
+
+- Use proper tools (Edit, Read, Write) instead of shell commands (echo, cat)
+- Never use Bash for file operations (find, grep, cat, ls) — use Glob, Read, Grep tools instead

@@ -1,0 +1,15 @@
+{
+  "best_practices": [],
+  "insights": [],
+  "internal_dependencies": [],
+  "key_dependencies": [],
+  "key_dependencies_reasoning": "",
+  "key_packages": {},
+  "purpose": "documentation",
+  "purpose_reasoning": "doc/ directory containing usage.adoc and migration.adoc",
+  "responsibility": "AsciiDoc documentation sources: usage guide and migration guide for the testing framework.",
+  "responsibility_reasoning": "doc/ directory containing usage.adoc and migration.adoc",
+  "skills_by_profile": {},
+  "skills_by_profile_reasoning": "",
+  "tips": []
+}
