@@ -25,8 +25,6 @@ import lombok.Setter;
 import org.apache.myfaces.test.config.ResourceBundleVarNames;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
@@ -80,7 +78,7 @@ class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
     }
 
     @Test
-    void shouldAssertRedirect() throws IOException {
+    void shouldAssertRedirect() throws Exception {
         getExternalContext().redirect(TO_VIEW_JSF);
         assertRedirect(TO_VIEW_JSF);
     }

@@ -21,8 +21,6 @@ import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -80,7 +78,7 @@ class NavigationAssertsTest {
     @Test
     void shouldAssertRedirect(
         ExternalContext externalContext,
-        NavigationAsserts navigationAsserts) throws IOException {
+        NavigationAsserts navigationAsserts) throws Exception {
         // Perform redirect
         externalContext.redirect("/test/url");
 
@@ -95,7 +93,7 @@ class NavigationAssertsTest {
     @Test
     void shouldFailWhenRedirectUrlDoesntMatch(
         ExternalContext externalContext,
-        NavigationAsserts navigationAsserts) throws IOException {
+        NavigationAsserts navigationAsserts) throws Exception {
         // Perform redirect
         externalContext.redirect("/test/url");
 

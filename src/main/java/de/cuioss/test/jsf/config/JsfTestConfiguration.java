@@ -52,8 +52,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface JsfTestConfiguration {
 
     /**
-     * @return one or more concrete instances of {@link JsfTestContextConfigurator}
+     * @return one or more concrete instances of {@link JsfTestSetup}
      */
-    Class<? extends JsfTestContextConfigurator>[] value();
+    Class<? extends JsfTestSetup>[] value();
 
 }

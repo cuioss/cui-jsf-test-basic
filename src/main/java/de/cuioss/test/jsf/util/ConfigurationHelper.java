@@ -83,6 +83,8 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureComponents(registry));
+        getBareJsfTestSetups(configurations, ComponentConfigurator.class)
+            .forEach(instance -> instance.configureComponents(registry));
     }
 
     /**
@@ -108,6 +110,8 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureApplication(registry));
+        getBareJsfTestSetups(configurations, ApplicationConfigurator.class)
+            .forEach(instance -> instance.configureApplication(registry));
     }
 
     /**
@@ -133,22 +137,50 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureRequest(registry));
+        getBareJsfTestSetups(configurations, RequestConfigurator.class)
+            .forEach(instance -> instance.configureRequest(registry));
     }
 
     /**
      * @param configurations all configurators
      * @param configurator   class to check if assignable
      * @param <T>            target type
-     * @return list of {@link JsfTestContextConfigurator} with target type
+     * @return list of {@link JsfTestSetup} with target type
      */
     @SuppressWarnings("unchecked")
-    private static <T extends JsfTestContextConfigurator> List<T> getAssignableContextConfigurators(
+    private static <T extends JsfTestSetup> List<T> getAssignableContextConfigurators(
         final Collection<JsfTestConfiguration> configurations, final Class<T> configurator) {
         final List<T> instances = new ArrayList<>();
         for (final JsfTestConfiguration config : configurations) {
-            for (final Class<? extends JsfTestContextConfigurator> type : config.value()) {
+            for (final Class<? extends JsfTestSetup> type : config.value()) {
                 if (configurator.isAssignableFrom(type)) {
                     instances.add((T) new DefaultInstantiator<>(type).newInstance());
+                }
+            }
+        }
+        return instances;
+    }
+
+    /**
+     * Collects instances of bare {@link JsfTestSetup} implementors — types referenced by
+     * {@link JsfTestConfiguration#value()} that do <em>not</em> implement the given legacy
+     * sub-interface. These implementors are dispatched via the {@link JsfTestSetup} default
+     * methods, while legacy implementors are handled by the per-sub-interface dispatch path
+     * to avoid double-invocation.
+     *
+     * @param configurations the previously extracted annotations, must not be null
+     * @param legacyConfigurator the legacy sub-interface whose implementors are already
+     *                           dispatched elsewhere and must be excluded here
+     * @return list of {@link JsfTestSetup} instances that are not instances of the legacy
+     *         sub-interface
+     */
+    private static List<JsfTestSetup> getBareJsfTestSetups(final Collection<JsfTestConfiguration> configurations,
+        final Class<? extends JsfTestSetup> legacyConfigurator) {
+        final List<JsfTestSetup> instances = new ArrayList<>();
+        for (final JsfTestConfiguration config : configurations) {
+            for (final Class<? extends JsfTestSetup> type : config.value()) {
+                if (!legacyConfigurator.isAssignableFrom(type)) {
+                    instances.add(new DefaultInstantiator<>(type).newInstance());
                 }
             }
         }
