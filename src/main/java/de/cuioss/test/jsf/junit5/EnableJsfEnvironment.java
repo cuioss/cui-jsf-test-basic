@@ -183,7 +183,7 @@ public @interface EnableJsfEnvironment {
      * When true, the IdentityResourceBundle will be used which returns the message key
      * itself instead of looking up the actual message. This is useful for testing
      * that the correct message key is used without testing the ResourceBundle mechanism.
-     * 
+     *
      * @return true if the IdentityResourceBundle should be used, false otherwise
      */
     boolean useIdentityResourceBundle() default true;

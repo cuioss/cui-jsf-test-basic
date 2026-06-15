@@ -29,14 +29,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * should implement {@link JsfTestSetup} and override only the methods they
  * need. This is useful for cases where a certain configuration is reused
  * across multiple test classes.
- * 
+ *
  * <p>
  * This annotation can be applied at both the type level (class) and method level.
  * When applied at the method level, the configuration will only be applied for that
  * specific test method. When applied at both levels, the method-level configuration
  * takes precedence over the class-level configuration.
  * </p>
- * 
+ *
  * <p>
  * For nested test classes, the annotation can be applied to the nested class,
  * and it will take precedence over any annotation on the parent class.
