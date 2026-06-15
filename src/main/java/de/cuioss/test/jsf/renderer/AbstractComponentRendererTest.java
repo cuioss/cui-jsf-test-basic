@@ -85,7 +85,7 @@ public abstract class AbstractComponentRendererTest<R extends Renderer> extends 
     /**
      * Iterates through all active RendererAttributeAssert and tests them
      * accordingly.
-     * 
+     *
      * @param facesContext the FacesContext to be used for rendering
      */
     @Test

@@ -35,7 +35,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
     /**
      * Returns the array of EnableJsfEnvironment annotations that are contained
      * within this repeatable annotation container.
-     * 
+     *
      * @return an array of {@link EnableJsfEnvironment} annotations to be applied
      */
     EnableJsfEnvironment[] value();
