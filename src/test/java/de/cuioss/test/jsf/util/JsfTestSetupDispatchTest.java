@@ -24,9 +24,7 @@ import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Verifies that a bare {@link JsfTestSetup} implementor — one that does <em>not</em>

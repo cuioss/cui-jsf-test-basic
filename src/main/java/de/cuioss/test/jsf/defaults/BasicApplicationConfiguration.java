@@ -15,8 +15,7 @@
  */
 package de.cuioss.test.jsf.defaults;
 
-import de.cuioss.test.jsf.config.ApplicationConfigurator;
-import de.cuioss.test.jsf.config.RequestConfigurator;
+import de.cuioss.test.jsf.config.JsfTestSetup;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 
@@ -36,7 +35,7 @@ import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
  *
  * @author Oliver Wolff
  */
-public class BasicApplicationConfiguration implements ApplicationConfigurator, RequestConfigurator {
+public class BasicApplicationConfiguration implements JsfTestSetup {
 
     /**
      * Firefox user-agent
