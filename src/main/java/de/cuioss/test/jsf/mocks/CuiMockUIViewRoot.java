@@ -23,7 +23,7 @@ import java.util.Map;
 import static de.cuioss.tools.collect.CollectionLiterals.mutableMap;
 
 /**
- * Mock variant of {@link UIViewRoot} providing a heloer for adding a
+ * Mock variant of {@link UIViewRoot} providing a helper for adding a
  * {@link UIComponent} at runtime
  *
  * @author Oliver Wolff
