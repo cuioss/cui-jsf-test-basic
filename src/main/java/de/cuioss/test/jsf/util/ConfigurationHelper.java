@@ -83,7 +83,7 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureComponents(registry));
-        getBareJsfTestSetups(configurations, ComponentConfigurator.class)
+        getBareJsfTestSetups(configurations)
             .forEach(instance -> instance.configureComponents(registry));
     }
 
@@ -110,7 +110,7 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureApplication(registry));
-        getBareJsfTestSetups(configurations, ApplicationConfigurator.class)
+        getBareJsfTestSetups(configurations)
             .forEach(instance -> instance.configureApplication(registry));
     }
 
@@ -137,7 +137,7 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureRequest(registry));
-        getBareJsfTestSetups(configurations, RequestConfigurator.class)
+        getBareJsfTestSetups(configurations)
             .forEach(instance -> instance.configureRequest(registry));
     }
 
@@ -163,23 +163,24 @@ public final class ConfigurationHelper {
 
     /**
      * Collects instances of bare {@link JsfTestSetup} implementors — types referenced by
-     * {@link JsfTestConfiguration#value()} that do <em>not</em> implement the given legacy
-     * sub-interface. These implementors are dispatched via the {@link JsfTestSetup} default
-     * methods, while legacy implementors are handled by the per-sub-interface dispatch path
-     * to avoid double-invocation.
+     * {@link JsfTestConfiguration#value()} that do <em>not</em> implement any of the legacy
+     * sub-interfaces ({@link ApplicationConfigurator}, {@link ComponentConfigurator},
+     * {@link RequestConfigurator}). These implementors are dispatched via the
+     * {@link JsfTestSetup} default methods for all configuration phases, while legacy
+     * implementors are handled by the per-sub-interface dispatch path to avoid
+     * redundant instantiations.
      *
      * @param configurations the previously extracted annotations, must not be null
-     * @param legacyConfigurator the legacy sub-interface whose implementors are already
-     *                           dispatched elsewhere and must be excluded here
-     * @return list of {@link JsfTestSetup} instances that are not instances of the legacy
-     *         sub-interface
+     * @return list of {@link JsfTestSetup} instances that do not implement any legacy
+     *         configurator sub-interface
      */
-    private static List<JsfTestSetup> getBareJsfTestSetups(final Collection<JsfTestConfiguration> configurations,
-        final Class<? extends JsfTestSetup> legacyConfigurator) {
+    private static List<JsfTestSetup> getBareJsfTestSetups(final Collection<JsfTestConfiguration> configurations) {
         final List<JsfTestSetup> instances = new ArrayList<>();
         for (final JsfTestConfiguration config : configurations) {
             for (final Class<? extends JsfTestSetup> type : config.value()) {
-                if (!legacyConfigurator.isAssignableFrom(type)) {
+                if (!ApplicationConfigurator.class.isAssignableFrom(type)
+                    && !ComponentConfigurator.class.isAssignableFrom(type)
+                    && !RequestConfigurator.class.isAssignableFrom(type)) {
                     instances.add(new DefaultInstantiator<>(type).newInstance());
                 }
             }
