@@ -21,9 +21,12 @@ import de.cuioss.test.jsf.mocks.CuiMockSearchExpressionHandler;
 import jakarta.faces.application.Application;
 import jakarta.faces.component.search.SearchExpressionHandler;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Regression tests for issue #104: {@link CuiMockSearchExpressionHandler} must be
@@ -35,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SearchExpressionHandlerDefaultsTest {
 
     @Test
+    @DisplayName("Should provide a default CuiMockSearchExpressionHandler")
     void defaultSearchExpressionHandlerIsProvided(FacesContext facesContext) {
         assertInstanceOf(CuiMockSearchExpressionHandler.class,
             facesContext.getApplication().getSearchExpressionHandler(),
@@ -43,11 +47,13 @@ class SearchExpressionHandlerDefaultsTest {
     }
 
     @Test
+    @DisplayName("Should expose the mock search expression handler via the decorator")
     void decoratorExposesMockSearchExpressionHandler(ApplicationConfigDecorator appConfig) {
         assertNotNull(appConfig.getMockSearchExpressionHandler());
     }
 
     @Test
+    @DisplayName("Should inject the same Application instance used by the FacesContext")
     void injectedApplicationMatchesFacesContextApplication(Application application, FacesContext facesContext) {
         assertSame(application, facesContext.getApplication(),
             "Injected Application parameter must be identical to facesContext.getApplication() — "
@@ -55,6 +61,7 @@ class SearchExpressionHandlerDefaultsTest {
     }
 
     @Test
+    @DisplayName("Should make configuration on the injected Application visible to the FacesContext")
     void configurationOnInjectedApplicationIsVisibleToFacesContext(Application application, FacesContext facesContext) {
         var custom = new CuiMockSearchExpressionHandler();
         application.setSearchExpressionHandler(custom);
@@ -63,6 +70,7 @@ class SearchExpressionHandlerDefaultsTest {
     }
 
     @Test
+    @DisplayName("Should provide a default CuiMockResourceHandler")
     void defaultResourceHandlerIsProvided(FacesContext facesContext, ApplicationConfigDecorator appConfig) {
         assertInstanceOf(CuiMockResourceHandler.class,
             facesContext.getApplication().getResourceHandler(),

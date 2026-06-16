@@ -19,9 +19,11 @@ import de.cuioss.test.jsf.config.JsfTestConfiguration;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 import jakarta.faces.context.FacesContext;
 import org.apache.myfaces.test.mock.MockFacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnableJsfEnvironment
@@ -29,9 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class JsfSetupExtensionTestWOEnvironmentConsumerTest {
 
     @Test
-    void shouldBootstrapJsf() {
-        assertNotNull(FacesContext.getCurrentInstance());
-        assertEquals(MockFacesContext.class, FacesContext.getCurrentInstance().getClass());
+    @DisplayName("Should bootstrap JSF without implementing JsfEnvironmentConsumer")
+    void shouldBootstrapJsf(FacesContext facesContext) {
+        assertNotNull(facesContext, "FacesContext should be resolved as parameter");
+        assertEquals(FacesContext.getCurrentInstance(), facesContext,
+            "Resolved FacesContext should match the current thread-local instance");
+        assertInstanceOf(MockFacesContext.class, facesContext,
+            "FacesContext should be a MockFacesContext");
     }
 
 }

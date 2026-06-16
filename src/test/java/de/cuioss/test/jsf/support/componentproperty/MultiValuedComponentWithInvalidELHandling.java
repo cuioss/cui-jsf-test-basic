@@ -17,6 +17,13 @@ package de.cuioss.test.jsf.support.componentproperty;
 
 import de.cuioss.test.jsf.config.component.VerifyComponentProperties;
 
+/**
+ * Test fixture deliberately violating the value-expression contract: the
+ * {@code someProperty} accessors store and read state under the mismatched key
+ * {@link #INVALID_VE} instead of {@code "someProperty"}. The mismatch is
+ * intentional so {@code ValueExpressionPropertyContractTestInvalidTest} can
+ * assert the contract fails — do not "fix" it to use the property name.
+ */
 @VerifyComponentProperties(of = {"someProperty"})
 public class MultiValuedComponentWithInvalidELHandling extends MultiValuedComponent {
 

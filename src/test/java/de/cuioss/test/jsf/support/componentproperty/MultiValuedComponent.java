@@ -20,5 +20,4 @@ import jakarta.faces.component.html.HtmlInputText;
 
 @VerifyComponentProperties(of = {"rendered", "styleClass", "style"})
 public class MultiValuedComponent extends HtmlInputText {
-
 }

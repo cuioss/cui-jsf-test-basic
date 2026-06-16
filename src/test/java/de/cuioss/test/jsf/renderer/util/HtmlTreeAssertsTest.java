@@ -18,10 +18,14 @@ package de.cuioss.test.jsf.renderer.util;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@DisplayName("HtmlTreeAsserts")
 class HtmlTreeAssertsTest {
 
     private static final String SPAN = "span";
@@ -38,93 +42,124 @@ class HtmlTreeAssertsTest {
 
     private static final String DIV = "div";
 
-    public static final String ROOT = "root";
+    private static final String ROOT = "root";
 
-    @Test
-    void shouldAssertSimpleDivCorrectly() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
+    @Nested
+    @DisplayName("when trees are equal")
+    class EqualTrees {
+
+        @Test
+        @DisplayName("Should treat two simple div trees as equal")
+        void shouldAssertSimpleDivCorrectly() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+
+            assertDoesNotThrow(() -> {
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
+            }, "Identical div trees should be considered equal");
+        }
+
+        @Test
+        @DisplayName("Should treat two div trees with the same attribute as equal")
+        void shouldAssertSimpleDivWithAttributeCorrectly() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            expected.getRootElement().getChild(DIV).getAttributes().add(createIdAttribute());
+            actual.getRootElement().getChild(DIV).getAttributes().add(createIdAttribute());
+
+            assertDoesNotThrow(() -> {
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
+            }, "Div trees carrying the same attribute should be considered equal");
+        }
+
+        @Test
+        @DisplayName("Should ignore attribute order when comparing div trees")
+        void shouldAssertSimpleDivWithAttributeUnordered() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            var expectedAttribute = expected.getRootElement().getChild(DIV).getAttributes();
+            expectedAttribute.add(createIdAttribute());
+            expectedAttribute.add(createNameAttribute());
+            var actualAttributes = actual.getRootElement().getChild(DIV).getAttributes();
+            actualAttributes.add(createNameAttribute());
+            actualAttributes.add(createIdAttribute());
+
+            assertDoesNotThrow(() -> {
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
+                HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
+            }, "Attribute order should not affect equality");
+        }
+
+        @Test
+        @DisplayName("Should treat trees with equal text content as equal")
+        void shouldAssertWithTextNode() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            expected.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
+            actual.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
+
+            assertDoesNotThrow(() -> HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual),
+                "Trees with equal text content should be considered equal");
+        }
     }
 
-    @Test
-    void shouldAssertSimpleDivWithAttributeCorrectly() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        expected.getRootElement().getChild(DIV).getAttributes().add(createIdAttribute());
-        actual.getRootElement().getChild(DIV).getAttributes().add(createIdAttribute());
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-    }
+    @Nested
+    @DisplayName("when trees differ")
+    class DifferingTrees {
 
-    @Test
-    void shouldAssertSimpleDivWithAttributeUnordered() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        var expectedAttribute = expected.getRootElement().getChild(DIV).getAttributes();
-        expectedAttribute.add(createIdAttribute());
-        expectedAttribute.add(createNameAttribute());
-        var actualAttributes = actual.getRootElement().getChild(DIV).getAttributes();
-        actualAttributes.add(createNameAttribute());
-        actualAttributes.add(createIdAttribute());
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-    }
+        @Test
+        @DisplayName("Should fail when attribute values differ")
+        void shouldFailSimpleDivWithDifferentAttributeValues() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            expected.getRootElement().getChild(DIV).getAttributes().add(new Attribute(ID, SOME_ID));
+            actual.getRootElement().getChild(DIV).getAttributes().add(new Attribute(ID, SOME_NAME));
 
-    @Test
-    void shouldFailSimpleDivWithDifferentAttributeValues() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        var expectedAttribute = expected.getRootElement().getChild(DIV).getAttributes();
-        expectedAttribute.add(new Attribute(ID, SOME_ID));
-        var actualAttributes = actual.getRootElement().getChild(DIV).getAttributes();
-        actualAttributes.add(new Attribute(ID, SOME_NAME));
-        assertThrows(AssertionError.class, () ->
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
-    }
+            assertThrows(AssertionError.class, () -> HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual),
+                "Differing attribute values should trigger an assertion error");
+        }
 
-    @Test
-    void shouldFailSimpleMixedElements() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        expected.getRootElement().getChildren().add(createDivElement());
-        actual.getRootElement().getChildren().add(createSpanElement());
-        assertThrows(AssertionError.class, () ->
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
-    }
+        @Test
+        @DisplayName("Should fail when element types differ")
+        void shouldFailSimpleMixedElements() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            expected.getRootElement().getChildren().add(createDivElement());
+            actual.getRootElement().getChildren().add(createSpanElement());
 
-    @Test
-    void shouldFailWithElementsUnordered() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        var expectedChildren = expected.getRootElement().getChild(DIV).getChildren();
-        expectedChildren.add(createDivElement());
-        expectedChildren.add(createSpanElement());
-        var actualChildren = actual.getRootElement().getChild(DIV).getChildren();
-        actualChildren.add(createSpanElement());
-        actualChildren.add(createDivElement());
-        assertThrows(AssertionError.class, () ->
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
-    }
+            assertThrows(AssertionError.class, () -> HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual),
+                "Differing element types should trigger an assertion error");
+        }
 
-    @Test
-    void shouldAssertWithTextNode() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        expected.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
-        actual.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
-        HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
-    }
+        @Test
+        @DisplayName("Should fail when child element order differs")
+        void shouldFailWithElementsUnordered() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            var expectedChildren = expected.getRootElement().getChild(DIV).getChildren();
+            expectedChildren.add(createDivElement());
+            expectedChildren.add(createSpanElement());
+            var actualChildren = actual.getRootElement().getChild(DIV).getChildren();
+            actualChildren.add(createSpanElement());
+            actualChildren.add(createDivElement());
 
-    @Test
-    void shouldFailWithUnequalTextNode() {
-        var expected = createDocumentWithDivChild();
-        var actual = createDocumentWithDivChild();
-        expected.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
-        actual.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT + "hey");
-        assertThrows(AssertionError.class, () ->
-            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual));
+            assertThrows(AssertionError.class, () -> HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual),
+                "Differing child element order should trigger an assertion error");
+        }
+
+        @Test
+        @DisplayName("Should fail when text content differs")
+        void shouldFailWithUnequalTextNode() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            expected.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT);
+            actual.getRootElement().getChild(DIV).addContent(SOME_TEXT_CONTENT + "hey");
+
+            assertThrows(AssertionError.class, () -> HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual),
+                "Differing text content should trigger an assertion error");
+        }
     }
 
     private static Document createDocumentWithRoot() {

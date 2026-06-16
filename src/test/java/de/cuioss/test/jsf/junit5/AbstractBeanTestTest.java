@@ -18,6 +18,7 @@ package de.cuioss.test.jsf.junit5;
 import de.cuioss.test.jsf.support.beans.MediumComplexityBean;
 import de.cuioss.test.valueobjects.api.object.ObjectTestConfig;
 import de.cuioss.test.valueobjects.api.property.PropertyReflectionConfig;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,7 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class AbstractBeanTestTest extends AbstractBeanTest<MediumComplexityBean> {
 
     @Test
+    @DisplayName("Should provide a fully configured bean instance")
     void shouldInstantiate() {
-        assertNotNull(anyBean());
+        var bean = anyBean();
+
+        assertNotNull(bean, "anyBean() should return a configured instance");
     }
 }

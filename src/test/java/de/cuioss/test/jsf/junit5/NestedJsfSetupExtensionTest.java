@@ -17,20 +17,23 @@ package de.cuioss.test.jsf.junit5;
 
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
+import jakarta.faces.context.ExternalContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests whether the annotation {@link JsfTestConfiguration} will be used from
- * JsfSetupExtensionTest
- *
+ * Tests whether the {@link JsfTestConfiguration} annotation is inherited from the
+ * super class {@link JsfSetupExtensionTest}.
  */
 class NestedJsfSetupExtensionTest extends JsfSetupExtensionTest {
 
     @Test
-    void shouldProvideBasicInformation() {
+    @DisplayName("Should inherit the parent JsfTestConfiguration")
+    void shouldProvideBasicInformation(ExternalContext externalContext) {
         assertEquals(BasicApplicationConfiguration.FIREFOX,
-            getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
+            externalContext.getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT),
+            "Inherited configuration should set the User-Agent header");
     }
 }

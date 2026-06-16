@@ -18,17 +18,27 @@ package de.cuioss.test.jsf.producer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
+@DisplayName("ServletMockObjectsProducer Tests")
 class ServletMockObjectsProducerTest {
 
     @Test
-    void shouldProduce() {
+    @DisplayName("Should produce servlet mocks from directly instantiated fields")
+    void shouldProduceServletMocks() {
         var producer = new ServletMockObjectsProducer();
-        assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest());
-        assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse());
-        assertInstanceOf(ServletContext.class, producer.produceServletContext());
+
+        assertAll("Produced servlet objects",
+            () -> assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest(),
+                "Servlet request should be produced"),
+            () -> assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse(),
+                "Servlet response should be produced"),
+            () -> assertInstanceOf(ServletContext.class, producer.produceServletContext(),
+                "Servlet context should be produced")
+        );
     }
 }

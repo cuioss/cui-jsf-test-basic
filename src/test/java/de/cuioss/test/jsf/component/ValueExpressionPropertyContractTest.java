@@ -21,21 +21,24 @@ import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
+@DisplayName("ValueExpressionPropertyContract")
 class ValueExpressionPropertyContractTest extends AbstractComponentTest<MultiValuedComponent> {
 
     @Test
-    void shouldTestGoodCase(FacesContext facesContext) {
+    @DisplayName("Should pass the value-expression contract for a component with valid EL handling")
+    void shouldPassContractForValidComponent(FacesContext facesContext) {
         var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
             new MultiValuedComponent());
-
         var instantiator = new CallbackAwareInstantiator<>(new BeanInstantiator<>(
             new DefaultInstantiator<>(MultiValuedComponent.class), new RuntimeProperties(properties)), this);
+        var contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
 
-        ValueExpressionPropertyContract<MultiValuedComponent> contract;
-        contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
-
-        contract.assertContract();
+        assertDoesNotThrow(contract::assertContract,
+            "Value-expression contract should hold for a component with valid EL handling");
     }
 }

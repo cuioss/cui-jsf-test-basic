@@ -25,6 +25,7 @@ import jakarta.faces.context.FacesContext;
 import org.apache.myfaces.test.mock.MockHttpServletRequest;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * This test class verifies that all supported JSF-related objects can be resolved
  * as parameters in test methods.
  */
+@DisplayName("JSF parameter resolution")
 @EnableJsfEnvironment
 class JsfParameterResolverTest {
 

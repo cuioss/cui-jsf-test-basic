@@ -16,83 +16,103 @@
 package de.cuioss.test.jsf.junit5;
 
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
+import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
+import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
+import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
 import de.cuioss.test.jsf.util.ConfigurableApplication;
-import de.cuioss.test.jsf.util.JsfEnvironmentConsumer;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import org.apache.myfaces.test.config.ResourceBundleVarNames;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
 @EnableJsfEnvironment
-class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
+class JsfSetupExtensionTest {
 
     public static final String TO_VIEW_JSF = "/to/view.jsf";
     public static final String OUTCOME = "outcome";
 
-    @Setter
-    @Getter
-    private JsfEnvironmentHolder environmentHolder;
-
     @Test
-    void shouldBootstrapJsf() {
-        assertNotNull(environmentHolder);
-        assertNotNull(getApplication());
-        assertNotNull(getApplicationConfigDecorator());
-        assertNotNull(getComponentConfigDecorator());
-        assertNotNull(getExternalContext());
-        assertNotNull(getFacesContext());
-        assertNotNull(getRequestConfigDecorator());
-        assertNotNull(getResponse());
+    @DisplayName("Should bootstrap the full JSF environment")
+    void shouldBootstrapJsf(JsfEnvironmentHolder environmentHolder, Application application,
+        ApplicationConfigDecorator applicationConfig, ComponentConfigDecorator componentConfig,
+        ExternalContext externalContext, FacesContext facesContext,
+        RequestConfigDecorator requestConfig) {
+        assertNotNull(environmentHolder, "JsfEnvironmentHolder should be resolved");
+        assertNotNull(application, "Application should be resolved");
+        assertNotNull(applicationConfig, "ApplicationConfigDecorator should be resolved");
+        assertNotNull(componentConfig, "ComponentConfigDecorator should be resolved");
+        assertNotNull(externalContext, "ExternalContext should be resolved");
+        assertNotNull(facesContext, "FacesContext should be resolved");
+        assertNotNull(requestConfig, "RequestConfigDecorator should be resolved");
+        assertNotNull(environmentHolder.getResponse(), "Response should be available");
     }
 
     @Test
-    void shouldApplyBasicConfiguration() {
+    @DisplayName("Should apply the basic application configuration")
+    void shouldApplyBasicConfiguration(ExternalContext externalContext) {
         assertEquals(BasicApplicationConfiguration.FIREFOX,
-            getExternalContext().getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT));
+            externalContext.getRequestHeaderMap().get(BasicApplicationConfiguration.USER_AGENT),
+            "User-Agent header should match the configured value");
     }
 
     @Test
-    void shouldFailForNoNavigationOutcome() {
-        // No Navigation took place -> Assertion Error
-        assertThrows(AssertionError.class, () ->
-            assertNavigatedWithOutcome(OUTCOME));
+    @DisplayName("Should fail asserting an outcome when no navigation took place")
+    void shouldFailForNoNavigationOutcome(NavigationAsserts navigationAsserts) {
+        assertThrows(AssertionError.class, () -> navigationAsserts.assertNavigatedWithOutcome(OUTCOME),
+            "Asserting an outcome without navigation should fail");
     }
 
     @Test
-    void shouldAssertNavigationOutcome() {
-        getApplicationConfigDecorator().registerNavigationCase(OUTCOME, TO_VIEW_JSF);
-        getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, OUTCOME);
-        assertNavigatedWithOutcome(OUTCOME);
+    @DisplayName("Should assert a registered navigation outcome")
+    void shouldAssertNavigationOutcome(FacesContext facesContext,
+        ApplicationConfigDecorator applicationConfig, NavigationAsserts navigationAsserts) {
+        applicationConfig.registerNavigationCase(OUTCOME, TO_VIEW_JSF);
+        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, OUTCOME);
+
+        navigationAsserts.assertNavigatedWithOutcome(OUTCOME);
     }
 
     @Test
-    void shouldFailForNoRedirect() {
-        // No Navigation took place -> Assertion Error
-        assertThrows(AssertionError.class, () ->
-            assertRedirect(TO_VIEW_JSF));
+    @DisplayName("Should fail asserting a redirect when none took place")
+    void shouldFailForNoRedirect(NavigationAsserts navigationAsserts) {
+        assertThrows(AssertionError.class, () -> navigationAsserts.assertRedirect(TO_VIEW_JSF),
+            "Asserting a redirect without one should fail");
     }
 
     @Test
-    void shouldAssertRedirect() throws Exception {
-        getExternalContext().redirect(TO_VIEW_JSF);
-        assertRedirect(TO_VIEW_JSF);
+    @DisplayName("Should assert a performed redirect")
+    void shouldAssertRedirect(ExternalContext externalContext, NavigationAsserts navigationAsserts)
+        throws Exception {
+        externalContext.redirect(TO_VIEW_JSF);
+
+        navigationAsserts.assertRedirect(TO_VIEW_JSF);
     }
 
     @Test
-    void shouldWrapConfigurableApplication() {
-        assertEquals(ConfigurableApplication.class, getApplication().getClass());
+    @DisplayName("Should wrap the application in a ConfigurableApplication")
+    void shouldWrapConfigurableApplication(Application application) {
+        assertEquals(ConfigurableApplication.class, application.getClass(),
+            "Application should be wrapped in a ConfigurableApplication");
     }
 
     @Test
-    void shouldDefaultToMirrorResourceBundle() {
+    @DisplayName("Should default to a mirroring resource bundle")
+    void shouldDefaultToMirrorResourceBundle(Application application, FacesContext facesContext) {
         ResourceBundleVarNames.addVarName("msg", "msg");
-        var resourceBundle = getApplication().getResourceBundle(getFacesContext(), "msg");
-        assertNotNull(resourceBundle);
-        assertEquals("some.key", resourceBundle.getString("some.key"));
+
+        var resourceBundle = application.getResourceBundle(facesContext, "msg");
+
+        assertNotNull(resourceBundle, "Resource bundle should be resolved");
+        assertEquals("some.key", resourceBundle.getString("some.key"),
+            "Identity resource bundle should mirror the requested key");
     }
 }

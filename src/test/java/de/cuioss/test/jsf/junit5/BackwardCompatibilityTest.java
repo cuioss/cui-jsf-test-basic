@@ -28,14 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Tests that verify backward compatibility with the existing approach using
+ * Tests that verify backward compatibility with the deprecated approach using
  * {@link JsfEnvironmentConsumer}.
  * <p>
  * This test class implements {@link JsfEnvironmentConsumer} to receive the
  * {@link JsfEnvironmentHolder} via the setter method, and also uses parameter
  * resolution in its test methods. This verifies that both approaches can be used
- * simultaneously.
+ * simultaneously. The deprecated interface is intentionally exercised here so the
+ * backward-compatibility contract stays covered; parameter resolution is the
+ * recommended approach for new tests.
  */
+@SuppressWarnings("deprecation")
 @EnableJsfEnvironment
 class BackwardCompatibilityTest implements JsfEnvironmentConsumer {
 
@@ -71,23 +74,17 @@ class BackwardCompatibilityTest implements JsfEnvironmentConsumer {
      */
     @Test
     void shouldProvideConsistentObjects(FacesContext facesContext, ComponentConfigDecorator componentConfigDecorator) {
-        // Objects from parameter resolution
         assertNotNull(facesContext, "FacesContext should be resolved as parameter");
         assertNotNull(componentConfigDecorator, "ComponentConfigDecorator should be resolved as parameter");
-
-        // Objects from JsfEnvironmentConsumer
         assertNotNull(getFacesContext(), "FacesContext should be accessible via consumer");
         assertNotNull(getComponentConfigDecorator(), "ComponentConfigDecorator should be accessible via consumer");
 
-        // Verify they are the same objects
         assertEquals(getFacesContext(), facesContext,
             "FacesContext from consumer should be the same as from parameter resolution");
 
-        // Note: ComponentConfigDecorator is created on demand, so we can't compare instances directly
-        // Instead, verify they both work by registering a mock component
+        // ComponentConfigDecorator is created on demand, so instances cannot be compared
+        // directly; instead verify both work by registering a mock component without throwing.
         getComponentConfigDecorator().registerCuiMockComponentWithRenderer();
         componentConfigDecorator.registerCuiMockComponentWithRenderer();
-
-        // If we got here without exceptions, both decorators are working properly
     }
 }

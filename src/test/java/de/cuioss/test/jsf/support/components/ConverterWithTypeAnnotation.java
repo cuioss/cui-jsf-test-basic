@@ -23,7 +23,7 @@ import jakarta.faces.convert.FacesConverter;
 import java.io.Serializable;
 
 @FacesConverter(forClass = Serializable.class)
-public class ConverterWithTypeAnnotation implements Converter {
+public class ConverterWithTypeAnnotation implements Converter<Object> {
 
     public static final Class<?> FOR_CLASS = Serializable.class;
 
