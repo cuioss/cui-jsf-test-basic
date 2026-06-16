@@ -42,7 +42,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
     <dependency>
         <groupId>de.cuioss.test</groupId>
         <artifactId>cui-jsf-test-basic</artifactId>
-        <version>4.1.0</version>
+        <version>4.3.0</version>
         <scope>test</scope>
     </dependency>
 ----
