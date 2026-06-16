@@ -37,20 +37,15 @@ public class FakeSanitizingConverter implements Converter<String> {
 
     @Override
     public String getAsObject(FacesContext context, UIComponent component, String value) {
-        requireNonNull(component);
-        requireNonNull(context);
-        if (null == value) {
-            return "";
-        }
-        if (fakeEscaping) {
-            return new ReverseConverter().getAsObject(context, component, value);
-        }
-        return value;
-
+        return convert(context, component, value);
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, String value) {
+        return convert(context, component, value);
+    }
+
+    private String convert(FacesContext context, UIComponent component, String value) {
         requireNonNull(component);
         requireNonNull(context);
         if (null == value) {

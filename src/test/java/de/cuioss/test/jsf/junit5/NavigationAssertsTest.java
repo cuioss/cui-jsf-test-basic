@@ -18,6 +18,7 @@ package de.cuioss.test.jsf.junit5;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
@@ -37,17 +38,14 @@ class NavigationAssertsTest {
      * verifies navigation outcomes.
      */
     @Test
+    @DisplayName("Should assert a matching navigation outcome")
     void shouldAssertNavigationOutcome(
         FacesContext facesContext,
         ApplicationConfigDecorator applicationConfig,
         NavigationAsserts navigationAsserts) {
-        // Set up navigation
         applicationConfig.registerNavigationCase("testOutcome", "targetViewId");
-
-        // Perform navigation
         facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, "testOutcome");
 
-        // Assert navigation outcome
         navigationAsserts.assertNavigatedWithOutcome("testOutcome");
     }
 
@@ -56,19 +54,18 @@ class NavigationAssertsTest {
      * an exception when the outcome doesn't match.
      */
     @Test
+    @DisplayName("Should fail when the asserted outcome does not match")
     void shouldFailWhenOutcomeDoesntMatch(
         FacesContext facesContext,
         ApplicationConfigDecorator applicationConfig,
         NavigationAsserts navigationAsserts) {
-        // Set up navigation
         applicationConfig.registerNavigationCase("testOutcome", "targetViewId");
-
-        // Perform navigation
         facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, "testOutcome");
 
-        // Assert that asserting a different outcome fails
         Executable assertion = () -> navigationAsserts.assertNavigatedWithOutcome("wrongOutcome");
-        assertThrows(AssertionError.class, assertion);
+
+        assertThrows(AssertionError.class, assertion,
+            "Asserting a different outcome should fail");
     }
 
     /**
@@ -76,13 +73,12 @@ class NavigationAssertsTest {
      * verifies redirects.
      */
     @Test
+    @DisplayName("Should assert a matching redirect")
     void shouldAssertRedirect(
         ExternalContext externalContext,
         NavigationAsserts navigationAsserts) throws Exception {
-        // Perform redirect
         externalContext.redirect("/test/url");
 
-        // Assert redirect
         navigationAsserts.assertRedirect("/test/url");
     }
 
@@ -91,14 +87,15 @@ class NavigationAssertsTest {
      * an exception when the redirect URL doesn't match.
      */
     @Test
+    @DisplayName("Should fail when the asserted redirect URL does not match")
     void shouldFailWhenRedirectUrlDoesntMatch(
         ExternalContext externalContext,
         NavigationAsserts navigationAsserts) throws Exception {
-        // Perform redirect
         externalContext.redirect("/test/url");
 
-        // Assert that asserting a different URL fails
         Executable assertion = () -> navigationAsserts.assertRedirect("/wrong/url");
-        assertThrows(AssertionError.class, assertion);
+
+        assertThrows(AssertionError.class, assertion,
+            "Asserting a different redirect URL should fail");
     }
 }

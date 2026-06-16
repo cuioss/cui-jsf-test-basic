@@ -24,6 +24,7 @@ import jakarta.faces.component.html.HtmlInputText;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.FacesEvent;
 import jakarta.faces.event.FacesListener;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serial;
@@ -32,13 +33,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @VetoRenderAttributeAssert({CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
     CommonRendererAsserts.STYLE_CLASS})
+@DisplayName("AbstractComponentRendererTest")
 class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<CuiMockRenderer> {
 
     @Test
-    void shouldDetectCorrextVetoes() {
-        assertEquals(2, getActiveAsserts().size());
-        assertTrue(getActiveAsserts().contains(CommonRendererAsserts.ID));
-        assertTrue(getActiveAsserts().contains(CommonRendererAsserts.RENDERED));
+    @DisplayName("Should retain only the non-vetoed render attribute asserts")
+    void shouldDetectCorrectVetoes() {
+        var activeAsserts = getActiveAsserts();
+
+        assertEquals(2, activeAsserts.size(), "Two asserts should remain after vetoing three");
+        assertTrue(activeAsserts.contains(CommonRendererAsserts.ID), "ID assert should remain active");
+        assertTrue(activeAsserts.contains(CommonRendererAsserts.RENDERED), "RENDERED assert should remain active");
     }
 
     @Override
@@ -47,26 +52,30 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
     }
 
     @Test
+    @DisplayName("Should not wrap the component in a form when configuration is absent")
     void shouldHandleConfigAnnotation(FacesContext facesContext) {
-        assertFalse(super.isWrapComponentInForm());
-        assertEquals(HtmlInputText.class, getWrappedComponent().getClass());
-        assertNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
+        assertFalse(isWrapComponentInForm(), "Component should not be wrapped in a form by default");
+        assertEquals(HtmlInputText.class, getWrappedComponent().getClass(),
+            "Wrapped component should be the configured component");
+        assertNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE),
+            "No form renderer should be registered when wrapping is disabled");
     }
 
     @Test
+    @DisplayName("Should leave the component without a parent when not nested in a form")
     void shouldNotBeNestedInForm() {
-        assertNull(getWrappedComponent().getParent());
+        assertNull(getWrappedComponent().getParent(), "Component should have no parent without form wrapping");
     }
 
     @Test
+    @DisplayName("Should extract a queued event from the view root")
     void shouldHandleExtractEventsFromViewRoot(FacesContext facesContext) {
-        assertTrue(extractEventsFromViewRoot(facesContext).isEmpty());
         var component = new HtmlInputText();
         component.setParent(facesContext.getViewRoot());
-        assertTrue(extractEventsFromViewRoot(facesContext).isEmpty());
         component.queueEvent(new FacesEvent(component) {
 
-            @Serial private static final long serialVersionUID = 591161343873329974L;
+            @Serial
+            private static final long serialVersionUID = 591161343873329974L;
 
             @Override
             public void processListener(final FacesListener faceslistener) {
@@ -78,6 +87,20 @@ class AbstractComponentRendererTestTest extends AbstractComponentRendererTest<Cu
                 return false;
             }
         });
-        assertEquals(1, extractEventsFromViewRoot(facesContext).size());
+
+        var events = extractEventsFromViewRoot(facesContext);
+
+        assertEquals(1, events.size(), "Exactly one queued event should be extracted from the view root");
+    }
+
+    @Test
+    @DisplayName("Should extract no events when the view root has none queued")
+    void shouldExtractNoEventsWhenViewRootIsEmpty(FacesContext facesContext) {
+        var component = new HtmlInputText();
+        component.setParent(facesContext.getViewRoot());
+
+        var events = extractEventsFromViewRoot(facesContext);
+
+        assertTrue(events.isEmpty(), "No events should be extracted when none are queued");
     }
 }

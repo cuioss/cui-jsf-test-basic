@@ -15,9 +15,11 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import jakarta.faces.component.search.ComponentNotFoundException;
 import jakarta.faces.component.search.SearchExpressionHint;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -26,23 +28,30 @@ import static de.cuioss.tools.collect.CollectionLiterals.mutableList;
 import static de.cuioss.tools.collect.CollectionLiterals.mutableSet;
 import static org.junit.jupiter.api.Assertions.*;
 
-class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
+@EnableJsfEnvironment
+@DisplayName("CuiMockSearchExpressionHandler")
+class CuiSearchExpressionHandlerMockTest {
 
     private static final String EXPRESSION = "expression";
 
     @Test
-    void shouldBeProvided() {
-        assertNotNull(CuiMockSearchExpressionHandler.retrieve(getFacesContext()));
+    @DisplayName("Should be provided by the JSF test setup")
+    void shouldBeProvided(FacesContext facesContext) {
+        assertNotNull(CuiMockSearchExpressionHandler.retrieve(facesContext),
+            "Handler should be registered by the test setup");
     }
 
     @Test
-    void shouldIgnoreHint() {
-        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
+    @DisplayName("Should resolve to nothing when the ignore-no-result hint is set")
+    void shouldIgnoreHint(FacesContext facesContext) {
+        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), facesContext,
             Set.of(), mutableSet(SearchExpressionHint.IGNORE_NO_RESULT));
         var callback = new CuiMockContextCallback();
 
-        assertNull(new CuiMockSearchExpressionHandler().resolveClientId(context, EXPRESSION));
-        assertTrue(new CuiMockSearchExpressionHandler().resolveClientIds(context, EXPRESSION).isEmpty());
+        assertNull(new CuiMockSearchExpressionHandler().resolveClientId(context, EXPRESSION),
+            "resolveClientId should return null when no result is ignored");
+        assertTrue(new CuiMockSearchExpressionHandler().resolveClientIds(context, EXPRESSION).isEmpty(),
+            "resolveClientIds should be empty when no result is ignored");
 
         new CuiMockSearchExpressionHandler().resolveComponent(context, EXPRESSION, callback);
         callback.assertNotCalledAtAll();
@@ -52,20 +61,24 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
     }
 
     @Test
-    void shouldFailOnMissingHint() {
-        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
+    @DisplayName("Should fail when no component is found and the hint is missing")
+    void shouldFailOnMissingHint(FacesContext facesContext) {
+        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), facesContext,
             Set.of(), Set.of());
         var handler = new CuiMockSearchExpressionHandler();
         var callback = new CuiMockContextCallback();
-        assertThrows(ComponentNotFoundException.class, () -> handler.resolveComponents(context, EXPRESSION, callback));
+
+        assertThrows(ComponentNotFoundException.class,
+            () -> handler.resolveComponents(context, EXPRESSION, callback),
+            "Missing component without ignore hint should throw");
     }
 
     @Test
-    void shouldCallBack() {
-        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(),
+    @DisplayName("Should invoke the callback for resolved components")
+    void shouldCallBack(FacesContext facesContext) {
+        var context = new CuiMockSearchExpressionContext(new CuiMockComponent(), facesContext,
             Set.of(), Set.of());
         var callback = new CuiMockContextCallback();
-
         var component = new CuiMockComponent();
 
         var handler = new CuiMockSearchExpressionHandler();
@@ -74,11 +87,11 @@ class CuiSearchExpressionHandlerMockTest extends ConfigurableFacesTest {
         handler.resolveComponent(context, EXPRESSION, callback);
         callback.assertCalledAtLeastOnce();
 
-        callback = new CuiMockContextCallback();
-        handler = new CuiMockSearchExpressionHandler();
-        handler.setResolvedComponents(mutableList(component));
+        var componentsCallback = new CuiMockContextCallback();
+        var componentsHandler = new CuiMockSearchExpressionHandler();
+        componentsHandler.setResolvedComponents(mutableList(component));
 
-        handler.resolveComponents(context, EXPRESSION, callback);
-        callback.assertCalledAtLeastOnce();
+        componentsHandler.resolveComponents(context, EXPRESSION, componentsCallback);
+        componentsCallback.assertCalledAtLeastOnce();
     }
 }

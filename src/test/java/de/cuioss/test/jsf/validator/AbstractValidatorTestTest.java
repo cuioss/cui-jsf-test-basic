@@ -17,10 +17,6 @@ package de.cuioss.test.jsf.validator;
 
 import jakarta.faces.validator.LengthValidator;
 
-/**
- * @author Oliver Wolff
- *
- */
 class AbstractValidatorTestTest extends AbstractValidatorTest<LengthValidator, String> {
 
     @Override

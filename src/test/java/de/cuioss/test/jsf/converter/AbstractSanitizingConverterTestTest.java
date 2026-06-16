@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.converter;
 
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -30,26 +31,33 @@ class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTes
 
     @Override
     public void populate(TestItems<String> testItems) {
-        // Not testing this
-
+        // No TestItems are required: this self-test exercises the sanitizing
+        // assertions of the base class directly via shouldSanitizeJavaScript.
     }
 
     @Override
     @Test
     protected void shouldSanitizeJavaScript(FacesContext facesContext) {
-        // ignore, the tests are separate;
+        // Disabled here: the inherited sanitizing assertion is exercised explicitly
+        // from shouldDetectInvalidEscaping / shouldDetectValidEscaping instead.
     }
 
     @Test
+    @DisplayName("Should fail the sanitizing assertion when escaping is disabled")
     void shouldDetectInvalidEscaping(FacesContext facesContext) {
-        super.getConverter().setFakeEscaping(false);
-        assertThrows(AssertionError.class, () -> super.shouldSanitizeJavaScript(facesContext));
+        getConverter().setFakeEscaping(false);
+
+        assertThrows(AssertionError.class, () -> super.shouldSanitizeJavaScript(facesContext),
+            "Sanitizing assertion must fail when the converter does not escape");
     }
 
     @Test
+    @DisplayName("Should pass the sanitizing assertion when escaping is enabled")
     void shouldDetectValidEscaping(FacesContext facesContext) {
-        super.getConverter().setFakeEscaping(true);
-        assertDoesNotThrow(() -> super.shouldSanitizeJavaScript(facesContext));
+        getConverter().setFakeEscaping(true);
+
+        assertDoesNotThrow(() -> super.shouldSanitizeJavaScript(facesContext),
+            "Sanitizing assertion must pass when the converter escapes");
     }
 
 }

@@ -15,7 +15,9 @@
  */
 package de.cuioss.test.jsf.mocks;
 
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -23,29 +25,34 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-class CuiMockSearchExpressionContextFactoryTest extends ConfigurableFacesTest {
+@EnableJsfEnvironment
+@DisplayName("CuiMockSearchExpressionContextFactory")
+class CuiMockSearchExpressionContextFactoryTest {
 
     @Test
+    @DisplayName("Should be provided by the JSF test setup")
     void shouldBeProvidedBySetup() {
-        assertNotNull(CuiMockSearchExpressionContextFactory.retrieve());
+        assertNotNull(CuiMockSearchExpressionContextFactory.retrieve(),
+            "Factory should be registered by the test setup");
     }
 
     @Test
-    void shouldHandleSearchExpressionContext() {
+    @DisplayName("Should create and serve search expression contexts")
+    void shouldHandleSearchExpressionContext(FacesContext facesContext) {
         var factory = CuiMockSearchExpressionContextFactory.retrieve();
 
-        var inlineCreated = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
+        var inlineCreated = factory.getSearchExpressionContext(facesContext, new CuiMockComponent(),
             Set.of(), Set.of());
 
-        assertNotNull(inlineCreated.getVisitHints());
+        assertNotNull(inlineCreated.getVisitHints(), "Inline-created context should provide visit hints");
 
         factory.setSearchExpressionContext(
-            new CuiMockSearchExpressionContext(new CuiMockComponent(), getFacesContext(), null, null));
+            new CuiMockSearchExpressionContext(new CuiMockComponent(), facesContext, null, null));
 
-        var preconfigured = factory.getSearchExpressionContext(getFacesContext(), new CuiMockComponent(),
+        var preconfigured = factory.getSearchExpressionContext(facesContext, new CuiMockComponent(),
             Set.of(), Set.of());
 
-        assertNull(preconfigured.getVisitHints());
+        assertNull(preconfigured.getVisitHints(), "Preconfigured context should serve the provided null hints");
     }
 
 }

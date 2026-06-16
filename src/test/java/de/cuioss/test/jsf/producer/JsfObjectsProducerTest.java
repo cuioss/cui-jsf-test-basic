@@ -17,31 +17,35 @@ package de.cuioss.test.jsf.producer;
 
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import jakarta.faces.application.Application;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableJsfEnvironment
+@DisplayName("JsfObjectsProducer Tests")
 class JsfObjectsProducerTest {
 
     @Test
-    void shouldProduceItems() {
+    @DisplayName("Should produce all JSF objects from the current FacesContext")
+    void shouldProduceAllJsfObjects() {
         var producer = new JsfObjectsProducer();
-        assertNotNull(producer.getApplicationMap());
-        assertNotNull(producer.getExternalContext());
-        assertNotNull(producer.getFacesContext());
-        assertNotNull(producer.getHeaderMap());
-        assertNotNull(producer.getHeaderValuesMap());
-        assertNotNull(producer.getInitParameter());
-        assertNotNull(producer.getRequest());
-        assertNotNull(producer.getRequestCookieMap());
-        assertNotNull(producer.getRequestParameterMap());
-        assertNotNull(producer.getSessionMap());
-        assertNotNull(producer.getSessionMap());
-        assertNotNull(producer.getViewMap());
-        assertNotNull(producer.getViewRoot());
-        assertInstanceOf(Application.class, producer.produceApplication());
+
+        assertAll("Produced JSF objects",
+            () -> assertNotNull(producer.getApplicationMap(), "Application map should be produced"),
+            () -> assertNotNull(producer.getExternalContext(), "External context should be produced"),
+            () -> assertNotNull(producer.getFacesContext(), "Faces context should be produced"),
+            () -> assertNotNull(producer.getHeaderMap(), "Header map should be produced"),
+            () -> assertNotNull(producer.getHeaderValuesMap(), "Header values map should be produced"),
+            () -> assertNotNull(producer.getInitParameter(), "Init parameter map should be produced"),
+            () -> assertNotNull(producer.getRequest(), "Request should be produced"),
+            () -> assertNotNull(producer.getRequestCookieMap(), "Request cookie map should be produced"),
+            () -> assertNotNull(producer.getRequestParameterMap(), "Request parameter map should be produced"),
+            () -> assertNotNull(producer.getSessionMap(), "Session map should be produced"),
+            () -> assertNotNull(producer.getViewMap(), "View map should be produced"),
+            () -> assertNotNull(producer.getViewRoot(), "View root should be produced"),
+            () -> assertInstanceOf(Application.class, producer.produceApplication(), "Application should be produced")
+        );
     }
 
 }

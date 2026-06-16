@@ -21,10 +21,12 @@ import jakarta.faces.component.html.HtmlInputText;
 import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("AbstractRendererTestBase")
 class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRenderer> {
 
     public static final String RENDER_RESULT = "<HtmlInputText id=\"j_id%s\" name=\"j_id%s\" type=\"text\"/>"
@@ -39,22 +41,33 @@ class AbstractRendererTestBaseTest extends AbstractRendererTestBase<CuiMockRende
     }
 
     @Test
-    void shouldRenderGoodCase(FacesContext facesContext) throws Exception {
-        assertEquals(RENDER_RESULT, assertDoesNotThrow(() -> renderToString(component, facesContext)));
-        assertRenderResult(component, RENDER_RESULT, facesContext);
-        assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT), facesContext);
+    @DisplayName("Should render the component and match the expected result in all forms")
+    void shouldRenderGoodCase(FacesContext facesContext) {
+        var rendered = assertDoesNotThrow(() -> renderToString(component, facesContext),
+            "Rendering the component should not throw");
+
+        assertEquals(RENDER_RESULT, rendered, "Rendered output should match the expected markup");
+        assertDoesNotThrow(() -> assertRenderResult(component, RENDER_RESULT, facesContext),
+            "String-based render assertion should succeed");
+        assertDoesNotThrow(() -> assertRenderResult(component, DomUtils.htmlStringToDocument(RENDER_RESULT), facesContext),
+            "Document-based render assertion should succeed");
     }
 
     @Test
-    void assertEmptyRenderResult(FacesContext facesContext) {
+    @DisplayName("Should assert an empty render result when the component is not rendered")
+    void shouldAssertEmptyRenderResult(FacesContext facesContext) {
         component.setRendered(false);
 
-        assertEmptyRenderResult(component, facesContext);
+        assertDoesNotThrow(() -> assertEmptyRenderResult(component, facesContext),
+            "An unrendered component should produce an empty render result");
     }
 
     @Test
-    void assertFailOnNonEmptyResult(FacesContext facesContext) {
+    @DisplayName("Should fail the empty-result assertion when the component renders output")
+    void shouldFailOnNonEmptyResult(FacesContext facesContext) {
         component.setRendered(true);
-        assertThrows(AssertionError.class, () -> assertEmptyRenderResult(component, facesContext));
+
+        assertThrows(AssertionError.class, () -> assertEmptyRenderResult(component, facesContext),
+            "A rendered component should fail the empty-result assertion");
     }
 }

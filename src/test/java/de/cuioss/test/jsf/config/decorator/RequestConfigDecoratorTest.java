@@ -16,91 +16,96 @@
 package de.cuioss.test.jsf.config.decorator;
 
 import de.cuioss.test.generator.Generators;
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.myfaces.test.mock.MockExternalContext;
-import org.apache.myfaces.test.mock.MockFacesContext;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RequestConfigDecoratorTest extends ConfigurableFacesTest {
-
-    private RequestConfigDecorator decorator;
-
-    @BeforeEach
-    void before() {
-        decorator = new RequestConfigDecorator((MockFacesContext) getFacesContext(),
-            (MockExternalContext) getExternalContext());
-    }
+@EnableJsfEnvironment
+@DisplayName("RequestConfigDecorator")
+class RequestConfigDecoratorTest {
 
     @Test
-    void shouldSetPostaback() {
-        assertFalse(getFacesContext().isPostback());
+    @DisplayName("Should set the postback flag")
+    void shouldSetPostaback(RequestConfigDecorator decorator, FacesContext facesContext) {
+        assertFalse(facesContext.isPostback());
         decorator.setPostback(true);
-        assertTrue(getFacesContext().isPostback());
+        assertTrue(facesContext.isPostback());
     }
 
     @Test
-    void shouldSetViewRootPath() {
-        assertEquals("/viewId", getFacesContext().getViewRoot().getViewId());
+    @DisplayName("Should set the view root path")
+    void shouldSetViewRootPath(RequestConfigDecorator decorator, FacesContext facesContext) {
+        assertEquals("/viewId", facesContext.getViewRoot().getViewId());
         final var viewRoot = "/" + Generators.nonEmptyStrings().next();
 
         decorator.setViewId(viewRoot);
-        assertEquals(viewRoot, getFacesContext().getViewRoot().getViewId());
+        assertEquals(viewRoot, facesContext.getViewRoot().getViewId());
     }
 
     @Test
-    void shouldRegisterRequestHeader() {
-        assertFalse(getExternalContext().getRequestHeaderMap().containsKey(USER_AGENT));
+    @DisplayName("Should register a request header")
+    void shouldRegisterRequestHeader(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        assertFalse(externalContext.getRequestHeaderMap().containsKey(USER_AGENT));
 
         decorator.setRequestHeader(USER_AGENT, FIREFOX);
 
-        assertEquals(FIREFOX, getExternalContext().getRequestHeaderMap().get(USER_AGENT));
+        assertEquals(FIREFOX, externalContext.getRequestHeaderMap().get(USER_AGENT));
     }
 
     @Test
-    void shouldRegisterRequestParameter() {
-        assertFalse(getExternalContext().getRequestParameterMap().containsKey(USER_AGENT));
+    @DisplayName("Should register a request parameter")
+    void shouldRegisterRequestParameter(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        assertFalse(externalContext.getRequestParameterMap().containsKey(USER_AGENT));
 
         decorator.setRequestParameter(USER_AGENT, FIREFOX);
 
-        assertEquals(FIREFOX, getExternalContext().getRequestParameterMap().get(USER_AGENT));
+        assertEquals(FIREFOX, externalContext.getRequestParameterMap().get(USER_AGENT));
     }
 
     @Test
-    void shouldRegisterRequestLocales() {
-        assertNull(getExternalContext().getRequestLocale());
-        assertTrue(getExternalContext().getRequestLocales().hasNext());
+    @DisplayName("Should register request locales")
+    void shouldRegisterRequestLocales(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        assertNull(externalContext.getRequestLocale());
+        assertTrue(externalContext.getRequestLocales().hasNext());
 
         decorator.setRequestLocale();
-        assertNull(getExternalContext().getRequestLocale());
-        assertFalse(getExternalContext().getRequestLocales().hasNext());
+        assertNull(externalContext.getRequestLocale());
+        assertFalse(externalContext.getRequestLocales().hasNext());
 
         decorator.setRequestLocale(Locale.GERMAN, Locale.ENGLISH);
-        assertEquals(Locale.GERMAN, getExternalContext().getRequestLocale());
-        var iterator = getExternalContext().getRequestLocales();
+        assertEquals(Locale.GERMAN, externalContext.getRequestLocale());
+        var iterator = externalContext.getRequestLocales();
         assertEquals(Locale.GERMAN, iterator.next());
         assertEquals(Locale.ENGLISH, iterator.next());
         assertFalse(iterator.hasNext());
     }
 
     @Test
-    void shouldRegisterRequestAttribute() {
-        assertNull(((HttpServletRequest) getExternalContext().getRequest()).getAttribute(USER_AGENT));
+    @DisplayName("Should register a request attribute")
+    void shouldRegisterRequestAttribute(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        assertNull(((HttpServletRequest) externalContext.getRequest()).getAttribute(USER_AGENT));
         decorator.setRequestAttribute(USER_AGENT, FIREFOX);
-        assertEquals(FIREFOX, ((HttpServletRequest) getExternalContext().getRequest()).getAttribute(USER_AGENT));
+        assertEquals(FIREFOX, ((HttpServletRequest) externalContext.getRequest()).getAttribute(USER_AGENT));
     }
 
     @Test
-    void shouldAddCookies() {
-        var request = (HttpServletRequest) getExternalContext().getRequest();
+    @DisplayName("Should add cookies to the request")
+    void shouldAddCookies(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        var request = (HttpServletRequest) externalContext.getRequest();
         assertEquals(0, request.getCookies().length);
         decorator.addRequestCookie(new Cookie("coo", "kie"));
         assertNotNull(request.getCookies(), "Cookies should not be there");

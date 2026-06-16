@@ -15,28 +15,45 @@
  */
 package de.cuioss.test.jsf.generator;
 
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
+import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import jakarta.faces.application.Application;
+import jakarta.faces.convert.EnumConverter;
+import jakarta.faces.convert.IntegerConverter;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class JsfProvidedConverterTest extends ConfigurableFacesTest {
+@EnableJsfEnvironment
+@DisplayName("JsfProvidedConverter Tests")
+class JsfProvidedConverterTest {
 
     @Test
-    void shouldRegisterConverter() {
+    @DisplayName("Should resolve every JSF-provided converter by its converter id")
+    void shouldRegisterConverter(Application application, ComponentConfigDecorator componentConfig) {
+        componentConfig.registerConverter(IntegerConverter.class, IntegerConverter.CONVERTER_ID);
+        componentConfig.registerConverter(EnumConverter.class, EnumConverter.CONVERTER_ID);
+
         for (ConverterDescriptor descriptor : JsfProvidedConverter.JSF_CONVERTER) {
             assertEquals(descriptor.getConverterClass(),
-                getApplication().createConverter(descriptor.getConverterId()).getClass());
+                application.createConverter(descriptor.getConverterId()).getClass(),
+                "Converter id " + descriptor.getConverterId() + " should resolve to "
+                    + descriptor.getConverterClass().getName());
         }
     }
 
     @Test
+    @DisplayName("Should generate non-null values for all converter-specific generators")
     void shouldGenerateConverterSpecificTypes() {
-        assertNotNull(new JsfProvidedConverter().next());
-        assertNotNull(JsfProvidedConverter.CONVERTER_CLASS_GERNERATOR.next());
-        assertNotNull(JsfProvidedConverter.CONVERTER_ID_GENERATOR.next());
-        assertNotNull(JsfProvidedConverter.TARGET_TYPE_GENERATOR.next());
+        assertNotNull(new JsfProvidedConverter().next(), "Hybrid generator should produce a converter class");
+        assertNotNull(JsfProvidedConverter.CONVERTER_CLASS_GERNERATOR.next(),
+            "Converter-class generator should produce a descriptor");
+        assertNotNull(JsfProvidedConverter.CONVERTER_ID_GENERATOR.next(),
+            "Converter-id generator should produce an id");
+        assertNotNull(JsfProvidedConverter.TARGET_TYPE_GENERATOR.next(),
+            "Target-type generator should produce a class");
     }
 
 }

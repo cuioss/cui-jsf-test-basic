@@ -19,19 +19,29 @@ import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @EnableJsfEnvironment
+@DisplayName("ServletObjectsFromJSFContextProducer Tests")
 class ServletObjectsFromJSFContextProducerTest {
 
     @Test
-    void shouldProduce() {
+    @DisplayName("Should produce servlet objects derived from the current FacesContext")
+    void shouldProduceServletObjectsFromContext() {
         var producer = new ServletObjectsFromJSFContextProducer();
-        assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest());
-        assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse());
-        assertInstanceOf(ServletContext.class, producer.produceServletContext());
+
+        assertAll("Produced servlet objects",
+            () -> assertInstanceOf(HttpServletRequest.class, producer.produceServletRequest(),
+                "Servlet request should be produced"),
+            () -> assertInstanceOf(HttpServletResponse.class, producer.produceServletResponse(),
+                "Servlet response should be produced"),
+            () -> assertInstanceOf(ServletContext.class, producer.produceServletContext(),
+                "Servlet context should be produced")
+        );
     }
 
 }

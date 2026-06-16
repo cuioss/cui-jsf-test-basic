@@ -16,86 +16,84 @@
 package de.cuioss.test.jsf.util;
 
 import de.cuioss.test.generator.Generators;
-import de.cuioss.test.jsf.config.ApplicationConfigurator;
-import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
-import de.cuioss.test.jsf.config.RequestConfigurator;
 import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
-import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
-import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.defaults.BasicApplicationConfiguration;
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
+import de.cuioss.test.jsf.junit5.NavigationAsserts;
+import jakarta.faces.application.Application;
+import jakarta.faces.context.ExternalContext;
+import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.DEFAULT_LOCALE;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.SUPPORTED_LOCALES;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * Verifies the JSF test environment provided by {@link EnableJsfEnvironment} together with a
+ * {@link JsfTestConfiguration}: the configuration declared by {@link BasicApplicationConfiguration}
+ * is applied, the {@code IdentityResourceBundle} is active by default, and navigation outcomes and
+ * redirects can be asserted via {@link NavigationAsserts}.
+ * <p>
+ * Uses JUnit 5 parameter resolution exclusively — no deprecated base class or configurator
+ * interfaces.
+ */
+@EnableJsfEnvironment
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
-class ConfigurableFacesTestTest extends ConfigurableFacesTest
-    implements ApplicationConfigurator, ComponentConfigurator, RequestConfigurator {
+class ConfigurableFacesTestTest {
 
-    public static final String TO_VIEW_JSF = "/to/view.jsf";
-    public static final String OUTCOME = "outcome";
-
-    private boolean componentsCallbackCalled = false;
-    private boolean applicationCallbackCalled = false;
-    private boolean requestCallbackCalled = false;
+    private static final String TO_VIEW_JSF = "/to/view.jsf";
+    private static final String OUTCOME = "outcome";
 
     @Test
-    void shouldCallCallbackDecorator() {
-        assertTrue(componentsCallbackCalled);
-        assertTrue(applicationCallbackCalled);
-        assertTrue(requestCallbackCalled);
-    }
+    void shouldDefaultToIdentityResourceBundle(Application application, FacesContext facesContext,
+        ApplicationConfigDecorator applicationConfig) {
+        var text = Generators.nonEmptyStrings().next();
+        applicationConfig.registerResourceBundle("anyBundle", "anyBundle");
 
-    @Test
-    void shouldDefaultToIdentityResourceBundle() {
-        final var text = Generators.nonEmptyStrings().next();
-        getApplicationConfigDecorator().registerResourceBundle("anyBundle", "anyBundle");
-        assertEquals(text, getApplication().getResourceBundle(getFacesContext(), "anyBundle").getString(text));
+        var resolved = application.getResourceBundle(facesContext, "anyBundle").getString(text);
+
+        assertEquals(text, resolved, "IdentityResourceBundle should return the key itself");
     }
 
     @Test
-    void shouldHavePickedUpBasicConfiguration() {
-        assertEquals(SUPPORTED_LOCALES.iterator().next(), getApplication().getSupportedLocales().next());
-        assertEquals(DEFAULT_LOCALE, getApplication().getDefaultLocale());
-        assertEquals(FIREFOX, getExternalContext().getRequestHeaderMap().get(USER_AGENT));
-    }
-
-    @Override
-    public void configureComponents(final ComponentConfigDecorator decorator) {
-        componentsCallbackCalled = true;
-    }
-
-    @Override
-    public void configureApplication(final ApplicationConfigDecorator decorator) {
-        applicationCallbackCalled = true;
-    }
-
-    @Override
-    public void configureRequest(final RequestConfigDecorator decorator) {
-        requestCallbackCalled = true;
+    void shouldHavePickedUpBasicConfiguration(Application application, ExternalContext externalContext) {
+        assertEquals(SUPPORTED_LOCALES.iterator().next(), application.getSupportedLocales().next(),
+            "First supported locale should match the basic configuration");
+        assertEquals(DEFAULT_LOCALE, application.getDefaultLocale(),
+            "Default locale should match the basic configuration");
+        assertEquals(FIREFOX, externalContext.getRequestHeaderMap().get(USER_AGENT),
+            "User-agent header should match the basic configuration");
     }
 
     @Test
-    void shouldHandleNavigationOutcome() {
-        getApplicationConfigDecorator().registerNavigationCase(OUTCOME, TO_VIEW_JSF);
-        getApplication().getNavigationHandler().handleNavigation(getFacesContext(), null, OUTCOME);
-        assertNavigatedWithOutcome(OUTCOME);
+    void shouldHandleNavigationOutcome(FacesContext facesContext, ApplicationConfigDecorator applicationConfig,
+        NavigationAsserts navigationAsserts) {
+        applicationConfig.registerNavigationCase(OUTCOME, TO_VIEW_JSF);
+
+        facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, null, OUTCOME);
+
+        navigationAsserts.assertNavigatedWithOutcome(OUTCOME);
     }
 
     @Test
-    void shouldFailHandleNavigationOutcome() {
-        assertThrows(AssertionError.class, () -> assertNavigatedWithOutcome(OUTCOME));
+    void shouldFailHandleNavigationOutcome(NavigationAsserts navigationAsserts) {
+        assertThrows(AssertionError.class, () -> navigationAsserts.assertNavigatedWithOutcome(OUTCOME));
     }
 
     @Test
-    void shouldHandleRedirect() throws Exception {
-        getExternalContext().redirect(TO_VIEW_JSF);
-        assertRedirect(TO_VIEW_JSF);
+    void shouldHandleRedirect(ExternalContext externalContext, NavigationAsserts navigationAsserts) throws Exception {
+        externalContext.redirect(TO_VIEW_JSF);
+
+        navigationAsserts.assertRedirect(TO_VIEW_JSF);
     }
 
     @Test
-    void shouldFailHandleRedirect() {
-        assertThrows(AssertionError.class, () -> assertRedirect(TO_VIEW_JSF));
+    void shouldFailHandleRedirect(NavigationAsserts navigationAsserts) {
+        assertThrows(AssertionError.class, () -> navigationAsserts.assertRedirect(TO_VIEW_JSF));
     }
 }

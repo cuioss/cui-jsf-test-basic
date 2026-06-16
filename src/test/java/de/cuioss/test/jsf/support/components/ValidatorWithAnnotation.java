@@ -22,7 +22,7 @@ import jakarta.faces.validator.Validator;
 import jakarta.faces.validator.ValidatorException;
 
 @FacesValidator(ValidatorWithAnnotation.VALIDATOR_ID)
-public class ValidatorWithAnnotation implements Validator {
+public class ValidatorWithAnnotation implements Validator<Object> {
 
     public static final String VALIDATOR_ID = "de.cuioss.test.jsf.context.support.ValidatorWithAnnotation";
 

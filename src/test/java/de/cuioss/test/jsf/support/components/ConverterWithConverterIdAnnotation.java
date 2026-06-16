@@ -21,7 +21,7 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
 
 @FacesConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID)
-public class ConverterWithConverterIdAnnotation implements Converter {
+public class ConverterWithConverterIdAnnotation implements Converter<Object> {
 
     public static final String CONVERTER_ID = "de.cuioss.test.jsf.context.support.ConverterWithConverterIdAnnotation";
 

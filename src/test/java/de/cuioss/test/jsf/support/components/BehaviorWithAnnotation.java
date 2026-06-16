@@ -16,7 +16,11 @@
 package de.cuioss.test.jsf.support.components;
 
 import jakarta.faces.component.UIComponent;
-import jakarta.faces.component.behavior.*;
+import jakarta.faces.component.behavior.BehaviorBase;
+import jakarta.faces.component.behavior.ClientBehavior;
+import jakarta.faces.component.behavior.ClientBehaviorContext;
+import jakarta.faces.component.behavior.ClientBehaviorHint;
+import jakarta.faces.component.behavior.FacesBehavior;
 import jakarta.faces.context.FacesContext;
 
 import java.util.Set;

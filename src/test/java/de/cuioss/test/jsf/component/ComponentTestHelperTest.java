@@ -19,31 +19,44 @@ import de.cuioss.test.generator.junit.EnableGeneratorController;
 import de.cuioss.test.jsf.support.componentproperty.ComponentWithCollection;
 import de.cuioss.test.jsf.support.componentproperty.MultiValuedComponent;
 import de.cuioss.test.valueobjects.junit5.EnableGeneratorRegistry;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @EnableGeneratorController
 @EnableGeneratorRegistry
+@DisplayName("ComponentTestHelper")
 class ComponentTestHelperTest {
 
     @Test
+    @DisplayName("Should return metadata when the requesting class carries no property annotation")
     void shouldHandleMissingAnnotationGracefully() {
-        assertNotNull(ComponentTestHelper.filterPropertyMetadata(getClass(), new MultiValuedComponent()));
+        var component = new MultiValuedComponent();
+
+        var metadata = ComponentTestHelper.filterPropertyMetadata(getClass(), component);
+
+        assertNotNull(metadata, "Metadata should be resolved even without a property annotation");
     }
 
     @Test
+    @DisplayName("Should resolve the simple properties declared by the component")
     void shouldHandleSimpleProperties() {
-        var filterPropertyMetadata = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class,
-            new MultiValuedComponent());
-        assertNotNull(filterPropertyMetadata);
-        assertEquals(3, filterPropertyMetadata.size());
+        var component = new MultiValuedComponent();
+
+        var metadata = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponent.class, component);
+
+        assertNotNull(metadata, "Metadata should be resolved for a component with simple properties");
+        assertEquals(3, metadata.size(), "All three simple properties should be resolved");
     }
 
     @Test
+    @DisplayName("Should fail when the component exposes a collection-typed property")
     void shouldFailOnCollectionType() {
         var component = new ComponentWithCollection();
-        assertThrows(IllegalStateException.class, () ->
-            ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, component));
+
+        assertThrows(IllegalStateException.class,
+            () -> ComponentTestHelper.filterPropertyMetadata(ComponentWithCollection.class, component),
+            "Resolving metadata for a collection-typed property should fail");
     }
 }

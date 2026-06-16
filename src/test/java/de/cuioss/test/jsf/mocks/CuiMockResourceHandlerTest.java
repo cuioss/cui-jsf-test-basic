@@ -15,16 +15,28 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@DisplayName("CuiMockResourceHandler")
 class CuiMockResourceHandlerTest {
 
     @Test
+    @DisplayName("Should derive the resource map key from name and library")
     void shouldCreateResourceSuffix() {
-        assertEquals("ressource-my", CuiMockResourceHandler.createResourceMapKey("my", "ressource"));
-        assertEquals("notThere-notThere", CuiMockResourceHandler.createResourceMapKey("", ""));
+        var key = CuiMockResourceHandler.createResourceMapKey("my", "ressource");
+
+        assertEquals("ressource-my", key, "Key should combine library and resource name");
+    }
+
+    @Test
+    @DisplayName("Should fall back to defaults for blank name and library")
+    void shouldFallBackToDefaultsForBlankInput() {
+        var key = CuiMockResourceHandler.createResourceMapKey("", "");
+
+        assertEquals("notThere-notThere", key, "Blank input should map to the default placeholder");
     }
 
 }

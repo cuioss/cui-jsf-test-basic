@@ -15,258 +15,282 @@
  */
 package de.cuioss.test.jsf.config.decorator;
 
+import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.jsf.mocks.CuiMockComponent;
 import de.cuioss.test.jsf.mocks.ReverseConverter;
 import de.cuioss.test.jsf.support.components.*;
-import de.cuioss.test.jsf.util.ConfigurableFacesTest;
 import jakarta.faces.FacesException;
+import jakarta.faces.application.Application;
 import jakarta.faces.component.*;
 import jakarta.faces.component.html.HtmlForm;
 import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.LengthValidator;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;
 
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.FORM_RENDERER_ID;
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.TEXT_RENDERER_ID;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ComponentConfigDecoratorTest extends ConfigurableFacesTest {
-
-    private ComponentConfigDecorator decorator;
-
-    @BeforeEach
-    void before() {
-        decorator = new ComponentConfigDecorator(getApplication(), getFacesContext());
-    }
+@EnableJsfEnvironment
+@DisplayName("ComponentConfigDecorator")
+class ComponentConfigDecoratorTest {
 
     // UIComponent related methods
     @Test
-    void shouldRegisterUIComponentWithId() {
-        assertUIComponentIsNotRegistered(HtmlInputText.COMPONENT_TYPE);
+    @DisplayName("Should register a UIComponent with an explicit id")
+    void shouldRegisterUIComponentWithId(ComponentConfigDecorator decorator, Application application) {
+        assertUIComponentIsNotRegistered(application, HtmlInputText.COMPONENT_TYPE);
         decorator.registerUIComponent(HtmlInputText.COMPONENT_TYPE, HtmlInputText.class);
-        assertNotNull(getApplication().createComponent(HtmlInputText.COMPONENT_TYPE));
-        assertEquals(HtmlInputText.class, getApplication().createComponent(HtmlInputText.COMPONENT_TYPE).getClass());
+        assertNotNull(application.createComponent(HtmlInputText.COMPONENT_TYPE));
+        assertEquals(HtmlInputText.class, application.createComponent(HtmlInputText.COMPONENT_TYPE).getClass());
     }
 
     @Test
-    void shouldRegisterUIComponentWithAnnotation() {
-        assertUIComponentIsNotRegistered(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE);
+    @DisplayName("Should register a UIComponent from its annotation")
+    void shouldRegisterUIComponentWithAnnotation(ComponentConfigDecorator decorator, Application application) {
+        assertUIComponentIsNotRegistered(application, UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE);
         decorator.registerUIComponent(UiComponentWithAnnotation.class);
-        assertNotNull(getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE));
+        assertNotNull(application.createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE));
         assertEquals(UiComponentWithAnnotation.class,
-            getApplication().createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE).getClass());
+            application.createComponent(UiComponentWithAnnotation.ANNOTATED_COMPONENT_TYPE).getClass());
     }
 
     // Renderer related methods
     @Test
-    void shouldRegisterRendererByFamilyAndId() {
-        assertRendererIsNotRegistered(RendererWithAnnotation.COMPONENT_FAMILY, RendererWithAnnotation.RENDERER_TYPE);
+    @DisplayName("Should register a renderer by family and id")
+    void shouldRegisterRendererByFamilyAndId(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, RendererWithAnnotation.COMPONENT_FAMILY,
+            RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.COMPONENT_FAMILY, RendererWithAnnotation.RENDERER_TYPE,
             new RendererWithAnnotation());
 
-        final var renderer = getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
+        final var renderer = facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
             RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
     }
 
     @Test
-    void shouldRegisterRendererByAnnotation() {
-        assertRendererIsNotRegistered(RendererWithAnnotation.COMPONENT_FAMILY, RendererWithAnnotation.RENDERER_TYPE);
+    @DisplayName("Should register a renderer from its annotation")
+    void shouldRegisterRendererByAnnotation(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, RendererWithAnnotation.COMPONENT_FAMILY,
+            RendererWithAnnotation.RENDERER_TYPE);
         decorator.registerRenderer(RendererWithAnnotation.class);
 
-        final var renderer = getFacesContext().getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
+        final var renderer = facesContext.getRenderKit().getRenderer(RendererWithAnnotation.COMPONENT_FAMILY,
             RendererWithAnnotation.RENDERER_TYPE);
         assertNotNull(renderer);
         assertEquals(RendererWithAnnotation.class, renderer.getClass());
     }
 
     @Test
-    void shouldRegisterMockRenderer() {
-        assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE);
+    @DisplayName("Should register a mock renderer")
+    void shouldRegisterMockRenderer(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE);
         decorator.registerMockRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE);
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, HtmlForm.COMPONENT_TYPE));
     }
 
     @Test
-    void shouldRegisterCuiMockComponent() {
-        assertUIComponentIsNotRegistered(CuiMockComponent.COMPONENT_TYPE);
+    @DisplayName("Should register the CuiMockComponent with its renderer")
+    void shouldRegisterCuiMockComponent(ComponentConfigDecorator decorator, Application application,
+            FacesContext facesContext) {
+        assertUIComponentIsNotRegistered(application, CuiMockComponent.COMPONENT_TYPE);
 
-        assertRendererIsNotRegistered(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
+        assertRendererIsNotRegistered(facesContext, CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
         decorator.registerCuiMockComponentWithRenderer();
         assertNotNull(
-            getFacesContext().getRenderKit().getRenderer(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE));
-        assertNotNull(getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE));
+            facesContext.getRenderKit().getRenderer(CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE));
+        assertNotNull(application.createComponent(CuiMockComponent.COMPONENT_TYPE));
         assertEquals(CuiMockComponent.class,
-            getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
+            application.createComponent(CuiMockComponent.COMPONENT_TYPE).getClass());
     }
 
     @Test
-    void shouldRegisterMockRendererForHtmlOutput() {
-        assertRendererIsNotRegistered(UIOutput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
+    @DisplayName("Should register a mock renderer for HtmlOutputText")
+    void shouldRegisterMockRendererForHtmlOutput(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UIOutput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlOutputText();
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIOutput.COMPONENT_FAMILY, TEXT_RENDERER_ID));
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIOutput.COMPONENT_FAMILY, TEXT_RENDERER_ID));
     }
 
     @Test
-    void shouldRegisterMockRendererForHtmlInput() {
-        assertRendererIsNotRegistered(UIInput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
+    @DisplayName("Should register a mock renderer for HtmlInputText")
+    void shouldRegisterMockRendererForHtmlInput(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UIInput.COMPONENT_FAMILY, TEXT_RENDERER_ID);
         decorator.registerMockRendererForHtmlInputText();
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIInput.COMPONENT_FAMILY, TEXT_RENDERER_ID));
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIInput.COMPONENT_FAMILY, TEXT_RENDERER_ID));
     }
 
     @Test
-    void shouldRegisterMockRendererForHtmlForm() {
-        assertRendererIsNotRegistered(UIForm.COMPONENT_FAMILY, FORM_RENDERER_ID);
+    @DisplayName("Should register a mock renderer for HtmlForm")
+    void shouldRegisterMockRendererForHtmlForm(ComponentConfigDecorator decorator, FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UIForm.COMPONENT_FAMILY, FORM_RENDERER_ID);
         decorator.registerMockRendererForHtmlForm();
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, FORM_RENDERER_ID));
+        assertNotNull(facesContext.getRenderKit().getRenderer(UIForm.COMPONENT_FAMILY, FORM_RENDERER_ID));
     }
 
     @Test
-    void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox() {
-        assertRendererIsNotRegistered(UISelectBoolean.COMPONENT_FAMILY,
+    @DisplayName("Should register a mock renderer for HtmlSelectBooleanCheckbox")
+    void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox(ComponentConfigDecorator decorator,
+            FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UISelectBoolean.COMPONENT_FAMILY,
             ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectBoolean.COMPONENT_FAMILY,
             ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID));
     }
 
     @Test
-    void shouldRegisterMockRendererForHtmlSelectOneRadio() {
-        assertRendererIsNotRegistered(UISelectOne.COMPONENT_FAMILY, ComponentConfigDecorator.SELECT_ONE_RENDERER_ID);
+    @DisplayName("Should register a mock renderer for HtmlSelectOneRadio")
+    void shouldRegisterMockRendererForHtmlSelectOneRadio(ComponentConfigDecorator decorator,
+            FacesContext facesContext) {
+        assertRendererIsNotRegistered(facesContext, UISelectOne.COMPONENT_FAMILY,
+            ComponentConfigDecorator.SELECT_ONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
-        assertNotNull(getFacesContext().getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
+        assertNotNull(facesContext.getRenderKit().getRenderer(UISelectOne.COMPONENT_FAMILY,
             ComponentConfigDecorator.SELECT_ONE_RENDERER_ID));
     }
 
     // Converter related methods
     @Test
-    void shouldRegisterConverterWithId() {
-        assertConverterForIdIsNotRegistered(ReverseConverter.CONVERTER_ID);
+    @DisplayName("Should register a converter with an explicit id")
+    void shouldRegisterConverterWithId(ComponentConfigDecorator decorator, Application application) {
+        assertConverterForIdIsNotRegistered(application, ReverseConverter.CONVERTER_ID);
         decorator.registerConverter(ReverseConverter.class, ReverseConverter.CONVERTER_ID);
-        assertNotNull(getApplication().createConverter(ReverseConverter.CONVERTER_ID));
+        assertNotNull(application.createConverter(ReverseConverter.CONVERTER_ID));
         assertEquals(ReverseConverter.class,
-            getApplication().createConverter(ReverseConverter.CONVERTER_ID).getClass());
+            application.createConverter(ReverseConverter.CONVERTER_ID).getClass());
     }
 
     @Test
-    void shouldRegisterConverterWithType() {
-        assertConverterForTypeIsNotRegistered(Serializable.class);
+    @DisplayName("Should register a converter for a target type")
+    void shouldRegisterConverterWithType(ComponentConfigDecorator decorator, Application application) {
+        assertConverterForTypeIsNotRegistered(application, Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class, Serializable.class);
-        assertNotNull(getApplication().createConverter(Serializable.class));
+        assertNotNull(application.createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-            getApplication().createConverter(Serializable.class).getClass());
+            application.createConverter(Serializable.class).getClass());
     }
 
     @Test
-    void shouldRegisterConverterWithAnnotatetdType() {
-        assertConverterForTypeIsNotRegistered(Serializable.class);
+    @DisplayName("Should register a converter from its annotated type")
+    void shouldRegisterConverterWithAnnotatetdType(ComponentConfigDecorator decorator, Application application) {
+        assertConverterForTypeIsNotRegistered(application, Serializable.class);
         decorator.registerConverter(ConverterWithTypeAnnotation.class);
-        assertNotNull(getApplication().createConverter(Serializable.class));
+        assertNotNull(application.createConverter(Serializable.class));
         assertEquals(ConverterWithTypeAnnotation.class,
-            getApplication().createConverter(Serializable.class).getClass());
+            application.createConverter(Serializable.class).getClass());
     }
 
     @Test
-    void shouldRegisterConverterWithAnnotatedId() {
-        assertConverterForIdIsNotRegistered(ConverterWithConverterIdAnnotation.CONVERTER_ID);
+    @DisplayName("Should register a converter from its annotated id")
+    void shouldRegisterConverterWithAnnotatedId(ComponentConfigDecorator decorator, Application application) {
+        assertConverterForIdIsNotRegistered(application, ConverterWithConverterIdAnnotation.CONVERTER_ID);
         decorator.registerConverter(ConverterWithConverterIdAnnotation.class);
-        assertNotNull(getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
+        assertNotNull(application.createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID));
         assertEquals(ConverterWithConverterIdAnnotation.class,
-            getApplication().createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID).getClass());
+            application.createConverter(ConverterWithConverterIdAnnotation.CONVERTER_ID).getClass());
     }
 
     // Validator related methods
     @Test
-    void shouldRegisterValidatorWithId() {
-        assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
+    @DisplayName("Should register a validator with an explicit id")
+    void shouldRegisterValidatorWithId(ComponentConfigDecorator decorator, Application application) {
+        assertValidatorIsNotRegistered(application, LengthValidator.VALIDATOR_ID);
         decorator.registerValidator(LengthValidator.VALIDATOR_ID, LengthValidator.class);
-        assertNotNull(getApplication().createValidator(LengthValidator.VALIDATOR_ID));
-        assertEquals(LengthValidator.class, getApplication().createValidator(LengthValidator.VALIDATOR_ID).getClass());
+        assertNotNull(application.createValidator(LengthValidator.VALIDATOR_ID));
+        assertEquals(LengthValidator.class, application.createValidator(LengthValidator.VALIDATOR_ID).getClass());
     }
 
     @Test
-    void shouldRegisterValidatorWithValidatorAnnotation() {
-        assertValidatorIsNotRegistered(ValidatorWithAnnotation.VALIDATOR_ID);
+    @DisplayName("Should register a validator from its annotation")
+    void shouldRegisterValidatorWithValidatorAnnotation(ComponentConfigDecorator decorator, Application application) {
+        assertValidatorIsNotRegistered(application, ValidatorWithAnnotation.VALIDATOR_ID);
         decorator.registerValidator(ValidatorWithAnnotation.class);
-        assertNotNull(getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
+        assertNotNull(application.createValidator(ValidatorWithAnnotation.VALIDATOR_ID));
         assertEquals(ValidatorWithAnnotation.class,
-            getApplication().createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
+            application.createValidator(ValidatorWithAnnotation.VALIDATOR_ID).getClass());
     }
 
     @Test
-    void shouldFailToRegisterValidatorWithMissingAnnotation() {
-        assertValidatorIsNotRegistered(LengthValidator.VALIDATOR_ID);
+    @DisplayName("Should fail to register a validator that is missing the FacesValidator annotation")
+    void shouldFailToRegisterValidatorWithMissingAnnotation(ComponentConfigDecorator decorator,
+            Application application) {
+        assertValidatorIsNotRegistered(application, LengthValidator.VALIDATOR_ID);
         assertThrows(IllegalArgumentException.class, () -> decorator.registerValidator(LengthValidator.class));
     }
 
     // Client Behavior related
     @Test
-    void shouldRegisterBehaviorWithId() {
-        assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
+    @DisplayName("Should register a behavior with an explicit id")
+    void shouldRegisterBehaviorWithId(ComponentConfigDecorator decorator, Application application) {
+        assertBehaviorIsNotRegistered(application, BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.BEHAVIOR_ID, BehaviorWithAnnotation.class);
-        final var behavior = getApplication().createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(BehaviorWithAnnotation.class, behavior.getClass());
     }
 
     @Test
-    void shouldRegisterBehaviorWithAnnotation() {
-        assertBehaviorIsNotRegistered(BehaviorWithAnnotation.BEHAVIOR_ID);
+    @DisplayName("Should register a behavior from its annotation")
+    void shouldRegisterBehaviorWithAnnotation(ComponentConfigDecorator decorator, Application application) {
+        assertBehaviorIsNotRegistered(application, BehaviorWithAnnotation.BEHAVIOR_ID);
         decorator.registerBehavior(BehaviorWithAnnotation.class);
-        final var behavior = getApplication().createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
+        final var behavior = application.createBehavior(BehaviorWithAnnotation.BEHAVIOR_ID);
         assertNotNull(behavior);
         assertEquals(BehaviorWithAnnotation.class, behavior.getClass());
     }
 
     @Test
-    void shouldFailToRegisterBehaviorWithMissingAnnotation() {
-        assertBehaviorIsNotRegistered(BehaviorWithoutAnnotation.BEHAVIOR_ID);
+    @DisplayName("Should fail to register a behavior that is missing the FacesBehavior annotation")
+    void shouldFailToRegisterBehaviorWithMissingAnnotation(ComponentConfigDecorator decorator,
+            Application application) {
+        assertBehaviorIsNotRegistered(application, BehaviorWithoutAnnotation.BEHAVIOR_ID);
         assertThrows(IllegalArgumentException.class, () -> decorator.registerBehavior(BehaviorWithoutAnnotation.class));
     }
 
     @Test
-    void addComponent() {
+    @DisplayName("Should add a UIComponent to the view root")
+    void addComponent(ComponentConfigDecorator decorator, FacesContext facesContext) {
         final UIComponent input = new HtmlInputText();
         decorator.addUiComponent("test:id", input);
-        assertEquals(input, getFacesContext().getViewRoot().findComponent("test:id"));
+        assertEquals(input, facesContext.getViewRoot().findComponent("test:id"));
     }
 
-    private void assertValidatorIsNotRegistered(final String validatorId) {
-        var application = getApplication();
+    private void assertValidatorIsNotRegistered(final Application application, final String validatorId) {
         assertThrows(FacesException.class, () -> application.createValidator(validatorId));
     }
 
-    private void assertBehaviorIsNotRegistered(final String behaviorId) {
-        var application = getApplication();
+    private void assertBehaviorIsNotRegistered(final Application application, final String behaviorId) {
         assertThrows(FacesException.class, () -> application.createBehavior(behaviorId));
     }
 
-    private void assertConverterForIdIsNotRegistered(final String converterId) {
-        var application = getApplication();
+    private void assertConverterForIdIsNotRegistered(final Application application, final String converterId) {
         assertNull(application.createConverter(converterId));
     }
 
-    private void assertConverterForTypeIsNotRegistered(final Class<?> target) {
-        final Converter<?> converter = getApplication().createConverter(target);
+    private void assertConverterForTypeIsNotRegistered(final Application application, final Class<?> target) {
+        final Converter<?> converter = application.createConverter(target);
         assertNull(converter, "Converter is registered " + target);
     }
 
-    private void assertUIComponentIsNotRegistered(final String componentType) {
-        var application = getApplication();
+    private void assertUIComponentIsNotRegistered(final Application application, final String componentType) {
         assertThrows(FacesException.class, () -> application.createComponent(componentType));
-
     }
 
-    private void assertRendererIsNotRegistered(final String family, final String rendererType) {
-        Renderer renderer;
-
-        renderer = getFacesContext().getRenderKit().getRenderer(family, rendererType);
+    private void assertRendererIsNotRegistered(final FacesContext facesContext, final String family,
+            final String rendererType) {
+        final Renderer renderer = facesContext.getRenderKit().getRenderer(family, rendererType);
         assertNull(renderer, "Renderer is registered " + rendererType + ", " + family);
     }
 }

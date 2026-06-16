@@ -15,22 +15,31 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@DisplayName("CuiMockViewHandler")
 class CuiMockViewHandlerTest {
 
     @Test
-    void shouldReturnVDlForAnyParameter() {
-        assertNotNull(new CuiMockViewHandler().getViewDeclarationLanguage(null, null));
+    @DisplayName("Should return a view declaration language for any parameters")
+    void shouldReturnVdlForAnyParameter() {
+        var handler = new CuiMockViewHandler();
 
+        assertNotNull(handler.getViewDeclarationLanguage(null, null),
+            "View declaration language should never be null");
     }
 
     @Test
-    void shouldRegisterAnyCompositeComonent() {
-        assertDoesNotThrow(() -> new CuiMockViewHandler().registerCompositeComponent(null, null, null));
+    @DisplayName("Should silently register any composite component")
+    void shouldRegisterAnyCompositeComponent() {
+        var handler = new CuiMockViewHandler();
+
+        assertDoesNotThrow(() -> handler.registerCompositeComponent(null, null, null),
+            "Registering a composite component should not throw");
     }
 
 }

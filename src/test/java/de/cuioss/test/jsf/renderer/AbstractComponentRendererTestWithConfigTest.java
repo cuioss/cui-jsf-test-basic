@@ -21,6 +21,7 @@ import de.cuioss.test.jsf.mocks.CuiMockRenderer;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlForm;
 import jakarta.faces.component.html.HtmlInputText;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,13 +29,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @VetoRenderAttributeAssert({CommonRendererAsserts.PASSTHROUGH, CommonRendererAsserts.STYLE,
     CommonRendererAsserts.STYLE_CLASS})
 @VerifyComponentRendererConfig(wrapComponentInForm = true)
+@DisplayName("AbstractComponentRendererTest with form-wrapping configuration")
 class AbstractComponentRendererTestWithConfigTest extends AbstractComponentRendererTest<CuiMockRenderer> {
 
     @Test
-    void shouldDetectCorrextVetoes() {
-        assertEquals(2, getActiveAsserts().size());
-        assertTrue(getActiveAsserts().contains(CommonRendererAsserts.ID));
-        assertTrue(getActiveAsserts().contains(CommonRendererAsserts.RENDERED));
+    @DisplayName("Should retain only the non-vetoed render attribute asserts")
+    void shouldDetectCorrectVetoes() {
+        var activeAsserts = getActiveAsserts();
+
+        assertEquals(2, activeAsserts.size(), "Two asserts should remain after vetoing three");
+        assertTrue(activeAsserts.contains(CommonRendererAsserts.ID), "ID assert should remain active");
+        assertTrue(activeAsserts.contains(CommonRendererAsserts.RENDERED), "RENDERED assert should remain active");
     }
 
     @Override
@@ -43,10 +48,14 @@ class AbstractComponentRendererTestWithConfigTest extends AbstractComponentRende
     }
 
     @Test
+    @DisplayName("Should wrap the component in a form when configuration enables it")
     void shouldHandleConfigAnnotation() {
-        assertTrue(super.isWrapComponentInForm());
-        assertNotNull(getWrappedComponent());
-        assertNotNull(getWrappedComponent().getParent());
-        assertEquals(HtmlForm.class, getWrappedComponent().getParent().getClass());
+        assertTrue(isWrapComponentInForm(), "Component should be wrapped in a form when configured");
+
+        var wrapped = getWrappedComponent();
+
+        assertNotNull(wrapped, "Wrapped component should not be null");
+        assertNotNull(wrapped.getParent(), "Wrapped component should have a parent");
+        assertEquals(HtmlForm.class, wrapped.getParent().getClass(), "Parent should be an HtmlForm");
     }
 }

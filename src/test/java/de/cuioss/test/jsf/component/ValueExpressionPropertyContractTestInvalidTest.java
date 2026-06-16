@@ -22,26 +22,27 @@ import de.cuioss.test.valueobjects.objects.impl.BeanInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.CallbackAwareInstantiator;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@DisplayName("ValueExpressionPropertyContract with invalid EL handling")
 class ValueExpressionPropertyContractTestInvalidTest
     extends AbstractPropertyAwareFacesTest<MultiValuedComponentWithInvalidELHandling> {
 
     @Test
-    void shouldTestGoodCase(FacesContext facesContext) {
-        var properties = ComponentTestHelper.filterPropertyMetadata(MultiValuedComponentWithInvalidELHandling.class,
-            new MultiValuedComponentWithInvalidELHandling());
-
+    @DisplayName("Should fail the value-expression contract for a component with invalid EL handling")
+    void shouldFailContractForComponentWithInvalidElHandling(FacesContext facesContext) {
+        var properties = ComponentTestHelper.filterPropertyMetadata(
+            MultiValuedComponentWithInvalidELHandling.class, new MultiValuedComponentWithInvalidELHandling());
         var instantiator = new CallbackAwareInstantiator<>(
             new BeanInstantiator<>(new DefaultInstantiator<>(MultiValuedComponentWithInvalidELHandling.class),
                 new RuntimeProperties(properties)),
             this);
+        var contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
 
-        ValueExpressionPropertyContract<MultiValuedComponentWithInvalidELHandling> contract;
-        contract = new ValueExpressionPropertyContract<>(instantiator, properties, facesContext);
-
-        assertThrows(AssertionError.class, contract::assertContract);
+        assertThrows(AssertionError.class, contract::assertContract,
+            "Value-expression contract should fail for a component with invalid EL handling");
     }
 }

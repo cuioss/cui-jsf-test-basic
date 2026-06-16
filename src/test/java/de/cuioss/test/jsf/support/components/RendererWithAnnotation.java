@@ -15,11 +15,12 @@
  */
 package de.cuioss.test.jsf.support.components;
 
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.render.FacesRenderer;
 import jakarta.faces.render.Renderer;
 
 @FacesRenderer(componentFamily = RendererWithAnnotation.COMPONENT_FAMILY, rendererType = RendererWithAnnotation.RENDERER_TYPE)
-public class RendererWithAnnotation extends Renderer {
+public class RendererWithAnnotation extends Renderer<UIComponent> {
 
     public static final String COMPONENT_FAMILY = "de.cuioss.test.jsf.context.support.RendererWithAnnotation_family";
 
