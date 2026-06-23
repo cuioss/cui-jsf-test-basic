@@ -60,8 +60,8 @@
       "steps": {
         "default:pre-push-quality-gate": {},
         "default:finalize-step-whole-tree-gate": {},
-        "default:push": {},
         "default:finalize-step-simplify": {},
+        "default:push": {},
         "default:create-pr": {},
         "default:ci-verify": {},
         "default:automated-review": {
