@@ -18,10 +18,39 @@ package de.cuioss.test.jsf.mocks;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("CuiMockResourceHandler")
 class CuiMockResourceHandlerTest {
+
+    @Test
+    @DisplayName("Deprecated availableResouces accessors delegate to the correctly-spelled ones (API-2)")
+    @SuppressWarnings("deprecation")
+    void deprecatedAvailableResourcesAccessorsDelegate() {
+        var handler = new CuiMockResourceHandler();
+        var map = new HashMap<String, CuiMockResource>();
+
+        handler.setAvailableResouces(map);
+
+        assertSame(map, handler.getAvailableResources(), "The correctly-spelled getter must return the set map");
+        assertSame(map, handler.getAvailableResouces(), "The deprecated getter must delegate to the same map");
+    }
+
+    @Test
+    @DisplayName("createResource resolves against the configured resources map")
+    void shouldResolveResourceFromMap() {
+        var handler = new CuiMockResourceHandler();
+
+        assertNull(handler.createResource("res", "lib"),
+            "An unregistered resource must resolve to null");
+
+        var resource = new CuiMockResource();
+        handler.getAvailableResources().put(CuiMockResourceHandler.createResourceMapKey("res", "lib"), resource);
+        assertSame(resource, handler.createResource("res", "lib"),
+            "A registered resource must be resolved from the map");
+    }
 
     @Test
     @DisplayName("Should derive the resource map key from name and library")

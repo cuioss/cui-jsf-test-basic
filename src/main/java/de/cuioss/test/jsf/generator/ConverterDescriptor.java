@@ -30,7 +30,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-class ConverterDescriptor {
+public class ConverterDescriptor {
 
     @Getter
     private final Class<? extends Converter> converterClass;

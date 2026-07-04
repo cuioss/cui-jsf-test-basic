@@ -52,12 +52,12 @@ public class CuiMockResourceHandler extends ResourceHandler {
     public static final String RESOURCE_NOT_THERE = "resNotThere";
 
     /**
-     * "rendererererer"
+     * "-rendererererer"
      */
     public static final String RENDERER_SUFFIX = "-rendererererer";
 
     /**
-     * the availableResouces use the form libraryName + LIBRARY_RESOURCE_DELIMITER +
+     * the availableResources use the form libraryName + LIBRARY_RESOURCE_DELIMITER +
      * resourceName as key
      */
     public static final String LIBRARY_RESOURCE_DELIMITER = "-";
@@ -75,10 +75,30 @@ public class CuiMockResourceHandler extends ResourceHandler {
      */
     @Getter
     @Setter
-    private Map<String, CuiMockResource> availableResouces = new HashMap<>();
+    private Map<String, CuiMockResource> availableResources = new HashMap<>();
 
     /**
-     * Creates an resourceIdetnifier utilized by availableResouces
+     * @return the configured resources
+     * @deprecated misspelled; use {@link #getAvailableResources()} instead. Retained
+     * for binary compatibility and scheduled for removal in the next major.
+     */
+    @Deprecated
+    public Map<String, CuiMockResource> getAvailableResouces() {
+        return availableResources;
+    }
+
+    /**
+     * @param availableResources the resources to configure
+     * @deprecated misspelled; use {@link #setAvailableResources(Map)} instead. Retained
+     * for binary compatibility and scheduled for removal in the next major.
+     */
+    @Deprecated
+    public void setAvailableResouces(final Map<String, CuiMockResource> availableResources) {
+        this.availableResources = availableResources;
+    }
+
+    /**
+     * Creates a resourceIdentifier utilized by availableResources
      *
      * @param resourceName may be null
      * @param libraryName  may be null
@@ -108,7 +128,7 @@ public class CuiMockResourceHandler extends ResourceHandler {
 
     @Override
     public Resource createResource(final String resourceName, final String libraryName, final String contentType) {
-        return availableResouces.get(createResourceMapKey(resourceName, libraryName));
+        return availableResources.get(createResourceMapKey(resourceName, libraryName));
     }
 
     @Override

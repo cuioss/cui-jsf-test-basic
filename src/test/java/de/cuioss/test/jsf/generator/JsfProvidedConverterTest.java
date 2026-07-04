@@ -48,7 +48,7 @@ class JsfProvidedConverterTest {
     @DisplayName("Should generate non-null values for all converter-specific generators")
     void shouldGenerateConverterSpecificTypes() {
         assertNotNull(new JsfProvidedConverter().next(), "Hybrid generator should produce a converter class");
-        assertNotNull(JsfProvidedConverter.CONVERTER_CLASS_GERNERATOR.next(),
+        assertNotNull(JsfProvidedConverter.CONVERTER_CLASS_GENERATOR.next(),
             "Converter-class generator should produce a descriptor");
         assertNotNull(JsfProvidedConverter.CONVERTER_ID_GENERATOR.next(),
             "Converter-id generator should produce an id");
