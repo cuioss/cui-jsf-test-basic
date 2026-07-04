@@ -17,11 +17,29 @@ package de.cuioss.test.jsf.mocks;
 
 import de.cuioss.test.jsf.converter.AbstractConverterTest;
 import de.cuioss.test.jsf.converter.TestItems;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ReverseConverterTest extends AbstractConverterTest<ReverseConverter, String> {
 
     @Override
     public void populate(TestItems<String> testItems) {
         testItems.addRoundtripValues("123");
+    }
+
+    @Test
+    void getAsObjectShouldReturnNullForNullOrEmptyInput(FacesContext facesContext) {
+        var converter = new ReverseConverter();
+        var component = new HtmlInputText();
+
+        // MOCK-9: getAsObject must return null for null/empty input
+        assertNull(converter.getAsObject(facesContext, component, null), "null input must convert to null");
+        assertNull(converter.getAsObject(facesContext, component, ""), "empty input must convert to null");
+        assertEquals("cba", converter.getAsObject(facesContext, component, "abc"),
+            "non-empty input must be reversed");
     }
 }

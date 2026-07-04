@@ -128,7 +128,7 @@ public class CuiMockResourceHandler extends ResourceHandler {
 
     @Override
     public boolean libraryExists(final String libraryName) {
-        return LIBRARY_NOT_THERE.equals(libraryName);
+        return !LIBRARY_NOT_THERE.equals(libraryName);
     }
 
     @Override
@@ -141,8 +141,20 @@ public class CuiMockResourceHandler extends ResourceHandler {
         return resourceRequest;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * <em>Mock deviation:</em> whereas the specification returns {@code null} when no
+     * renderer type matches, this mock returns a deterministic synthetic value
+     * ({@code resourceName + }{@link #RENDERER_SUFFIX}) for every non-empty resource
+     * name so that tests can assert on a stable renderer type. {@code null} is only
+     * returned for a {@code null} or empty resource name.
+     */
     @Override
     public String getRendererTypeForResourceName(final String resourceName) {
+        if (MoreStrings.isEmpty(resourceName)) {
+            return null;
+        }
         return resourceName + RENDERER_SUFFIX;
     }
 }

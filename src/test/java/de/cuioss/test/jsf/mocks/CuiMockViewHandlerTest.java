@@ -15,11 +15,13 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.component.html.HtmlOutputText;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("CuiMockViewHandler")
 class CuiMockViewHandlerTest {
@@ -40,6 +42,54 @@ class CuiMockViewHandlerTest {
 
         assertDoesNotThrow(() -> handler.registerCompositeComponent(null, null, null),
             "Registering a composite component should not throw");
+    }
+
+    @Test
+    @DisplayName("Should support registering more than one composite component (MOCK-5)")
+    void shouldRegisterMultipleCompositeComponents() {
+        var handler = new CuiMockViewHandler();
+        UIComponent first = new HtmlInputText();
+        UIComponent second = new HtmlOutputText();
+
+        handler.registerCompositeComponent("libA", "tagA", first);
+        // A second registration on the same handler must not throw (regression for MOCK-5)
+        assertDoesNotThrow(() -> handler.registerCompositeComponent("libB", "tagB", second),
+            "Registering a second composite component must be supported");
+
+        var vdl = handler.getViewDeclarationLanguage(null, null);
+        assertSame(first, vdl.createComponent(null, "libA", "tagA", null),
+            "First composite component must be resolvable");
+        assertSame(second, vdl.createComponent(null, "libB", "tagB", null),
+            "Second composite component must be resolvable");
+        assertNull(vdl.createComponent(null, "libX", "tagX", null),
+            "Unknown composite component must resolve to null");
+    }
+
+    @Test
+    @DisplayName("Should resolve a composite registered by short name via its full namespace URI (MOCK-5)")
+    void shouldNormalizeLibraryNamespace() {
+        var handler = new CuiMockViewHandler();
+        UIComponent component = new HtmlInputText();
+        handler.registerCompositeComponent("myLib", "tag", component);
+
+        var vdl = handler.getViewDeclarationLanguage(null, null);
+        assertSame(component, vdl.createComponent(null, "http://xmlns.jcp.org/jsf/composite/myLib", "tag", null),
+            "A full namespace URI must resolve to the short-name registration");
+    }
+
+    @Test
+    @DisplayName("The view declaration language stub rejects unsupported operations")
+    void shouldRejectUnsupportedVdlOperations() {
+        var vdl = new CuiMockViewHandler().getViewDeclarationLanguage(null, null);
+
+        assertThrows(UnsupportedOperationException.class, () -> vdl.buildView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.createView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getComponentMetadata(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getScriptComponentResource(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getStateManagementStrategy(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getViewMetadata(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.renderView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.restoreView(null, null));
     }
 
 }

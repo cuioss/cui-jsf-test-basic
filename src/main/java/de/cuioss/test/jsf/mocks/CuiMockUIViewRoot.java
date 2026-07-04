@@ -31,7 +31,7 @@ import static de.cuioss.tools.collect.CollectionLiterals.mutableMap;
 public class CuiMockUIViewRoot extends UIViewRoot {
 
     private final Map<String, UIComponent> componentMap = mutableMap();
-    private final Map<String, Object> viewMap = mutableMap();
+    private Map<String, Object> viewMap;
 
     /**
      * @param expr      must not be null
@@ -51,11 +51,14 @@ public class CuiMockUIViewRoot extends UIViewRoot {
 
     @Override
     public Map<String, Object> getViewMap() {
-        return viewMap;
+        return getViewMap(true);
     }
 
     @Override
     public Map<String, Object> getViewMap(boolean create) {
+        if (null == viewMap && create) {
+            viewMap = mutableMap();
+        }
         return viewMap;
     }
 }

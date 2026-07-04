@@ -18,7 +18,7 @@ package de.cuioss.test.jsf.mocks;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("CuiMockResourceHandler")
 class CuiMockResourceHandlerTest {
@@ -37,6 +37,31 @@ class CuiMockResourceHandlerTest {
         var key = CuiMockResourceHandler.createResourceMapKey("", "");
 
         assertEquals("notThere-notThere", key, "Blank input should map to the default placeholder");
+    }
+
+    @Test
+    @DisplayName("libraryExists should be true for real libraries and false only for the sentinel (MOCK-1)")
+    void shouldReportLibraryExistence() {
+        var handler = new CuiMockResourceHandler();
+
+        assertTrue(handler.libraryExists("some.real.library"),
+            "A real library must be reported as existing");
+        assertFalse(handler.libraryExists(CuiMockResourceHandler.LIBRARY_NOT_THERE),
+            "The sentinel library must be reported as not existing");
+    }
+
+    @Test
+    @DisplayName("getRendererTypeForResourceName returns null for empty input (MOCK-12)")
+    void shouldReturnNullRendererTypeForEmptyResourceName() {
+        var handler = new CuiMockResourceHandler();
+
+        assertNull(handler.getRendererTypeForResourceName(null),
+            "null resource name must not resolve to a renderer type");
+        assertNull(handler.getRendererTypeForResourceName(""),
+            "empty resource name must not resolve to a renderer type");
+        assertEquals("some.js" + CuiMockResourceHandler.RENDERER_SUFFIX,
+            handler.getRendererTypeForResourceName("some.js"),
+            "non-empty resource name resolves to the synthetic renderer type");
     }
 
 }

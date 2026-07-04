@@ -35,7 +35,7 @@ public class CuiMockServletContext extends MockServletContext {
     @Setter
     private String virtualServerName = "virtual";
     @Setter
-    private String contextPath = "mock-context";
+    private String contextPath = "/mock-context";
     @Setter
     private SessionCookieConfig sessionCookieConfig;
 

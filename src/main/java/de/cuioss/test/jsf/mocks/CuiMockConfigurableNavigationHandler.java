@@ -37,6 +37,13 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
 
     private static final CuiLogger LOGGER = new CuiLogger(CuiMockConfigurableNavigationHandler.class);
 
+    /**
+     * Registered navigation cases. Deviation from the JSF spec: whereas
+     * {@link ConfigurableNavigationHandler#getNavigationCases()} keys the map by
+     * from-view-id, this mock keys it by {@code "fromAction|outcome"} (see
+     * {@link #calculateKey(String, String)}) to match the way cases are registered
+     * for tests.
+     */
     @Getter
     private final Map<String, Set<NavigationCase>> navigationCases = new HashMap<>();
 
@@ -78,16 +85,19 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
         }
         final var navigationCase = getNavigationCase(context, fromAction, outcome);
 
-        var newViewId = outcome;
-        try {
+        // JSF spec: with no matching navigation case the current view is retained.
+        // Do not redirect and do not set the tracking flags, so an unregistered
+        // outcome does not count as navigation.
+        if (null == navigationCase) {
+            return;
+        }
 
-            if (null == navigationCase) {
-                externalContext.redirect(outcome);
-            } else {
-                newViewId = navigationCase.getToViewId(context);
+        final var newViewId = navigationCase.getToViewId(context);
+        try {
+            // Only registered redirect cases commit a redirect response.
+            if (navigationCase.isRedirect()) {
                 externalContext.redirect(newViewId);
             }
-
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -124,10 +134,10 @@ public class CuiMockConfigurableNavigationHandler extends ConfigurableNavigation
 
         final var key = calculateKey(fromAction, outcome);
 
-        navigationCases.remove(key);
-
         navigationCases.put(key, new HashSet<>(List.of(navigationCase)));
-        addNavigationWithFromActionCalled = true;
+        if (null != fromAction) {
+            addNavigationWithFromActionCalled = true;
+        }
         return this;
     }
 

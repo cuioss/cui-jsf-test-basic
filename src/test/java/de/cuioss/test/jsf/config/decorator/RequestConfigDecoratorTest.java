@@ -84,7 +84,12 @@ class RequestConfigDecoratorTest {
 
         decorator.setRequestLocale();
         assertNull(externalContext.getRequestLocale());
-        assertFalse(externalContext.getRequestLocales().hasNext());
+        // MOCK-7: getLocales must never return an empty enumeration; it falls back to
+        // the server default locale as required by the servlet specification.
+        var fallbackLocales = externalContext.getRequestLocales();
+        assertTrue(fallbackLocales.hasNext(),
+            "getRequestLocales must fall back to the default locale instead of being empty");
+        assertEquals(Locale.getDefault(), fallbackLocales.next());
 
         decorator.setRequestLocale(Locale.GERMAN, Locale.ENGLISH);
         assertEquals(Locale.GERMAN, externalContext.getRequestLocale());

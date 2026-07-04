@@ -15,28 +15,38 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import jakarta.faces.application.Resource;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.StateManagementStrategy;
 import jakarta.faces.view.ViewDeclarationLanguage;
+import jakarta.faces.view.ViewMetadata;
 import org.apache.myfaces.test.mock.MockViewHandler;
-import org.easymock.EasyMock;
+
+import java.beans.BeanInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * In addition to {@link MockViewHandler} this extension provides a mocked
- * {@link #getViewDeclarationLanguage(FacesContext, String)} using
- * {@link EasyMock} and a method for dynamically adding Composite-Component:
- * {@link #registerCompositeComponent(String, String, UIComponent)} Technically
- * they have not other use but being defined.
+ * In addition to {@link MockViewHandler} this extension provides a
+ * {@link #getViewDeclarationLanguage(FacesContext, String)} backed by a small
+ * hand-written {@link ViewDeclarationLanguage} stub and a method for dynamically
+ * adding composite components:
+ * {@link #registerCompositeComponent(String, String, UIComponent)}. In contrast
+ * to a mock-library based implementation any number of composite components can
+ * be registered.
  *
  * @author Oliver Wolff
  */
 public class CuiMockViewHandler extends MockViewHandler {
 
-    final ViewDeclarationLanguage mock = EasyMock.niceMock(ViewDeclarationLanguage.class);
+    private final CompositeComponentViewDeclarationLanguage viewDeclarationLanguage =
+        new CompositeComponentViewDeclarationLanguage();
 
     @Override
     public ViewDeclarationLanguage getViewDeclarationLanguage(FacesContext context, String viewId) {
-        return mock;
+        return viewDeclarationLanguage;
     }
 
     /**
@@ -45,8 +55,78 @@ public class CuiMockViewHandler extends MockViewHandler {
      * @param uiComponent must not be null
      */
     public void registerCompositeComponent(String libraryName, String tagName, UIComponent uiComponent) {
-        EasyMock.expect(mock.createComponent(EasyMock.anyObject(), EasyMock.eq(libraryName), EasyMock.eq(tagName),
-            EasyMock.anyObject())).andReturn(uiComponent).anyTimes();
-        EasyMock.replay(mock);
+        viewDeclarationLanguage.register(libraryName, tagName, uiComponent);
+    }
+
+    /**
+     * Minimal {@link ViewDeclarationLanguage} that resolves composite components
+     * from an internal map keyed by {@code libraryName + '|' + tagName}. All other
+     * operations are unsupported as they are not needed within the test-context.
+     */
+    private static final class CompositeComponentViewDeclarationLanguage extends ViewDeclarationLanguage {
+
+        private final Map<String, UIComponent> composites = new HashMap<>();
+
+        void register(String libraryName, String tagName, UIComponent uiComponent) {
+            composites.put(key(libraryName, tagName), uiComponent);
+        }
+
+        private static String key(String libraryName, String tagName) {
+            // Composite-component namespaces are often full URIs (e.g.
+            // "http://xmlns.jcp.org/jsf/composite/myLib" or "jakarta.faces.composite/myLib").
+            // Normalize to the last path segment so a registration by short name still
+            // resolves when JSF looks it up via the full namespace URI.
+            var normalizedLibrary = libraryName;
+            if (normalizedLibrary != null && normalizedLibrary.contains("/")) {
+                normalizedLibrary = normalizedLibrary.substring(normalizedLibrary.lastIndexOf('/') + 1);
+            }
+            return normalizedLibrary + '|' + tagName;
+        }
+
+        @Override
+        public UIComponent createComponent(FacesContext context, String taglibURI, String tagName,
+            Map<String, Object> attributes) {
+            return composites.get(key(taglibURI, tagName));
+        }
+
+        @Override
+        public void buildView(FacesContext context, UIViewRoot root) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public UIViewRoot createView(FacesContext context, String viewId) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public BeanInfo getComponentMetadata(FacesContext context, Resource componentResource) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Resource getScriptComponentResource(FacesContext context, Resource componentResource) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public StateManagementStrategy getStateManagementStrategy(FacesContext context, String viewId) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public ViewMetadata getViewMetadata(FacesContext context, String viewId) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void renderView(FacesContext context, UIViewRoot view) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public UIViewRoot restoreView(FacesContext context, String viewId) {
+            throw new UnsupportedOperationException();
+        }
     }
 }
