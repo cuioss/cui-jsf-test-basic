@@ -4,7 +4,7 @@ name: Maven Build
 
 on:
   push:
-    branches: [main, "feature/*", "fix/*", "chore/*", "release/*", "dependabot/**"]
+    branches: [main, "feature/*", "fix/*", "chore/*", "release/*"]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -12,6 +12,11 @@ on:
 permissions:
   contents: read
   pull-requests: read
+
+# Avoid duplicate/stale runs for the same ref (e.g. Dependabot push + PR)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:

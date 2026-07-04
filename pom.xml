@@ -58,14 +58,6 @@
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>jakarta.websocket</groupId>
-            <artifactId>jakarta.websocket-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>jakarta.el</groupId>
             <artifactId>jakarta.el-api</artifactId>
         </dependency>
@@ -83,6 +75,11 @@
             <artifactId>jdom2</artifactId>
         </dependency>
         <dependency>
+            <groupId>de.cuioss</groupId>
+            <artifactId>cui-java-tools</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-test</artifactId>
             <scope>compile</scope>
@@ -98,13 +95,15 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>de.cuioss.test</groupId>
-            <artifactId>cui-test-value-objects</artifactId>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>6.0.3</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.cuioss.test</groupId>
-            <artifactId>cui-test-juli-logger</artifactId>
+            <artifactId>cui-test-value-objects</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.cuioss.test</groupId>
