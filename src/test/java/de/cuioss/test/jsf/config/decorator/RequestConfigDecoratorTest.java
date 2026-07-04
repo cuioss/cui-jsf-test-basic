@@ -30,7 +30,6 @@ import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -114,8 +113,7 @@ class RequestConfigDecoratorTest {
         var request = (HttpServletRequest) externalContext.getRequest();
         assertEquals(0, request.getCookies().length);
         decorator.addRequestCookie(new Cookie("coo", "kie"));
-        assertNotNull(request.getCookies(), "Cookies should not be there");
-        assertEquals(1, request.getCookies().length);
+        assertEquals(1, request.getCookies().length, "The added cookie should be present");
     }
 
     @Test

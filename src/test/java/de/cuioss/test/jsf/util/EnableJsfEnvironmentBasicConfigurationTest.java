@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @EnableJsfEnvironment
 @JsfTestConfiguration(BasicApplicationConfiguration.class)
-class ConfigurableFacesTestTest {
+class EnableJsfEnvironmentBasicConfigurationTest {
 
     private static final String TO_VIEW_JSF = "/to/view.jsf";
     private static final String OUTCOME = "outcome";

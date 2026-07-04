@@ -22,6 +22,7 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,6 +35,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnableJsfEnvironment
 @JsfTestConfiguration(JsfTestSetupDispatchTest.BareSetup.class)
 class JsfTestSetupDispatchTest {
+
+    /**
+     * Resets the shared dispatch flags after each test so they cannot leak into a
+     * later reuse of the fixture. Reset happens in {@code @AfterEach} (not
+     * {@code @BeforeEach}) because the configuration — and thus the flag mutation —
+     * runs during test-instance post-processing, before {@code @BeforeEach}.
+     */
+    @AfterEach
+    void resetDispatchFlags() {
+        BareSetup.applicationCalled = false;
+        BareSetup.componentsCalled = false;
+        BareSetup.requestCalled = false;
+    }
 
     @Test
     void shouldDispatchAllThreeConfigureMethodsForBareSetup(FacesContext facesContext) {
