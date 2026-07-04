@@ -35,6 +35,7 @@ import lombok.Getter;
 import org.apache.myfaces.test.mock.MockExternalContext;
 import org.apache.myfaces.test.mock.MockFacesContext;
 import org.apache.myfaces.test.mock.MockHttpServletResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import static de.cuioss.test.jsf.util.ConfigurationHelper.*;
@@ -118,6 +119,18 @@ public class ConfigurableFacesTest {
         getApplicationConfigDecorator().getMockNavigationHandler();
         getApplicationConfigDecorator().getMockSearchExpressionHandler();
         getApplicationConfigDecorator().getMockResourceHandler();
+    }
+
+    /**
+     * Tears down the JSF runtime after each test. This releases the
+     * {@link MockFacesContext} (avoiding thread-local leaks into later tests),
+     * releases the {@link jakarta.faces.FactoryFinder} factories and restores the
+     * original thread-context classloader. Mirrors
+     * {@code JsfSetupExtension#afterEach}.
+     */
+    @AfterEach
+    protected void tearDownJsfRuntime() {
+        runtimeSetup.tearDown();
     }
 
     protected FacesContext getFacesContext() {

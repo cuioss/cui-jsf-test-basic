@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnableJsfEnvironment
@@ -115,5 +116,15 @@ class RequestConfigDecoratorTest {
         decorator.addRequestCookie(new Cookie("coo", "kie"));
         assertNotNull(request.getCookies(), "Cookies should not be there");
         assertEquals(1, request.getCookies().length);
+    }
+
+    @Test
+    @DisplayName("Should set the query string and return itself for fluent chaining (LIFE-9)")
+    void shouldSetQueryString(RequestConfigDecorator decorator, ExternalContext externalContext) {
+        var result = decorator.setQueryString("foo=bar");
+
+        assertSame(decorator, result, "setQueryString must return the decorator to enable fluent chaining");
+        assertEquals("foo=bar", ((HttpServletRequest) externalContext.getRequest()).getQueryString(),
+            "The query string should be set on the request");
     }
 }
