@@ -17,7 +17,6 @@ package de.cuioss.test.jsf.generator;
 
 import de.cuioss.test.generator.Generators;
 import de.cuioss.test.generator.TypedGenerator;
-import de.cuioss.test.jsf.config.ComponentConfigurator;
 import jakarta.faces.convert.*;
 
 import java.math.BigDecimal;
@@ -28,8 +27,9 @@ import java.util.List;
 import static de.cuioss.tools.collect.CollectionLiterals.immutableList;
 
 /**
- * Hybrid class that acts as an {@link TypedGenerator} and
- * {@link ComponentConfigurator}.
+ * A {@link TypedGenerator} providing the converter classes shipped with JSF. The
+ * available descriptors are exposed via {@link #JSF_CONVERTER} and the accompanying
+ * generators.
  *
  * @author Oliver Wolff
  */
@@ -58,8 +58,17 @@ public class JsfProvidedConverter implements TypedGenerator<Class> {
     /**
      * Defines a generator for all converter types provided by JSF.
      */
-    public static final TypedGenerator<ConverterDescriptor> CONVERTER_CLASS_GERNERATOR = Generators
+    public static final TypedGenerator<ConverterDescriptor> CONVERTER_CLASS_GENERATOR = Generators
         .fixedValues(JSF_CONVERTER);
+
+    /**
+     * Defines a generator for all converter types provided by JSF.
+     *
+     * @deprecated misspelled; use {@link #CONVERTER_CLASS_GENERATOR}. Retained for one
+     * release and scheduled for removal in the next major.
+     */
+    @Deprecated
+    public static final TypedGenerator<ConverterDescriptor> CONVERTER_CLASS_GERNERATOR = CONVERTER_CLASS_GENERATOR;
 
     /**
      * A generator for every id of registered generator.
@@ -76,7 +85,7 @@ public class JsfProvidedConverter implements TypedGenerator<Class> {
     @SuppressWarnings("unchecked")
     @Override
     public Class<Converter> next() {
-        return (Class<Converter>) CONVERTER_CLASS_GERNERATOR.next().getConverterClass();
+        return (Class<Converter>) CONVERTER_CLASS_GENERATOR.next().getConverterClass();
     }
 
     @Override

@@ -36,7 +36,16 @@ public class ReverseConverter implements Converter<String> {
      * The standard converter id for this converter.
      * </p>
      */
-    public static final String CONVERTER_ID = "de.cuioss.test.jsf.mocks.ReserveConverter";
+    public static final String CONVERTER_ID = "de.cuioss.test.jsf.mocks.ReverseConverter";
+
+    /**
+     * The previous, misspelled converter id ("Reserve" instead of "Reverse").
+     *
+     * @deprecated use {@link #CONVERTER_ID}. Retained for one release for consumers
+     * that still reference the old id; scheduled for removal in the next major.
+     */
+    @Deprecated
+    public static final String RESERVE_CONVERTER_ID = "de.cuioss.test.jsf.mocks.ReserveConverter";
 
     @Override
     public String getAsObject(final FacesContext context, final UIComponent component, final String value) {

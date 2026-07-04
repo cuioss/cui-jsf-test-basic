@@ -40,7 +40,17 @@ public class ComponentPropertyMetadata implements PropertyMetadata {
     private final PropertyMetadata delegate;
 
     @Getter
-    private final boolean ignoreOnValueExpresssion;
+    private final boolean ignoreOnValueExpression;
+
+    /**
+     * @return whether the property is ignored for value-expression handling
+     * @deprecated misspelled; use {@link #isIgnoreOnValueExpression()} instead.
+     * Retained for binary compatibility and scheduled for removal in the next major.
+     */
+    @Deprecated
+    public boolean isIgnoreOnValueExpresssion() {
+        return ignoreOnValueExpression;
+    }
 
     /**
      * @see de.cuioss.test.valueobjects.property.PropertyMetadata#getName()

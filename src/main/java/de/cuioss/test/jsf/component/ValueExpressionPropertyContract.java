@@ -64,7 +64,7 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     public ValueExpressionPropertyContract(final ParameterizedInstantiator<T> instantiator,
         final List<ComponentPropertyMetadata> metadata, final FacesContext facesContext) {
         this.instantiator = instantiator;
-        filteredMetadata = metadata.stream().filter(m -> !m.isIgnoreOnValueExpresssion()).toList();
+        filteredMetadata = metadata.stream().filter(m -> !m.isIgnoreOnValueExpression()).toList();
         this.facesContext = facesContext;
     }
 

@@ -26,11 +26,15 @@ import de.cuioss.test.valueobjects.api.property.PropertyReflectionConfig;
 import de.cuioss.test.valueobjects.property.PropertyMetadata;
 import de.cuioss.test.valueobjects.property.impl.PropertyMetadataImpl;
 import de.cuioss.tools.property.PropertyReadWrite;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @PropertyReflectionConfig(skip = true)
 @PropertyConfig(name = "delegate", propertyClass = PropertyMetadata.class, required = true, propertyReadWrite = PropertyReadWrite.WRITE_ONLY)
-@PropertyConfig(name = "ignoreOnValueExpresssion", propertyClass = boolean.class)
-@VerifyConstructor(of = {"delegate", "ignoreOnValueExpresssion"})
+@PropertyConfig(name = "ignoreOnValueExpression", propertyClass = boolean.class)
+@VerifyConstructor(of = {"delegate", "ignoreOnValueExpression"})
 @VetoObjectTestContract(ObjectTestContracts.SERIALIZABLE)
 class ComponentPropertyMetadataTest extends ValueObjectTest<ComponentPropertyMetadata>
     implements TypedGenerator<PropertyMetadata> {
@@ -44,6 +48,16 @@ class ComponentPropertyMetadataTest extends ValueObjectTest<ComponentPropertyMet
     @Override
     public Class<PropertyMetadata> getType() {
         return PropertyMetadata.class;
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void deprecatedGetterMatchesCorrectlySpelledGetter() {
+        var metadata = new ComponentPropertyMetadata(next(), true);
+
+        assertTrue(metadata.isIgnoreOnValueExpression(), "The correctly-spelled getter must return the value");
+        assertEquals(metadata.isIgnoreOnValueExpression(), metadata.isIgnoreOnValueExpresssion(),
+            "The deprecated getter must match the correctly-spelled one (API-1)");
     }
 
 }
