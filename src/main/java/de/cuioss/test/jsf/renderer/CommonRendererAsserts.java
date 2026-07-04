@@ -24,6 +24,7 @@ import org.jdom2.Element;
 import java.io.Serializable;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -47,12 +48,12 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
     RENDERED("rendered", Boolean.FALSE) {
         @Override
         public void assertAttributeSet(final Element element) {
-            if (null == element) {
-                return;
-            }
             if (!element.getChildren().isEmpty()) {
                 fail("Children found, although the rendered attribute is set to 'false'. This may be a tricky one, depending on your desired output");
             }
+            // A not-rendered component must not emit bare text either (ASSERT-4).
+            assertTrue(element.getTextTrim().isEmpty(),
+                "Text output found, although the rendered attribute is set to 'false'. This may be a tricky one, depending on your desired output");
         }
     },
     /**
@@ -60,7 +61,7 @@ public enum CommonRendererAsserts implements RendererAttributeAssert {
      */
     STYLE("style", "traceStyle"),
     /**
-     * Checks the attribute 'style'
+     * Checks the attribute 'styleClass'
      */
     STYLE_CLASS("styleClass", "traceStyleClass") {
         @Override

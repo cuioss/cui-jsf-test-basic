@@ -97,4 +97,15 @@ class DomUtilsTest {
         assertThrows(IllegalArgumentException.class, () -> htmlStringToDocument("<a></b>"),
             "Malformed HTML should raise an IllegalArgumentException");
     }
+
+    @Test
+    @DisplayName("Should reject empty attribute name / value with IllegalArgumentException (ASSERT-10)")
+    void shouldRejectEmptyFilterArguments() {
+        var element = htmlStringToDocument(NESTED_DIV_WITH_STYLE).getRootElement();
+
+        assertThrows(IllegalArgumentException.class, () -> filterForAttribute(element, ""),
+            "An empty attribute name must raise an IllegalArgumentException, not a bare NPE");
+        assertThrows(IllegalArgumentException.class, () -> filterForAttributeContainingValue(element, STYLE, ""),
+            "An empty value fragment must raise an IllegalArgumentException, not a bare NPE");
+    }
 }

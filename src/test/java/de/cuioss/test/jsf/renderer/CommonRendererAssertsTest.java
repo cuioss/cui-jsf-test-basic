@@ -111,6 +111,22 @@ class CommonRendererAssertsTest {
             "Present passthrough attribute should not trigger an assertion error");
     }
 
+    @Test
+    @DisplayName("RENDERED should pass on empty output but fail on child elements and bare text (ASSERT-4)")
+    void shouldDetectNotRenderedOutput() {
+        var empty = DomUtils.htmlStringToDocument(EMPTY_ELEMENT).getRootElement();
+        assertDoesNotThrow(() -> CommonRendererAsserts.RENDERED.assertAttributeSet(empty),
+            "Empty output must satisfy the not-rendered assertion");
+
+        var withChildren = DomUtils.htmlStringToDocument(NESTED_DIV).getRootElement();
+        assertThrows(AssertionError.class, () -> CommonRendererAsserts.RENDERED.assertAttributeSet(withChildren),
+            "Child elements must fail the not-rendered assertion");
+
+        var textOnly = DomUtils.htmlStringToDocument("plain text output").getRootElement();
+        assertThrows(AssertionError.class, () -> CommonRendererAsserts.RENDERED.assertAttributeSet(textOnly),
+            "Bare text output must fail the not-rendered assertion");
+    }
+
     private static void verifyContract(final RendererAttributeAssert attributeAssert, final String positiveHtml,
         final Serializable traceAttributeValue) {
         var component = new HtmlInputText();

@@ -96,7 +96,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Oliver Wolff
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-// owolff we need to migrate this aspect later
 @EnableGeneratorController
 @EnableJsfEnvironment
 public abstract class AbstractConverterTest<C extends Converter, T>
@@ -246,6 +245,10 @@ public abstract class AbstractConverterTest<C extends Converter, T>
     private void verifyExpectedErrorMessage(final ConverterTestItem<T> item, final ConverterException e) {
         // Check message
         if (null != item.getErrorMessage()) {
+            assertNotNull(e.getFacesMessage(),
+                "Exception carries no FacesMessage but message '" + item.getErrorMessage() + "' was expected");
+            assertEquals(item.getSeverity(), e.getFacesMessage().getSeverity(),
+                "Wrong severity detected. TestItem was : " + item);
             assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
                 "Wrong error message detected. TestItem was : " + item);
         }

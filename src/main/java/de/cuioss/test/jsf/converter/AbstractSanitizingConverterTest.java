@@ -20,6 +20,7 @@ import jakarta.faces.convert.Converter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Extension of {@linkplain AbstractConverterTest} to also test the sanitizing
@@ -51,7 +52,9 @@ public abstract class AbstractSanitizingConverterTest<C extends Converter<T>, T>
     protected void shouldSanitizeJavaScript(FacesContext facesContext) {
         var toConvert = createTestObjectWithMaliciousContent("<script>");
         var result = getConverter().getAsString(facesContext, getComponent(), toConvert);
-        assertFalse(result.contains("<script"));
+        assertNotNull(result, "The converter must not return null for malicious content");
+        assertFalse(result.contains("<script"),
+            "The converter must sanitize the '<script' fragment from its output, but was: " + result);
     }
 
 }

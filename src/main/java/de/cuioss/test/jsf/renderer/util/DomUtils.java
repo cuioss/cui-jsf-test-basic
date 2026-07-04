@@ -60,6 +60,8 @@ public class DomUtils {
             var saxBuilder = new SAXBuilder();
             saxBuilder.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
             saxBuilder.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            // Fully disable DOCTYPE declarations to prevent XXE (Sonar S2755).
+            saxBuilder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             return saxBuilder.build(input);
         } catch (JDOMException | IOException e) {
             throw new IllegalArgumentException("Unable to parse given String, due to ", e);
@@ -77,7 +79,7 @@ public class DomUtils {
      */
     public static List<Attribute> filterForAttribute(final Element element, final String attributeName) {
         requireNonNull(element);
-        requireNonNull(emptyToNull(attributeName));
+        checkNotEmpty(attributeName, "attributeName");
         List<Attribute> found = new ArrayList<>();
         var current = element.getAttribute(attributeName);
         if (null != current) {
@@ -103,9 +105,18 @@ public class DomUtils {
      */
     public static List<Attribute> filterForAttributeContainingValue(final Element element, final String attributeName,
         final String attributeValuePart) {
-        requireNonNull(emptyToNull(attributeValuePart));
+        checkNotEmpty(attributeValuePart, "attributeValuePart");
 
         return filterForAttribute(element, attributeName).stream()
             .filter(a -> a.getValue().contains(attributeValuePart)).toList();
+    }
+
+    /**
+     * @throws IllegalArgumentException if the given value is {@code null} or empty
+     */
+    private static void checkNotEmpty(final String value, final String name) {
+        if (null == emptyToNull(value)) {
+            throw new IllegalArgumentException(name + " must not be null nor empty");
+        }
     }
 }

@@ -69,7 +69,8 @@ public final class ComponentTestHelper {
             unorderedCollection.addAll(Arrays.asList(property.assertUnorderedCollection()));
         }
 
-        final Map<String, PropertyMetadata> map = new HashMap<>();
+        // LinkedHashMap keeps verification order deterministic (ASSERT-12).
+        final Map<String, PropertyMetadata> map = new LinkedHashMap<>();
         propertyConfigs.forEach(pc -> map.put(pc.getName(), pc));
         for (String configuredName : of) {
             map.put(configuredName, resolvePropertyForConfiguredName(instance, configuredName));
@@ -95,9 +96,8 @@ public final class ComponentTestHelper {
      */
     public static PropertyMetadata resolvePropertyForConfiguredName(final UIComponent instance,
         final String configuredName) {
-        Class<?> propertyType = null;
-        var collectionType = CollectionType.NO_ITERABLE;
-        propertyType = PropertyHolder.from(instance.getClass(), configuredName)
+        final var collectionType = CollectionType.NO_ITERABLE;
+        final Class<?> propertyType = PropertyHolder.from(instance.getClass(), configuredName)
             .orElseThrow(() -> new IllegalStateException("Unable to determine property type for " + configuredName
                 + ", use @PropertyConfig to define this property"))
             .getType();

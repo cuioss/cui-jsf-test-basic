@@ -54,7 +54,7 @@ public class ServletObjectsFromJSFContextProducer {
     }
 
     @Produces
-    //    @Typed({ ServletContext.class })
+    @Typed({ServletContext.class})
     @Dependent
     ServletContext produceServletContext() {
         return (ServletContext) FacesContext.getCurrentInstance().getExternalContext()
