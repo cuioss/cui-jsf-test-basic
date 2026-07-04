@@ -62,8 +62,10 @@ public class TestItems<T> {
     @Getter(AccessLevel.PACKAGE)
     private final List<ConverterTestItem<T>> invalidStringTestItems = new ArrayList<>();
 
+    // LinkedHashSet keeps a deterministic iteration order so order-dependent converter
+    // bugs remain reproducible (ASSERT-7).
     @Getter(AccessLevel.PACKAGE)
-    private final Set<String> roundtripValues = new HashSet<>();
+    private final Set<String> roundtripValues = new LinkedHashSet<>();
 
     /**
      * Adds roundtrip String values to be tested. These values are used in the

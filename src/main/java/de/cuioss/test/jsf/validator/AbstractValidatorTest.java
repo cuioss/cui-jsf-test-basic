@@ -20,7 +20,6 @@ import de.cuioss.test.jsf.junit5.EnableJsfEnvironment;
 import de.cuioss.test.valueobjects.objects.ConfigurationCallBackHandler;
 import de.cuioss.test.valueobjects.objects.impl.DefaultInstantiator;
 import de.cuioss.tools.reflect.MoreReflection;
-import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlInputText;
 import jakarta.faces.context.FacesContext;
@@ -92,7 +91,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Oliver Wolff
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-// owolff we need to migrate this aspect later
 @EnableGeneratorController
 @EnableJsfEnvironment
 public abstract class AbstractValidatorTest<V extends Validator, T>
@@ -169,9 +167,13 @@ public abstract class AbstractValidatorTest<V extends Validator, T>
                 validator.validate(facesContext, getComponent(), item.getTestValue());
                 fail("Validation should have thrown a ValidatorException for testValue" + item);
             } catch (final ValidatorException e) {
-                assertEquals(FacesMessage.SEVERITY_ERROR, e.getFacesMessage().getSeverity());
+                var facesMessage = e.getFacesMessage();
+                assertNotNull(facesMessage,
+                    "ValidatorException carries no FacesMessage but one was expected for test value " + item);
+                assertEquals(item.getSeverity(), facesMessage.getSeverity(),
+                    "The severity does not match the configured test item. TestItem was: " + item);
                 if (null != item.getErrorMessage()) {
-                    assertEquals(item.getErrorMessage(), e.getFacesMessage().getSummary(),
+                    assertEquals(item.getErrorMessage(), facesMessage.getSummary(),
                         "The validation failed as expected, but the messages are not equal as expected");
                 }
             }

@@ -71,6 +71,6 @@ public class BasicApplicationConfiguration implements JsfTestSetup {
     @Override
     public void configureRequest(final RequestConfigDecorator decorator) {
         decorator.setRequestHeader(USER_AGENT, FIREFOX)
-            .setRequestLocale(SUPPORTED_LOCALES.toArray(new Locale[SUPPORTED_LOCALES.size()]));
+            .setRequestLocale(SUPPORTED_LOCALES.toArray(new Locale[0]));
     }
 }

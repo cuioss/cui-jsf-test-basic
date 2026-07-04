@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("HtmlTreeAsserts")
@@ -90,6 +91,30 @@ class HtmlTreeAssertsTest {
                 HtmlTreeAsserts.assertHtmlTreeEquals(expected, expected);
                 HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
             }, "Attribute order should not affect equality");
+        }
+
+        @Test
+        @DisplayName("Should not mutate the attribute order of the argument documents (ASSERT-1)")
+        void shouldNotMutateAttributeOrderOfArguments() {
+            var expected = createDocumentWithDivChild();
+            var actual = createDocumentWithDivChild();
+            // Add attributes in non-sorted order (name before id)
+            var expectedAttributes = expected.getRootElement().getChild(DIV).getAttributes();
+            expectedAttributes.add(createNameAttribute());
+            expectedAttributes.add(createIdAttribute());
+            var actualAttributes = actual.getRootElement().getChild(DIV).getAttributes();
+            actualAttributes.add(createNameAttribute());
+            actualAttributes.add(createIdAttribute());
+
+            HtmlTreeAsserts.assertHtmlTreeEquals(expected, actual);
+
+            // The live attribute list of the argument must retain its original order,
+            // i.e. the comparison must sort copies, not the caller's documents.
+            var afterAttributes = expected.getRootElement().getChild(DIV).getAttributes();
+            assertEquals(NAME, afterAttributes.get(0).getName(),
+                "The comparison must not sort (mutate) the caller's attribute list");
+            assertEquals(ID, afterAttributes.get(1).getName(),
+                "The comparison must not sort (mutate) the caller's attribute list");
         }
 
         @Test

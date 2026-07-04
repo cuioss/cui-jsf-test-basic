@@ -30,7 +30,6 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -80,20 +79,17 @@ public class JsfParameterResolver implements ParameterResolver {
 
     private final JsfEnvironmentHolder environmentHolder;
 
-    private static final Set<Class<?>> SUPPORTED_TYPES = new HashSet<>();
-
-    static {
-        SUPPORTED_TYPES.add(JsfEnvironmentHolder.class);
-        SUPPORTED_TYPES.add(FacesContext.class);
-        SUPPORTED_TYPES.add(ExternalContext.class);
-        SUPPORTED_TYPES.add(Application.class);
-        SUPPORTED_TYPES.add(RequestConfigDecorator.class);
-        SUPPORTED_TYPES.add(ApplicationConfigDecorator.class);
-        SUPPORTED_TYPES.add(ComponentConfigDecorator.class);
-        SUPPORTED_TYPES.add(MockHttpServletResponse.class);
-        SUPPORTED_TYPES.add(MockHttpServletRequest.class);
-        SUPPORTED_TYPES.add(NavigationAsserts.class);
-    }
+    private static final Set<Class<?>> SUPPORTED_TYPES = Set.of(
+        JsfEnvironmentHolder.class,
+        FacesContext.class,
+        ExternalContext.class,
+        Application.class,
+        RequestConfigDecorator.class,
+        ApplicationConfigDecorator.class,
+        ComponentConfigDecorator.class,
+        MockHttpServletResponse.class,
+        MockHttpServletRequest.class,
+        NavigationAsserts.class);
 
     /**
      * Determines if this resolver supports the given parameter.

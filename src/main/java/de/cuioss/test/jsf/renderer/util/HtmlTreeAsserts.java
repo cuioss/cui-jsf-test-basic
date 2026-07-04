@@ -20,10 +20,18 @@ import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Provides asserts for {@link Document} and Jdom elements.
+ * <p>
+ * <em>Known limitation:</em> the text content of an element is compared using
+ * {@code getTextNormalize()}, which concatenates all direct text of an element and
+ * collapses whitespace. The <em>position</em> of text relative to child elements is
+ * therefore not verified — {@code <div>x<span/></div>} and {@code <div><span/>x</div>}
+ * are treated as equal.
  *
  * @author Oliver Wolff
  */
@@ -63,6 +71,8 @@ public final class HtmlTreeAsserts {
      */
     public static void assertElementWithChildrenEquals(final Element expected, final Element actual,
         final String pointer) {
+        assertNotNull(expected, EXPECTED_MUST_NOT_BE_NULL);
+        assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         var currentPointer = pointer + ">" + expected.getName();
         assertElementEquals(expected, actual, currentPointer);
         var expectedChildren = expected.getChildren();
@@ -101,8 +111,10 @@ public final class HtmlTreeAsserts {
         assertNotNull(actual, ACTUAL_MUST_NOT_BE_NULL);
         assertEquals(expected.getName(), actual.getName(),
             "%s: The names are not equal, expected=%s, actual=%s".formatted(pointer, expected, actual));
-        var expectedAttributes = expected.getAttributes();
-        var actualAttributes = actual.getAttributes();
+        // Copy the live JDOM attribute lists before sorting so a reused expected/actual
+        // Document is not silently mutated (ASSERT-1).
+        var expectedAttributes = new ArrayList<>(expected.getAttributes());
+        var actualAttributes = new ArrayList<>(actual.getAttributes());
         if (expectedAttributes.isEmpty() && actualAttributes.isEmpty()) {
             return;
         }

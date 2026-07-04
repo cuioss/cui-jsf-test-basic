@@ -80,7 +80,7 @@ public class NavigationAsserts {
      * @param outcome must not be null
      */
     public void assertNavigatedWithOutcome(String outcome) {
-        assertNotNull(emptyToNull(outcome), "Outcome must not be null");
+        assertNotNull(emptyToNull(outcome), "Outcome must not be null or empty");
         assertTrue(facesContext.getExternalContext().isResponseCommitted(), "Response is not committed");
         var handler = applicationConfig.getMockNavigationHandler();
         assertTrue(handler.isHandleNavigationCalled(), "handleNavigation is not called");
@@ -94,7 +94,7 @@ public class NavigationAsserts {
      * @param redirectUrl must not be null
      */
     public void assertRedirect(String redirectUrl) {
-        assertNotNull(emptyToNull(redirectUrl), "redirectUrl must not be null");
+        assertNotNull(emptyToNull(redirectUrl), "redirectUrl must not be null or empty");
         assertTrue(facesContext.getExternalContext().isResponseCommitted(), "Response is not committed");
         var tempResponse = (HttpServletResponse) externalContext.getResponse();
         assertTrue(tempResponse.containsHeader("Location"), "Response must provide a header with the name 'Location'");

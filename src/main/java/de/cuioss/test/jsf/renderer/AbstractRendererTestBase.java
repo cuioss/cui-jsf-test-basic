@@ -137,9 +137,8 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *                     null
      * @param expected     the expected DOM document, must not be null
      * @param facesContext the FacesContext to be used for rendering
-     * @throws IOException if an error occurs during rendering
      */
-    public void assertRenderResult(final UIComponent toBeRendered, final Document expected, FacesContext facesContext) throws IOException {
+    public void assertRenderResult(final UIComponent toBeRendered, final Document expected, FacesContext facesContext) {
         var rendered = assertDoesNotThrow(() -> renderToString(toBeRendered, facesContext));
         assertNotNull(emptyToNull(rendered), "Render result must not be empty.");
         HtmlTreeAsserts.assertHtmlTreeEquals(expected, DomUtils.htmlStringToDocument(rendered));
@@ -153,10 +152,9 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
      *                     null
      * @param expected     the expected HTML string, must not be null
      * @param facesContext the FacesContext to be used for rendering
-     * @throws IOException if an error occurs during rendering
      */
-    public void assertRenderResult(final UIComponent toBeRendered, final String expected, FacesContext facesContext) throws IOException {
-        assertNotNull(emptyToNull(expected), "Render result must not be empty.");
+    public void assertRenderResult(final UIComponent toBeRendered, final String expected, FacesContext facesContext) {
+        assertNotNull(emptyToNull(expected), "Expected HTML must not be empty");
         assertRenderResult(toBeRendered, DomUtils.htmlStringToDocument(expected), facesContext);
     }
 
@@ -197,7 +195,8 @@ public abstract class AbstractRendererTestBase<R extends Renderer>
     void shouldThrowNPEOnMissingParameterForEncodeBegin(FacesContext facesContext) {
         assertThrows(NullPointerException.class, () -> renderer.encodeBegin(null, getComponent()),
             NPE_ON_MISSING_FACES_CONTEXT_EXPECTED);
-        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(facesContext, null));
+        assertThrows(NullPointerException.class, () -> renderer.encodeBegin(facesContext, null),
+            NPE_ON_MISSING_PARAMETER_EXPECTED);
     }
 
     /**
