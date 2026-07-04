@@ -103,6 +103,8 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
     @Override
     public void resolveComponents(SearchExpressionContext searchExpressionContext, String expressions,
         ContextCallback callback) {
+        requireNonNull(searchExpressionContext, "searchExpressionContext must not be null");
+        requireNonNull(callback, "callback must not be null");
         requireNonNull(resolvedComponents, "resolvedComponents must not be null");
         if (MoreStrings.isEmpty(expressions)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);

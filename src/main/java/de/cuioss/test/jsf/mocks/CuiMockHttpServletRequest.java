@@ -58,7 +58,7 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
             // Servlet spec: at least the server default locale must be returned.
             locales = mutableList(Locale.getDefault());
         }
-        return new Vector<>(locales).elements();
+        return Collections.enumeration(locales);
     }
 
     @Override
@@ -143,19 +143,16 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
             session = null;
         }
 
-        if (null == session) {
-            if (!create) {
-                return null;
-            }
-            return createCuiSession();
+        if (null != session) {
+            // Preserve the existing (possibly foreign) session so its attributes are
+            // never discarded, regardless of the create flag.
+            return session;
         }
 
-        // Ensure a CuiMockHttpSession is returned, but only when creation is allowed.
-        // In the read-only path the existing (possibly foreign) session is preserved.
-        if (create && !(session instanceof CuiMockHttpSession)) {
-            return createCuiSession();
+        if (!create) {
+            return null;
         }
-        return session;
+        return createCuiSession();
     }
 
     private static boolean isInvalidated(final HttpSession session) {

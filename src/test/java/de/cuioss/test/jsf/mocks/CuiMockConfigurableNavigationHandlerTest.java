@@ -70,6 +70,20 @@ class CuiMockConfigurableNavigationHandlerTest {
             "A non-redirect case must not commit a redirect response");
     }
 
+    @Test
+    @DisplayName("Registering with a fromAction sets the fromAction tracking flag (MOCK-14)")
+    void fromActionFlagSetOnlyWithFromAction() {
+        var handler = new CuiMockConfigurableNavigationHandler();
+
+        handler.addNavigationCase(KNOWN_OUTCOME, redirectCase("/target.xhtml"));
+        assertFalse(handler.isAddNavigationWithFromActionCalled(),
+            "The fromAction flag must not be set for the outcome-only overload");
+
+        handler.addNavigationCase("fromAction", KNOWN_OUTCOME, redirectCase("/target.xhtml"));
+        assertTrue(handler.isAddNavigationWithFromActionCalled(),
+            "The fromAction flag must be set when a fromAction is supplied");
+    }
+
     private static NavigationCase redirectCase(String toViewId) {
         return new NavigationCase(null, null, KNOWN_OUTCOME, null, toViewId, null, null, true, true);
     }

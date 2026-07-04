@@ -65,4 +65,31 @@ class CuiMockViewHandlerTest {
             "Unknown composite component must resolve to null");
     }
 
+    @Test
+    @DisplayName("Should resolve a composite registered by short name via its full namespace URI (MOCK-5)")
+    void shouldNormalizeLibraryNamespace() {
+        var handler = new CuiMockViewHandler();
+        UIComponent component = new HtmlInputText();
+        handler.registerCompositeComponent("myLib", "tag", component);
+
+        var vdl = handler.getViewDeclarationLanguage(null, null);
+        assertSame(component, vdl.createComponent(null, "http://xmlns.jcp.org/jsf/composite/myLib", "tag", null),
+            "A full namespace URI must resolve to the short-name registration");
+    }
+
+    @Test
+    @DisplayName("The view declaration language stub rejects unsupported operations")
+    void shouldRejectUnsupportedVdlOperations() {
+        var vdl = new CuiMockViewHandler().getViewDeclarationLanguage(null, null);
+
+        assertThrows(UnsupportedOperationException.class, () -> vdl.buildView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.createView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getComponentMetadata(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getScriptComponentResource(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getStateManagementStrategy(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.getViewMetadata(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.renderView(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> vdl.restoreView(null, null));
+    }
+
 }

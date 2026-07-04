@@ -19,9 +19,32 @@ import de.cuioss.test.valueobjects.ValueObjectTest;
 import de.cuioss.test.valueobjects.api.contracts.VerifyBeanProperty;
 import de.cuioss.test.valueobjects.api.object.ObjectTestContracts;
 import de.cuioss.test.valueobjects.api.object.VetoObjectTestContract;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @VerifyBeanProperty(exclude = {"invokedParams", "parmetersProvided"})
 @VetoObjectTestContract(ObjectTestContracts.SERIALIZABLE)
 class CuiMockMethodExpressionTest extends ValueObjectTest<CuiMockMethodExpression> {
 
+    @Test
+    void shouldTrackInvocationWithParams() {
+        var expression = new CuiMockMethodExpression();
+        expression.setInvokeResult("result");
+
+        assertEquals("result", expression.invoke(null, new Object[]{"a", "b"}));
+        assertTrue(expression.isInvoked(), "invoke must mark the expression as invoked");
+        assertArrayEquals(new Object[]{"a", "b"}, expression.getInvokedParams(),
+            "invoke must record the passed parameters");
+    }
+
+    @Test
+    void shouldTolerateNullParams() {
+        var expression = new CuiMockMethodExpression();
+
+        assertNull(expression.invoke(null, null), "invoke returns the (unset) result");
+        assertTrue(expression.isInvoked(), "invoke must mark the expression as invoked");
+        assertEquals(0, expression.getInvokedParams().length,
+            "null params must be normalized to an empty array (MOCK-10)");
+    }
 }

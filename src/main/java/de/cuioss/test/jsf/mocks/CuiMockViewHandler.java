@@ -72,7 +72,15 @@ public class CuiMockViewHandler extends MockViewHandler {
         }
 
         private static String key(String libraryName, String tagName) {
-            return libraryName + '|' + tagName;
+            // Composite-component namespaces are often full URIs (e.g.
+            // "http://xmlns.jcp.org/jsf/composite/myLib" or "jakarta.faces.composite/myLib").
+            // Normalize to the last path segment so a registration by short name still
+            // resolves when JSF looks it up via the full namespace URI.
+            var normalizedLibrary = libraryName;
+            if (normalizedLibrary != null && normalizedLibrary.contains("/")) {
+                normalizedLibrary = normalizedLibrary.substring(normalizedLibrary.lastIndexOf('/') + 1);
+            }
+            return normalizedLibrary + '|' + tagName;
         }
 
         @Override
