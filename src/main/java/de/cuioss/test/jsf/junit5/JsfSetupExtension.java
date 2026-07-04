@@ -27,7 +27,6 @@ import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.platform.commons.support.AnnotationSupport;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static de.cuioss.test.jsf.util.ConfigurationHelper.*;
 
@@ -55,6 +54,13 @@ import static de.cuioss.test.jsf.util.ConfigurationHelper.*;
  * }
  * }
  * </pre>
+ * <p>
+ * <em>Note:</em> {@code @TestInstance(TestInstance.Lifecycle.PER_CLASS)} is not
+ * supported. The JSF runtime is set up once per test instance in
+ * {@code postProcessTestInstance} but {@link #afterEach(ExtensionContext)} tears it
+ * down after every test method, so a single shared instance would run against a
+ * released runtime for the second and subsequent tests. Use the default
+ * {@code PER_METHOD} lifecycle.
  *
  * @author Oliver Wolff
  */
@@ -115,7 +121,9 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         List<EnableJsfEnvironment> environments = new ArrayList<>();
         retrieveEnableJSFAnnotations(testInstance.getClass(), environments);
         if (!environments.isEmpty()) {
-            // Use the outermost annotation
+            // Use the innermost (most specific) annotation: retrieveEnableJSFAnnotations
+            // collects them method > nested class > enclosing/superclass, so the first
+            // entry is the closest declaration to the test.
             useIdentityResourceBundle = environments.getFirst().useIdentityResourceBundle();
         }
 
@@ -131,10 +139,12 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
         setup.setApplication(environment.getFacesContext().getApplication());
 
         LOGGER.debug(() -> "Registering Decorators");
+        // Purpose-built LinkedHashSet preserves the deliberate configuration ordering
+        // (last-wins for conflicting registrations), so it must not be re-collected into
+        // an unordered set.
         Set<JsfTestConfiguration> decoratorAnnotations = LinkedHashSet.newLinkedHashSet(16);
 
         retrieveDecoratorAnnotations(testInstance.getClass(), decoratorAnnotations);
-        decoratorAnnotations = decoratorAnnotations.stream().filter(Objects::nonNull).collect(Collectors.toSet());
 
         configureApplication(testInstance, environment.getApplicationConfigDecorator(), decoratorAnnotations);
         configureComponents(testInstance, environment.getComponentConfigDecorator(), decoratorAnnotations);
@@ -278,17 +288,14 @@ public class JsfSetupExtension implements TestInstancePostProcessor, BeforeEachC
             return;
         }
 
-        // Get the actual test class (which might be a nested class)
-        Class<?> testClass = context.getRequiredTestClass();
+        // Only consider annotations declared directly on the test method. Class-level
+        // configurations were already applied in postProcessTestInstance; re-applying
+        // them here would run non-idempotent configurators twice per test (LIFE-2).
+        List<EnableJsfEnvironment> methodAnnotations = new ArrayList<>(
+            AnnotationSupport.findRepeatableAnnotations(testMethod.get(), EnableJsfEnvironment.class));
 
-        // Check for method-level EnableJsfEnvironment annotations
-        List<EnableJsfEnvironment> methodAnnotations = new ArrayList<>();
-        retrieveEnableJSFAnnotations(testClass, methodAnnotations, testMethod.get());
-
-        // Check for method-level JsfTestConfiguration annotations
-        Set<JsfTestConfiguration> decoratorAnnotations = LinkedHashSet.newLinkedHashSet(16);
-        retrieveDecoratorAnnotations(testClass, decoratorAnnotations, testMethod.get());
-        decoratorAnnotations = decoratorAnnotations.stream().filter(Objects::nonNull).collect(Collectors.toSet());
+        Set<JsfTestConfiguration> decoratorAnnotations = new LinkedHashSet<>(
+            AnnotationSupport.findRepeatableAnnotations(testMethod.get(), JsfTestConfiguration.class));
 
         // Apply method-level EnableJsfEnvironment annotation if present
         if (!methodAnnotations.isEmpty()) {

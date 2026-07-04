@@ -87,9 +87,9 @@ public class RequestConfigDecorator {
      * {@link ExternalContext#getRequestParameterMap()}
      *
      * @param key   used as the key for the
-     *              {@link ExternalContext#getRequestHeaderMap()}
+     *              {@link ExternalContext#getRequestParameterMap()}
      * @param value used as the value for the
-     *              {@link ExternalContext#getRequestHeaderMap()}
+     *              {@link ExternalContext#getRequestParameterMap()}
      * @return the {@link RequestConfigDecorator} itself in order to enable a
      * fluent-api style usage
      */
@@ -115,7 +115,7 @@ public class RequestConfigDecorator {
     }
 
     /**
-     * Registers one or more cookies the the contained request
+     * Registers one or more cookies to the contained request
      *
      * @param cookie to be added
      * @return the {@link RequestConfigDecorator} itself in order to enable a
@@ -157,11 +157,14 @@ public class RequestConfigDecorator {
     /**
      * Explicitly sets a given queryString as path-element of the request
      *
-     * @param parameterString
+     * @param parameterString the query string to set as the request's path query element
+     * @return the {@link RequestConfigDecorator} itself in order to enable a
+     * fluent-api style usage
      */
-    public void setQueryString(String parameterString) {
+    public RequestConfigDecorator setQueryString(String parameterString) {
         var request = (CuiMockHttpServletRequest) externalContext.getRequest();
         request.setPathElements(request.getContextPath(), request.getServletPath(), request.getPathInfo(),
             parameterString);
+        return this;
     }
 }

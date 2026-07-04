@@ -115,10 +115,17 @@ public abstract class AbstractConverterTest<C extends Converter, T>
     private TestItems<T> testItems;
 
     /**
-     * Instantiates and initially configures a concrete {@link Converter}
+     * Instantiates and initially configures a concrete {@link Converter}.
+     * <p>
+     * The injected {@link ComponentConfigDecorator} is passed to
+     * {@link #configureComponents(ComponentConfigDecorator)} so the (overridable)
+     * component configuration is actually applied before the converter is created.
+     *
+     * @param componentConfig resolved by the JSF test environment, never {@code null}
      */
     @BeforeEach
-    protected void initConverter() {
+    protected void initConverter(ComponentConfigDecorator componentConfig) {
+        configureComponents(componentConfig);
         final Class<C> clazz = MoreReflection.extractFirstGenericTypeArgument(getClass());
         converter = new DefaultInstantiator<>(clazz).newInstance();
         configure(converter);

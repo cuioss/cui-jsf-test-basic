@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.util;
 
 import de.cuioss.test.jsf.mocks.*;
+import de.cuioss.tools.logging.CuiLogger;
 import jakarta.faces.FactoryFinder;
 import jakarta.faces.application.Application;
 import jakarta.faces.application.ApplicationFactory;
@@ -29,6 +30,7 @@ import org.apache.myfaces.test.mock.*;
 import org.apache.myfaces.test.mock.lifecycle.MockLifecycle;
 import org.apache.myfaces.test.mock.lifecycle.MockLifecycleFactory;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -40,6 +42,8 @@ import java.net.URLClassLoader;
  * @author Oliver Wolff
  */
 public class JsfRuntimeSetup {
+
+    private static final CuiLogger LOGGER = new CuiLogger(JsfRuntimeSetup.class);
 
     @Getter
     @Setter
@@ -92,6 +96,8 @@ public class JsfRuntimeSetup {
     // Thread context class loader saved and restored after each test
     private ClassLoader threadContextClassLoader = null;
     private boolean classLoaderSet = false;
+    // The URLClassLoader installed during setUp; kept so it can be closed on tearDown
+    private URLClassLoader jsfClassLoader = null;
 
     /**
      * <p>
@@ -126,6 +132,7 @@ public class JsfRuntimeSetup {
             facesContext.release();
         }
         facesContext = null;
+        facesContextFactory = null;
         lifecycle = null;
         lifecycleFactory = null;
         renderKit = null;
@@ -145,8 +152,14 @@ public class JsfRuntimeSetup {
      * cases, the default classloader cannot be properly set.
      */
     private void setUpClassloader() {
+        // Guard against a repeated setUp() without an intervening tearDown() overwriting
+        // the saved original classloader (which could then never be restored).
+        if (classLoaderSet) {
+            return;
+        }
         threadContextClassLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(new URLClassLoader(new URL[0], this.getClass().getClassLoader()));
+        jsfClassLoader = new URLClassLoader(new URL[0], this.getClass().getClassLoader());
+        Thread.currentThread().setContextClassLoader(jsfClassLoader);
         classLoaderSet = true;
     }
 
@@ -293,6 +306,14 @@ public class JsfRuntimeSetup {
             Thread.currentThread().setContextClassLoader(threadContextClassLoader);
             threadContextClassLoader = null;
             classLoaderSet = false;
+        }
+        if (jsfClassLoader != null) {
+            try {
+                jsfClassLoader.close();
+            } catch (IOException e) {
+                LOGGER.debug("Unable to close the JSF test class-loader", e);
+            }
+            jsfClassLoader = null;
         }
     }
 }

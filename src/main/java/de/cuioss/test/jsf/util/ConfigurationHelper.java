@@ -83,8 +83,13 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureComponents(registry));
-        getBareJsfTestSetups(configurations)
+        getBareJsfTestSetups(configurations, ComponentConfigurator.class)
             .forEach(instance -> instance.configureComponents(registry));
+        // LIFE-6: a test class migrated to the bare JsfTestSetup replacement (without
+        // implementing the deprecated ComponentConfigurator) must still be called.
+        if (!(testClass instanceof ComponentConfigurator) && testClass instanceof JsfTestSetup setup) {
+            setup.configureComponents(registry);
+        }
     }
 
     /**
@@ -110,8 +115,13 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureApplication(registry));
-        getBareJsfTestSetups(configurations)
+        getBareJsfTestSetups(configurations, ApplicationConfigurator.class)
             .forEach(instance -> instance.configureApplication(registry));
+        // LIFE-6: a test class migrated to the bare JsfTestSetup replacement (without
+        // implementing the deprecated ApplicationConfigurator) must still be called.
+        if (!(testClass instanceof ApplicationConfigurator) && testClass instanceof JsfTestSetup setup) {
+            setup.configureApplication(registry);
+        }
     }
 
     /**
@@ -137,8 +147,13 @@ public final class ConfigurationHelper {
             instances.add(configurator);
         }
         instances.forEach(instance -> instance.configureRequest(registry));
-        getBareJsfTestSetups(configurations)
+        getBareJsfTestSetups(configurations, RequestConfigurator.class)
             .forEach(instance -> instance.configureRequest(registry));
+        // LIFE-6: a test class migrated to the bare JsfTestSetup replacement (without
+        // implementing the deprecated RequestConfigurator) must still be called.
+        if (!(testClass instanceof RequestConfigurator) && testClass instanceof JsfTestSetup setup) {
+            setup.configureRequest(registry);
+        }
     }
 
     /**
@@ -162,25 +177,28 @@ public final class ConfigurationHelper {
     }
 
     /**
-     * Collects instances of bare {@link JsfTestSetup} implementors — types referenced by
-     * {@link JsfTestConfiguration#value()} that do <em>not</em> implement any of the legacy
-     * sub-interfaces ({@link ApplicationConfigurator}, {@link ComponentConfigurator},
-     * {@link RequestConfigurator}). These implementors are dispatched via the
-     * {@link JsfTestSetup} default methods for all configuration phases, while legacy
-     * implementors are handled by the per-sub-interface dispatch path to avoid
-     * redundant instantiations.
+     * Collects {@link JsfTestSetup} implementors that should receive the callback for a
+     * <em>single</em> configuration phase via the {@link JsfTestSetup} default methods.
+     * A type is included unless it implements the legacy sub-interface that handles this
+     * very phase ({@code legacyPhaseInterface}); that is the only case in which it would
+     * be double-dispatched. A type that implements a legacy interface for a
+     * <em>different</em> phase (e.g. an {@link ApplicationConfigurator} that also overrides
+     * {@code configureComponents}) is therefore still invoked for this phase (LIFE-4).
+     * <p>
+     * Each configured class is instantiated once per phase, so implementations must be
+     * stateless.
      *
-     * @param configurations the previously extracted annotations, must not be null
-     * @return list of {@link JsfTestSetup} instances that do not implement any legacy
-     *         configurator sub-interface
+     * @param configurations      the previously extracted annotations, must not be null
+     * @param legacyPhaseInterface the legacy configurator interface handling the current
+     *                             phase; implementors of it are excluded to avoid a double call
+     * @return list of {@link JsfTestSetup} instances to dispatch for the current phase
      */
-    private static List<JsfTestSetup> getBareJsfTestSetups(final Collection<JsfTestConfiguration> configurations) {
+    private static List<JsfTestSetup> getBareJsfTestSetups(final Collection<JsfTestConfiguration> configurations,
+        final Class<? extends JsfTestSetup> legacyPhaseInterface) {
         final List<JsfTestSetup> instances = new ArrayList<>();
         for (final JsfTestConfiguration config : configurations) {
             for (final Class<? extends JsfTestSetup> type : config.value()) {
-                if (!ApplicationConfigurator.class.isAssignableFrom(type)
-                    && !ComponentConfigurator.class.isAssignableFrom(type)
-                    && !RequestConfigurator.class.isAssignableFrom(type)) {
+                if (!legacyPhaseInterface.isAssignableFrom(type)) {
                     instances.add(new DefaultInstantiator<>(type).newInstance());
                 }
             }
