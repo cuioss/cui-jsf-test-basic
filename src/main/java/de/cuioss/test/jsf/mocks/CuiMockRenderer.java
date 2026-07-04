@@ -83,7 +83,9 @@ public class CuiMockRenderer extends Renderer {
             writeBasicAttributes(context, component);
 
             if (component instanceof EditableValueHolder valueHolder) {
-                context.getResponseWriter().writeAttribute(VALUE, valueHolder.getValue(), VALUE);
+                if (null != valueHolder.getValue()) {
+                    context.getResponseWriter().writeAttribute(VALUE, valueHolder.getValue(), VALUE);
+                }
             } else if (component instanceof UIOutcomeTarget) {
                 handleOutputTarget(context, component);
             } else if (component instanceof HtmlOutputLink) {

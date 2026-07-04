@@ -15,6 +15,7 @@
  */
 package de.cuioss.test.jsf.mocks;
 
+import de.cuioss.tools.string.MoreStrings;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
@@ -39,20 +40,27 @@ public class ReverseConverter implements Converter<String> {
 
     @Override
     public String getAsObject(final FacesContext context, final UIComponent component, final String value) {
-        return reverse(context, component, value);
+        requireNonNull(component);
+        requireNonNull(context);
+        // Converter contract: return null for null/empty input.
+        if (MoreStrings.isEmpty(value)) {
+            return null;
+        }
+        return reverse(value);
     }
 
     @Override
     public String getAsString(final FacesContext context, final UIComponent component, final String value) {
-        return reverse(context, component, value);
-    }
-
-    private String reverse(final FacesContext context, final UIComponent component, final String value) {
         requireNonNull(component);
         requireNonNull(context);
+        // Converter contract: return a zero-length String for a null value.
         if (null == value) {
             return "";
         }
+        return reverse(value);
+    }
+
+    private static String reverse(final String value) {
         return new StringBuilder(value).reverse().toString();
     }
 

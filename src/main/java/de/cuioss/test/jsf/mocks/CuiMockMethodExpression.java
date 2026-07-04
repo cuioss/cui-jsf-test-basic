@@ -75,7 +75,8 @@ public class CuiMockMethodExpression extends MethodExpression {
     @Override
     public Object invoke(final ELContext context, final Object[] params) {
         invoked = true;
-        invokedParams = Arrays.copyOf(params, params.length);
+        // EL API allows params == null for zero-arg methods.
+        invokedParams = params == null ? new Object[0] : Arrays.copyOf(params, params.length);
         return invokeResult;
     }
 }

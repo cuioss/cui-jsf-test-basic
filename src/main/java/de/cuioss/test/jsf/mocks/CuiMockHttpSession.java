@@ -20,9 +20,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.myfaces.test.mock.MockHttpSession;
 
-import java.util.Collection;
-import java.util.Collections;
-
 /**
  * Extension to {@link MockHttpSession} that provides the programmatic setting
  * of 'maxInactiveInterval'
@@ -44,11 +41,12 @@ public class CuiMockHttpSession extends MockHttpSession {
         super(servletContext);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void invalidate() {
-        Collection<String> names = Collections.list(super.getAttributeNames());
-        names.forEach(super::removeAttribute);
+        // Delegate to the base implementation which clears the attributes and, more
+        // importantly, sets the 'invalid' flag so subsequent get/setAttribute calls
+        // throw IllegalStateException as required by the servlet contract.
+        super.invalidate();
     }
 
 }

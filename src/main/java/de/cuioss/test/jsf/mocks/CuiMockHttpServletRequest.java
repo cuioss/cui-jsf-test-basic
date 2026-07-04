@@ -53,7 +53,12 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
     // API defined
     @Override
     public Enumeration getLocales() {
-        return new Vector<>(requestLocales).elements();
+        var locales = requestLocales;
+        if (null == locales || locales.isEmpty()) {
+            // Servlet spec: at least the server default locale must be returned.
+            locales = mutableList(Locale.getDefault());
+        }
+        return new Vector<>(locales).elements();
     }
 
     @Override
@@ -119,32 +124,55 @@ public class CuiMockHttpServletRequest extends MockHttpServletRequest {
 
     /**
      * getSession should never return an invalidated session.
+     * <p>
+     * Contract notes:
+     * <ul>
+     * <li>An existing but invalidated session is dropped; with {@code create == false}
+     * this method then returns {@code null} instead of silently creating a fresh one.</li>
+     * <li>A foreign (non-{@link CuiMockHttpSession}) session is preserved in the
+     * read-only ({@code create == false}) path so its attributes are not lost.</li>
+     * </ul>
      */
     @Override
     public HttpSession getSession(final boolean create) {
-        HttpSession session = null;
-        if (!create) {
-            session = super.getSession(false);
-            if (null == session) {
+        var session = super.getSession(false);
+
+        // An existing session may have been invalidated; detect and drop it.
+        if (null != session && isInvalidated(session)) {
+            super.setHttpSession(null);
+            session = null;
+        }
+
+        if (null == session) {
+            if (!create) {
                 return null;
             }
-        } else {
-            session = super.getSession(true);
+            return createCuiSession();
         }
+
+        // Ensure a CuiMockHttpSession is returned, but only when creation is allowed.
+        // In the read-only path the existing (possibly foreign) session is preserved.
+        if (create && !(session instanceof CuiMockHttpSession)) {
+            return createCuiSession();
+        }
+        return session;
+    }
+
+    private static boolean isInvalidated(final HttpSession session) {
         try {
-            session.getAttribute("test"); // test if the session was invalidated
+            session.getAttribute("test");
+            return false;
         } catch (IllegalStateException e) {
-            super.setHttpSession(null);
-            session = super.getSession(true);
+            return true;
         }
-        if (!(session instanceof CuiMockHttpSession)) {
-            session = new CuiMockHttpSession(getServletContext());
-            super.setHttpSession(session);
-            var container = getWebContainer();
-            if (container != null) {
-                var se = new HttpSessionEvent(session);
-                container.sessionCreated(se);
-            }
+    }
+
+    private HttpSession createCuiSession() {
+        HttpSession session = new CuiMockHttpSession(getServletContext());
+        super.setHttpSession(session);
+        var container = getWebContainer();
+        if (container != null) {
+            container.sessionCreated(new HttpSessionEvent(session));
         }
         return session;
     }

@@ -94,7 +94,7 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
         }
         if (null != resolvedComponent) {
             callback.invokeContextCallback(searchExpressionContext.getFacesContext(), resolvedComponent);
-        } else if (shouldIgnoreNoResult(searchExpressionContext)) {
+        } else if (shouldFailOnNoResult(searchExpressionContext)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expression);
         }
 
@@ -103,11 +103,11 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
     @Override
     public void resolveComponents(SearchExpressionContext searchExpressionContext, String expressions,
         ContextCallback callback) {
-        requireNonNull(resolvedComponents);
+        requireNonNull(resolvedComponents, "resolvedComponents must not be null");
         if (MoreStrings.isEmpty(expressions)) {
             throw new ComponentNotFoundException(UNABLE_TO_FIND_COMPONENT_WITH_EXPRESSION + expressions);
         }
-        if (resolvedComponents.isEmpty() && shouldIgnoreNoResult(searchExpressionContext)) {
+        if (resolvedComponents.isEmpty() && shouldFailOnNoResult(searchExpressionContext)) {
             throw new ComponentNotFoundException("Unable to find components with expression = " + expressions);
         }
 
@@ -115,7 +115,12 @@ public class CuiMockSearchExpressionHandler extends SearchExpressionHandler {
             component -> callback.invokeContextCallback(searchExpressionContext.getFacesContext(), component));
     }
 
-    private boolean shouldIgnoreNoResult(SearchExpressionContext searchExpressionContext) {
+    /**
+     * @return {@code true} if a missing result should raise a
+     * {@link ComponentNotFoundException}, i.e. when the hints do <em>not</em>
+     * request {@link SearchExpressionHint#IGNORE_NO_RESULT}.
+     */
+    private boolean shouldFailOnNoResult(SearchExpressionContext searchExpressionContext) {
         var expressionHints = searchExpressionContext.getExpressionHints();
         return null == expressionHints || !expressionHints.contains(SearchExpressionHint.IGNORE_NO_RESULT);
     }

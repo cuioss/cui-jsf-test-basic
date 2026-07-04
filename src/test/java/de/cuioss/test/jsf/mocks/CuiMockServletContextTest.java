@@ -38,8 +38,8 @@ class CuiMockServletContextTest {
             () -> assertEquals(200, context.getSessionTimeout(), "Session timeout should default to 200"),
             () -> assertEquals("virtual", context.getVirtualServerName(),
                 "Virtual server name should default to 'virtual'"),
-            () -> assertEquals("mock-context", context.getContextPath(),
-                "Context path should default to 'mock-context'"),
+            () -> assertEquals("/mock-context", context.getContextPath(),
+                "Context path should default to '/mock-context'"),
             () -> assertNull(context.getSessionCookieConfig(), "Session cookie config should be null"));
     }
 

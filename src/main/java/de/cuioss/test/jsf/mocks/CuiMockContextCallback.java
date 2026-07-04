@@ -44,7 +44,7 @@ public class CuiMockContextCallback implements ContextCallback {
     }
 
     /**
-     * Checks whether callback has been called at least one time
+     * Checks whether callback has never been called
      */
     public void assertNotCalledAtAll() {
         assertEquals(0, called, "Has been called " + called + " times");
