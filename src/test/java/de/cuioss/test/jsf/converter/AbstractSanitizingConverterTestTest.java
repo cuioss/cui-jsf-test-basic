@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.converter;
 
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -37,9 +38,10 @@ class AbstractSanitizingConverterTestTest extends AbstractSanitizingConverterTes
 
     @Override
     @Test
+    @Disabled("replaced by shouldDetectInvalidEscaping / shouldDetectValidEscaping")
     protected void shouldSanitizeJavaScript(FacesContext facesContext) {
-        // Disabled here: the inherited sanitizing assertion is exercised explicitly
-        // from shouldDetectInvalidEscaping / shouldDetectValidEscaping instead.
+        // The inherited sanitizing assertion is exercised explicitly from
+        // shouldDetectInvalidEscaping / shouldDetectValidEscaping instead.
     }
 
     @Test

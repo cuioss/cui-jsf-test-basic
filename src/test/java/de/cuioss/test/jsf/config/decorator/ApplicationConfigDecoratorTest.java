@@ -63,6 +63,19 @@ class ApplicationConfigDecoratorTest {
     }
 
     @Test
+    @EnableJsfEnvironment(useIdentityResourceBundle = false)
+    @DisplayName("Should resolve a real resource bundle when identity mode is disabled (TEST-2)")
+    void shouldResolveRealResourceBundle(ApplicationConfigDecorator decorator, Application application,
+            FacesContext facesContext) {
+        decorator.registerResourceBundle(BUNDLE_NAME, BUNDLE_PATH);
+
+        var bundle = application.getResourceBundle(facesContext, BUNDLE_NAME);
+        assertNotNull(bundle, "The registered bundle must be resolvable");
+        assertEquals("value", bundle.getString("key"),
+            "With identity mode disabled the real bundle must be resolved from the classpath");
+    }
+
+    @Test
     @DisplayName("Should register supported locales")
     void shouldRegisterSupportedLocales(ApplicationConfigDecorator decorator, Application application) {
         assertFalse(application.getSupportedLocales().hasNext());

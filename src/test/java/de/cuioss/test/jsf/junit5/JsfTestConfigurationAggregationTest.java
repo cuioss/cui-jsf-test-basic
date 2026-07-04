@@ -23,13 +23,13 @@ import de.cuioss.test.jsf.config.decorator.ApplicationConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.config.decorator.RequestConfigDecorator;
 import jakarta.faces.context.FacesContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,9 +47,13 @@ class JsfTestConfigurationAggregationTest {
 
     private static final List<String> APPLIED_CONFIGS = new ArrayList<>();
 
-    @Test
+    /**
+     * Clears the shared applied-config record after every test (including nested tests)
+     * so a failing assertion cannot leak stale state into later tests.
+     */
+    @AfterEach
     void clearAppliedConfigs() {
-        assertDoesNotThrow(APPLIED_CONFIGS::clear);
+        APPLIED_CONFIGS.clear();
     }
 
     @Test
@@ -58,7 +62,6 @@ class JsfTestConfigurationAggregationTest {
         assertTrue(APPLIED_CONFIGS.contains("ParentConfig"));
         assertEquals(1, APPLIED_CONFIGS.size());
         assertEquals("/parent-path", facesContext.getExternalContext().getRequestContextPath());
-        APPLIED_CONFIGS.clear();
     }
 
     @Nested
@@ -72,7 +75,6 @@ class JsfTestConfigurationAggregationTest {
             assertTrue(APPLIED_CONFIGS.contains("NestedConfig"));
             assertEquals(2, APPLIED_CONFIGS.size());
             assertEquals("/nested-path", facesContext.getExternalContext().getRequestContextPath());
-            APPLIED_CONFIGS.clear();
         }
 
         @Test
@@ -86,7 +88,6 @@ class JsfTestConfigurationAggregationTest {
 
             // Check that the method-level configuration takes precedence
             assertEquals("/method-path", facesContext.getExternalContext().getRequestContextPath());
-            APPLIED_CONFIGS.clear();
         }
     }
 
@@ -101,7 +102,6 @@ class JsfTestConfigurationAggregationTest {
             assertTrue(APPLIED_CONFIGS.contains("SiblingConfig"));
             assertEquals(2, APPLIED_CONFIGS.size());
             assertEquals("/sibling-path", facesContext.getExternalContext().getRequestContextPath());
-            APPLIED_CONFIGS.clear();
         }
     }
 

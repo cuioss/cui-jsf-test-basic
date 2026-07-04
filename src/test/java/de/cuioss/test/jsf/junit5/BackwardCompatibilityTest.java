@@ -16,6 +16,7 @@
 package de.cuioss.test.jsf.junit5;
 
 import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
+import de.cuioss.test.jsf.mocks.CuiMockComponent;
 import de.cuioss.test.jsf.util.JsfEnvironmentConsumer;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import jakarta.faces.application.Application;
@@ -83,8 +84,13 @@ class BackwardCompatibilityTest implements JsfEnvironmentConsumer {
             "FacesContext from consumer should be the same as from parameter resolution");
 
         // ComponentConfigDecorator is created on demand, so instances cannot be compared
-        // directly; instead verify both work by registering a mock component without throwing.
+        // directly; instead verify both actually register the component by creating it.
         getComponentConfigDecorator().registerCuiMockComponentWithRenderer();
+        assertNotNull(facesContext.getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE),
+            "Component registered via the consumer decorator should be creatable");
+
         componentConfigDecorator.registerCuiMockComponentWithRenderer();
+        assertNotNull(facesContext.getApplication().createComponent(CuiMockComponent.COMPONENT_TYPE),
+            "Component registered via the resolved decorator should be creatable");
     }
 }
