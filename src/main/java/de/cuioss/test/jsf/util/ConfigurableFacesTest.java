@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * message key is used to create a message but do not want to test the actual
  * ResourceBundle mechanism itself. It will always return the given key itself.
  * As default this mechanism is active, you can change this by overwriting
- * #isUseIdentityResouceBundle(). If it is active it is used as well for
+ * #isUseIdentityResourceBundle(). If it is active it is used as well for
  * resolving the MessageBundle
  * </p>
  *
@@ -85,7 +85,7 @@ public class ConfigurableFacesTest {
     private ComponentConfigDecorator componentConfigDecorator;
     @Getter(AccessLevel.PROTECTED)
     private ApplicationConfigDecorator applicationConfigDecorator;
-    @Getter
+    @Getter(AccessLevel.PROTECTED)
     private RequestConfigDecorator requestConfigDecorator;
     private ConfigurableApplication configurableApplication;
 

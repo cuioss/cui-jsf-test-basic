@@ -19,6 +19,7 @@ import de.cuioss.test.jsf.config.ApplicationConfigurator;
 import de.cuioss.test.jsf.config.ComponentConfigurator;
 import de.cuioss.test.jsf.config.JsfTestConfiguration;
 import de.cuioss.test.jsf.config.RequestConfigurator;
+import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
 import de.cuioss.test.jsf.util.JsfEnvironmentHolder;
 import de.cuioss.test.valueobjects.util.IdentityResourceBundle;
 import jakarta.faces.context.FacesContext;
@@ -47,6 +48,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * corresponding methods accordingly, <em>after</em> the configurator derived by
  * the annotations</li>
  * </ul>
+ * <p>
+ * <strong>Note:</strong> The configurator-interface scanning described above
+ * (implementing {@link ApplicationConfigurator}, {@link RequestConfigurator} or
+ * {@link ComponentConfigurator}) as well as the {@code JsfEnvironmentConsumer}
+ * interface are deprecated. Prefer parameter resolution: declare the JSF objects
+ * and configuration decorators you need directly as test-method parameters.
+ * </p>
  * <h3>Using</h3>
  * <p>
  * Simple Sample: Use a preconfigured JSF-context for the test providing
@@ -63,20 +71,24 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p>
  * Complex Sample: Use a preconfigured JSF-context with access to the context
- * information like {@link FacesContext}, {@link ComponentConfigurator}, ... as
- * defined within {@link JsfEnvironmentHolder} With this setup you can
- * programmatically access the element
+ * information like {@link FacesContext}, {@link ComponentConfigDecorator}, ... by
+ * declaring them as test-method parameters (parameter resolution). With this
+ * setup you can programmatically access and configure the JSF environment
+ * within each test.
  * </p>
  *
  * <pre>
  * <code>
  * &#64;EnableJsfEnvironment
  * &#64;JsfTestConfiguration(BasicApplicationConfiguration.class)
- * class JsfSetupExtensionTest implements JsfEnvironmentConsumer {
+ * class JsfSetupExtensionTest {
  *
- * &#64;Setter
- * &#64;Getter
- * private JsfEnvironmentHolder environmentHolder;</code>
+ * &#64;Test
+ * void shouldConfigureComponent(FacesContext facesContext, ComponentConfigDecorator componentConfig) {
+ * componentConfig.registerRenderer(MyRenderer.class);
+ * // Test code using facesContext
+ * }
+ * }</code>
  * </pre>
  *
  * <p>

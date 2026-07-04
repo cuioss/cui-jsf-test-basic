@@ -79,7 +79,7 @@ public class CuiMockResourceHandler extends ResourceHandler {
 
     /**
      * @return the configured resources
-     * @deprecated misspelled; use {@link #getAvailableResources()} instead. Retained
+     * @deprecated misspelled; use {@code getAvailableResources()} instead. Retained
      * for binary compatibility and scheduled for removal in the next major.
      */
     @Deprecated
@@ -89,7 +89,7 @@ public class CuiMockResourceHandler extends ResourceHandler {
 
     /**
      * @param availableResources the resources to configure
-     * @deprecated misspelled; use {@link #setAvailableResources(Map)} instead. Retained
+     * @deprecated misspelled; use {@code setAvailableResources(Map)} instead. Retained
      * for binary compatibility and scheduled for removal in the next major.
      */
     @Deprecated

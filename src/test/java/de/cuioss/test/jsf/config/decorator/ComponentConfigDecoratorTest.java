@@ -24,7 +24,9 @@ import jakarta.faces.application.Application;
 import jakarta.faces.component.*;
 import jakarta.faces.component.html.HtmlForm;
 import jakarta.faces.component.html.HtmlInputText;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.LengthValidator;
@@ -183,6 +185,13 @@ class ComponentConfigDecoratorTest {
     }
 
     @Test
+    @DisplayName("Should reject a converter whose @FacesConverter defines neither value nor forClass (DOC-12)")
+    void shouldRejectConverterWithoutIdOrType(ComponentConfigDecorator decorator) {
+        assertThrows(IllegalArgumentException.class, () -> decorator.registerConverter(BareConverter.class),
+            "A @FacesConverter with neither value nor forClass must be rejected instead of registering nothing");
+    }
+
+    @Test
     @DisplayName("Should register a converter from its annotated type")
     void shouldRegisterConverterWithAnnotatetdType(ComponentConfigDecorator decorator, Application application) {
         assertConverterForTypeIsNotRegistered(application, Serializable.class);
@@ -292,5 +301,19 @@ class ComponentConfigDecoratorTest {
             final String rendererType) {
         final Renderer renderer = facesContext.getRenderKit().getRenderer(family, rendererType);
         assertNull(renderer, "Renderer is registered " + rendererType + ", " + family);
+    }
+
+    /** A converter whose {@code @FacesConverter} defines neither a value nor a specific forClass. */
+    @FacesConverter
+    public static class BareConverter implements Converter<Object> {
+        @Override
+        public Object getAsObject(FacesContext context, UIComponent component, String value) {
+            return value;
+        }
+
+        @Override
+        public String getAsString(FacesContext context, UIComponent component, Object value) {
+            return String.valueOf(value);
+        }
     }
 }

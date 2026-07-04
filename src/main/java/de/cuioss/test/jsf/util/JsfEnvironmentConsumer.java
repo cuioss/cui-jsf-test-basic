@@ -67,7 +67,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * assertNotNull(environmentHolder);
  * assertNotNull(getApplication());
  * assertNotNull(getApplicationConfigDecorator());
- * assertNotNull(getBeanConfigDecorator());
  * assertNotNull(getComponentConfigDecorator());
  * assertNotNull(getExternalContext());
  * assertNotNull(getFacesContext());

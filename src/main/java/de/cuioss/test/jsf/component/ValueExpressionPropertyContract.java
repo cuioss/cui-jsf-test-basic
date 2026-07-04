@@ -33,7 +33,7 @@ import static java.util.Objects.requireNonNull;
  * Tests all given properties according to the given List of
  * {@link ComponentPropertyMetadata}
  *
- * @param <T> The Rule does not apply to annotations: There is no inheritance
+ * @param <T> the concrete {@link UIComponent} type whose properties are verified
  * @author Oliver Wolff
  */
 // cui-rewrite:disable CuiLogRecordPatternRecipe
@@ -57,9 +57,11 @@ public class ValueExpressionPropertyContract<T extends UIComponent> implements T
     private final FacesContext facesContext;
 
     /**
-     * @param instantiator
-     * @param metadata
-     * @param facesContext
+     * @param instantiator used for creating instances of the component under test
+     * @param metadata     the property metadata describing the component
+     *                     properties to be verified via value-expressions
+     * @param facesContext the {@link FacesContext} used for evaluating the
+     *                     value-expressions
      */
     public ValueExpressionPropertyContract(final ParameterizedInstantiator<T> instantiator,
         final List<ComponentPropertyMetadata> metadata, final FacesContext facesContext) {

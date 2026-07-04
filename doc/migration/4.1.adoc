@@ -39,7 +39,7 @@ Ensure you're using the latest version of the JSF testing framework that include
 
 === Step 2: Identify Classes Using JsfEnvironmentConsumer
 
-Identify test classes that currently implement `JsfEnvironmentConsumer` or extend `JsfEnabledTestEnvironment`. These classes will need to be migrated.
+Identify test classes that currently implement `JsfEnvironmentConsumer` or that extended the now-removed `JsfEnabledTestEnvironment` base class. These classes will need to be migrated. Note that `JsfEnabledTestEnvironment` has been removed in 4.x, so it can no longer be extended.
 
 === Step 3: Migrate Test Methods
 
@@ -86,7 +86,7 @@ class MyTest {
 
 === Step 4: Migrate Base Classes
 
-If your test classes extend `JsfEnabledTestEnvironment`, consider migrating to a standalone test class that uses parameter resolution.
+If your test classes still extended the now-removed `JsfEnabledTestEnvironment`, migrate them to a standalone test class that uses parameter resolution. The class no longer exists in 4.x, so extending it is no longer possible.
 
 ==== Before Migration
 
@@ -153,7 +153,7 @@ class MyComponentTest implements ComponentConfigurator {
 
     @Override
     public void configureComponents(ComponentConfigDecorator decorator) {
-        decorator.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+        decorator.registerMockRenderer("jakarta.faces.Output", "jakarta.faces.Text");
     }
 }
 ----
@@ -167,7 +167,7 @@ class MyComponentTest {
 
     @Test
     void testComponent(ComponentConfigDecorator componentConfig) {
-        componentConfig.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+        componentConfig.registerMockRenderer("jakarta.faces.Output", "jakarta.faces.Text");
 
         // Test code
     }
@@ -187,7 +187,7 @@ This approach has several advantages:
 
 === Step 6: Update Utility Method Calls
 
-If your tests use utility methods from `JsfEnvironmentConsumer` or `JsfEnabledTestEnvironment`, update them to use the `NavigationAsserts` parameter type.
+If your tests used utility methods from `JsfEnvironmentConsumer` or the now-removed `JsfEnabledTestEnvironment`, update them to use the `NavigationAsserts` parameter type.
 
 *Old approach (JsfEnvironmentConsumer):*
 
@@ -244,7 +244,7 @@ void testWithMultipleParameters(
 @Test
 void testComponentConfiguration(ComponentConfigDecorator componentConfig) {
     // Register a mock component
-    componentConfig.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+    componentConfig.registerMockRenderer("jakarta.faces.Output", "jakarta.faces.Text");
 
     // Test code using the configured component
 }

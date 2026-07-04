@@ -59,7 +59,7 @@ public class JsfEnvironmentHolder {
     }
 
     /**
-     * @return an {@link ApplicationConfigDecorator} for the contained
+     * @return an {@link RequestConfigDecorator} for the contained
      * {@link JsfRuntimeSetup}
      */
     public RequestConfigDecorator getRequestConfigDecorator() {

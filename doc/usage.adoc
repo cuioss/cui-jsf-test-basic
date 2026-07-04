@@ -10,10 +10,10 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 ** `AbstractComponentTest`
 ** `AbstractUiComponentTest`
 ** `AbstractComponentRendererTest`
-* Tooling for generating (partial-)HTML-trees including the corresponding Assertions
+* HTML-tree assertion tooling for verifying (partial-)HTML-trees
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
-* Baseline is Jakarta Faces (part of Jakarta EE 10)
+* Baseline is Jakarta Faces 4.1 (part of Jakarta EE 11)
 
 == How To use it
 
@@ -104,7 +104,7 @@ The following decorator types are available for configuration:
 * `de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator`
 * `de.cuioss.test.jsf.config.decorator.RequestConfigDecorator`
 
-For details on how to migrate from the deprecated callback interfaces to the parameter resolution approach, see the link:migration.adoc[Migration Guide].
+For details on how to migrate from the deprecated callback interfaces to the parameter resolution approach, see the link:migration/4.1.adoc[Migration Guide (4.1)] and link:migration/4.3.adoc[Migration Guide (4.3)].
 
 
 === Parameter Resolution (Recommended Approach)
@@ -184,7 +184,7 @@ class NavigationTest {
 }
 ----
 
-For more detailed information about parameter resolution, including common patterns, examples, and migration from deprecated approaches, see the link:migration.adoc[Migration Guide].
+For more detailed information about parameter resolution, including common patterns, examples, and migration from deprecated approaches, see the link:migration/4.1.adoc[Migration Guide (4.1)] and link:migration/4.3.adoc[Migration Guide (4.3)].
 
 
 == Testing a Validator
@@ -209,7 +209,7 @@ class AbstractValidatorTestTest extends AbstractValidatorTest<LengthValidator, S
 }
 ----
 
-Take a closer look at the parameter addInvalidWithMessage. It passes and checks the key not a resolved message, see `de.cuioss.test.jsf.junit5.EnableJsfEnvironment#useIdentityResouceBundle` for an explanation of the resource-bundle handling.
+Take a closer look at the parameter addInvalidWithMessage. It passes and checks the key not a resolved message, see `de.cuioss.test.jsf.junit5.EnableJsfEnvironment#useIdentityResourceBundle` for an explanation of the resource-bundle handling.
 
 === Testing a Converter
 
@@ -289,18 +289,12 @@ This is a complex real-world-example bringing together many aspects of the test-
 ----
 
 @JsfTestConfiguration(CoreJsfTestConfiguration.class)
-class SwitchRendererTest extends AbstractComponentRendererTest<SwitchRenderer> implements ComponentConfigurator {
-
-    @Override
-    public void configureComponents(final ComponentConfigDecorator decorator) {
-        decorator.registerUIComponent(ColumnComponent.class).
-        registerRenderer(LayoutComponentRenderer.class);
-   }
+class SwitchRendererTest extends AbstractComponentRendererTest<SwitchRenderer> {
 
     @Override
     protected UIComponent getComponent() {
         final SwitchComponent component = new SwitchComponent();
-        component.setId(testComponent);
+        component.setId("testComponent");
         component.setTitleValue(titleValue);
         component.setTitleKey(titleKey);
         component.setOnTextValue(onText);
@@ -314,89 +308,49 @@ class SwitchRendererTest extends AbstractComponentRendererTest<SwitchRenderer> i
     }
 
    @Test
-   void shouldRenderMinimal() {
+   void shouldRenderMinimal(FacesContext facesContext, ComponentConfigDecorator componentConfig) {
+       componentConfig.registerUIComponent(ColumnComponent.class)
+               .registerRenderer(LayoutComponentRenderer.class);
+
        final SwitchComponent component = (SwitchComponent) getComponent();
        component.processEvent(new PostAddToViewEvent(component));
        component.processEvent(new PreRenderComponentEvent(component));
 
-       final HtmlTreeBuilder expected = buildHtmlTree(false, false);
-       assertRenderResult(component, expected.getDocument());
+       assertRenderResult(component, expectedHtml(false), facesContext);
    }
 
    @Test
-   void shouldRenderDisabled() {
+   void shouldRenderDisabled(FacesContext facesContext, ComponentConfigDecorator componentConfig) {
+       componentConfig.registerUIComponent(ColumnComponent.class)
+               .registerRenderer(LayoutComponentRenderer.class);
+
        final SwitchComponent component = (SwitchComponent) getComponent();
        component.setDisabled(true);
 
        component.processEvent(new PostAddToViewEvent(component));
        component.processEvent(new PreRenderComponentEvent(component));
 
-       final HtmlTreeBuilder expected = buildHtmlTree(false, true);
-       assertRenderResult(component, expected.getDocument());
+       assertRenderResult(component, expectedHtml(true), facesContext);
    }
+
    /**
-    * <div id="testComponent_container"
-    * name="testComponent_container"
-    * data-switch-disabled="true|false">
-    * <div class="col-sm-6 switch-placing">
-    * <label class="switch">
-    * <input id="testComponent" name="testComponent"/>
-    * <span class="slider round"/>
-    * </label>
-    * <span class="switch-text" data-item-active="true">onText</span>
-    * <span class="switch-text" data-item-active="false">offText</span>
-    * </div>
-    * </div>
+    * The expected HTML is provided as a plain String. It is parsed via
+    * {@code DomUtils#htmlStringToDocument(String)} before being compared to the
+    * rendered output by {@code assertRenderResult}.
     */
-   private HtmlTreeBuilder buildHtmlTree(final boolean isActive, final boolean isDisabled) {
-     final HtmlTreeBuilder expected = new HtmlTreeBuilder()
-     // container
-     .withNode(Node.DIV)
-     .withAttributeNameAndId("testComponent_container")
-     .withAttribute("data-switch-disabled", String.valueOf(isDisabled))
-     .withAttribute(AttributeName.CLASS, styleClass)
-     .withAttribute(AttributeName.STYLE, style)
-
-     // column
-     .withNode(Node.DIV)
-     .withAttribute(AttributeName.CLASS, default_column_size + " switch-placing")
-
-     // label
-     .withNode(Node.LABEL)
-     .withAttribute(AttributeName.CLASS, "switch")
-     .withAttribute(AttributeName.TITLE, titleValue)
-
-     // checkbox
-     .withNode(Node.INPUT)
-     .withAttributeNameAndId("testComponent")
-     .currentHierarchyUp()
-
-     // slider
-     .withNode(Node.SPAN)
-     .withAttribute(AttributeName.CLASS, "slider round")
-     .currentHierarchyUp()
-
-     // leaving label
-     .currentHierarchyUp()
-
-     // on text
-     .withNode(Node.SPAN)
-     .withAttribute(AttributeName.CLASS, "switch-text" + (!isActive ? " hidden" : ""))
-     .withAttribute(AttributeName.DATA_ITEM_ACTIVE, "true")
-     .withTextContent(onText)
-     .currentHierarchyUp()
-
-     // off text
-     .withNode(Node.SPAN)
-     .withAttribute(AttributeName.CLASS, "switch-text" + (isActive ? " hidden" : ""))
-     .withAttribute(AttributeName.DATA_ITEM_ACTIVE, "false")
-     .withTextContent(offText)
-     .currentHierarchyUp()
-
-     // leaving column
-     .currentHierarchyUp();
-
-      return expected;
-    }
+   private String expectedHtml(final boolean isDisabled) {
+       return "<div id=\"testComponent_container\" name=\"testComponent_container\""
+               + " data-switch-disabled=\"" + isDisabled + "\""
+               + " class=\"" + styleClass + "\" style=\"" + style + "\">"
+               + "<div class=\"col-sm-6 switch-placing\">"
+               + "<label class=\"switch\" title=\"" + titleValue + "\">"
+               + "<input id=\"testComponent\" name=\"testComponent\"/>"
+               + "<span class=\"slider round\"></span>"
+               + "</label>"
+               + "<span class=\"switch-text\" data-item-active=\"true\">" + onText + "</span>"
+               + "<span class=\"switch-text hidden\" data-item-active=\"false\">" + offText + "</span>"
+               + "</div>"
+               + "</div>";
+   }
 }
 ----

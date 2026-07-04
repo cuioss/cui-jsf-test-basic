@@ -39,8 +39,9 @@ import static org.junit.jupiter.api.Assertions.*;
  * context
  * <h3>Setup</h3>
  * <p>
- * {@link #initConverter()}: Instantiates the concrete {@link Converter} using
- * reflection. After this the method calls {@link #configure(Object)} that can
+ * {@link #initConverter(ComponentConfigDecorator)}: Instantiates the concrete
+ * {@link Converter} using reflection. After this the method calls
+ * {@link #configure(Object)} that can
  * be used for further configuration of the {@link Converter}
  * </p>
  * <p>

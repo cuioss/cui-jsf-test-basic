@@ -25,7 +25,7 @@ Extension for http://myfaces.apache.org/test/index.html[MyFaces-Test] that uses 
 ** `AbstractComponentTest`
 ** `AbstractUiComponentTest`
 ** `AbstractComponentRendererTest`
-* Tooling for generating (partial-)HTML-trees including the corresponding Assertions
+* HTML-tree assertion tooling for verifying (partial-)HTML-trees
 * Additional Mocks completing the ones provided from myfaces-test
 * Integration into https://github.com/cuioss/cui-test-value-objects[cui-test-value-objects] framework
 * Baseline is JSF 4.1

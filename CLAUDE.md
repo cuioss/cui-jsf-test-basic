@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-cui-jsf-test-basic is a JSF testing framework that extends MyFaces-Test with mock-based infrastructure for testing JSF components, validators, converters, and renderers in Jakarta EE 10 (JSF 4.1+) environments. It provides base test classes, HTML tree generation/assertion tools, and JUnit 5 integration.
+cui-jsf-test-basic is a JSF testing framework that extends MyFaces-Test with mock-based infrastructure for testing JSF components, validators, converters, and renderers on Jakarta Faces 4.1 (Jakarta EE 11). It provides base test classes, HTML-tree assertion tooling, and JUnit 5 integration.
 
 ## Logging Standards for This Project
 
@@ -24,8 +24,8 @@ Do not create LogRecord constants or migrate to structured logging for this libr
 ## Build Commands
 
 ```bash
-# Build and install (default - includes rewrite profile)
-./mvnw -Prewrite clean install
+# Build and install (includes the pre-commit profile)
+./mvnw -Ppre-commit clean install
 
 # Run all tests
 ./mvnw test
@@ -44,8 +44,8 @@ Do not create LogRecord constants or migrate to structured logging for this libr
 # Review console output and fix all reported issues
 
 # Run code cleanup with rewrite only (without full build)
-./mvnw -Prewrite rewrite:run
-./mvnw -Prewrite clean install  # Verify changes
+./mvnw -Ppre-commit rewrite:run
+./mvnw -Ppre-commit clean install  # Verify changes
 ```
 
 
@@ -74,6 +74,7 @@ All cuioss repositories have branch protection on `main`. Direct pushes to `main
   - `@EnableJsfEnvironment`: Main annotation to enable JSF test context
   - `JsfSetupExtension`: Extension that manages JSF lifecycle
   - `JsfParameterResolver`: Resolves JSF objects as test method parameters
+  - `NavigationAsserts`: Assertions for navigation outcomes and redirects (`de.cuioss.test.jsf.junit5.NavigationAsserts`)
 
 - **component/**: Component testing infrastructure
   - `AbstractComponentTest<T>`: Base for testing JSF component classes
@@ -90,7 +91,6 @@ All cuioss repositories have branch protection on `main`. Direct pushes to `main
 
 - **renderer/**: Renderer testing utilities
   - `AbstractComponentRendererTest<R>`: Base for renderer tests
-  - `HtmlTreeBuilder`: Programmatic HTML tree construction
   - `HtmlTreeAsserts`: Assertions for rendered HTML output
 
 - **config/**: Configuration infrastructure
@@ -105,7 +105,6 @@ All cuioss repositories have branch protection on `main`. Direct pushes to `main
 
 - **util/**: Utility classes
   - `JsfEnvironmentHolder`: Container for JSF test environment
-  - `NavigationAsserts`: Assertions for navigation outcomes and redirects
 
 ### Package Structure
 ```
@@ -214,16 +213,13 @@ class MyComponentTest extends AbstractComponentTest<MyComponent> {
 class MyRendererTest extends AbstractComponentRendererTest<MyRenderer> {
 
     @Test
-    void shouldRenderMinimal(ComponentConfigDecorator componentConfig) {
+    void shouldRenderMinimal(FacesContext facesContext, ComponentConfigDecorator componentConfig) {
         componentConfig.registerUIComponent(MyComponent.class);
 
         UIComponent component = getComponent();
-        HtmlTreeBuilder expected = new HtmlTreeBuilder()
-            .withNode(Node.DIV)
-            .withAttributeNameAndId("componentId")
-            .withAttribute(AttributeName.CLASS, "my-class");
+        String expectedHtml = "<div id=\"componentId\" name=\"componentId\" class=\"my-class\"></div>";
 
-        assertRenderResult(component, expected.getDocument());
+        assertRenderResult(component, expectedHtml, facesContext);
     }
 
     @Override
@@ -278,7 +274,7 @@ To disable: `@EnableJsfEnvironment(useIdentityResourceBundle = false)`
 
 ## Important Dependencies
 
-- **Jakarta EE 10** (JSF 4.1+)
+- **Jakarta Faces 4.1** (Jakarta EE 11)
 - **MyFaces Test** - Must use `myfaces-api` (not Mojarra) due to classloader issues in parallel execution
 - **JUnit 5** - All tests use JUnit Jupiter
 - **Lombok** - Used throughout for builders, value objects, etc.
@@ -290,24 +286,24 @@ To disable: `@EnableJsfEnvironment(useIdentityResourceBundle = false)`
 
 **Deprecated approaches:**
 - `JsfEnvironmentConsumer` interface - Use parameter resolution instead
-- `JsfEnabledTestEnvironment` base class - Use parameter resolution instead
+- `JsfEnabledTestEnvironment` base class — removed in 4.x; use parameter resolution instead
 - Configurator interfaces (`ApplicationConfigurator`, `ComponentConfigurator`, `RequestConfigurator`) - Use decorator parameters instead
 
-See `doc/migration.adoc` for detailed migration guide.
+See `doc/migration/4.1.adoc` and `doc/migration/4.3.adoc` for detailed migration guides.
 
 ## Documentation References
 
 - Usage guide: `doc/usage.adoc`
-- Migration guide: `doc/migration.adoc`
+- Migration guides: `doc/migration/4.1.adoc`, `doc/migration/4.3.adoc`
 - Generated docs: https://cuioss.github.io/cui-jsf-test-basic/about.html
 - MyFaces Test: http://myfaces.apache.org/test/index.html
 
 ## Version Information
 
-- Current version: 4.0-SNAPSHOT
+- Current version: 4.4-SNAPSHOT
 - JSF 4+ support: main branch (4.x releases)
-- JSF 2.3 support: Release 2.0.2 on v2 branch
-- Parent POM: `de.cuioss:cui-java-parent:0.9.9.6`
+- JSF 2.3 support: Release 2.0.2 on `release/v2` branch
+- Parent POM: `de.cuioss:cui-java-parent:1.4.5`
 
 ## Temporary Files
 

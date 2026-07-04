@@ -58,10 +58,11 @@ public class TestItems<T> {
     }
 
     /**
-     * Add to TestData Store a Test item which must fail with
+     * Add to TestData Store a Test item which must pass validation without a
      * {@link ValidatorException}
      *
-     * @param value T invalid value which should cause a {@link ValidatorException}
+     * @param value T valid value which must pass validation without causing a
+     *              {@link ValidatorException}
      * @return TestItems reference to this object
      */
     public TestItems<T> addValid(final T value) {
