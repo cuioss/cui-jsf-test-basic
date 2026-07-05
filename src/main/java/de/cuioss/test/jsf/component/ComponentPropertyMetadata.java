@@ -44,7 +44,7 @@ public class ComponentPropertyMetadata implements PropertyMetadata {
 
     /**
      * @return whether the property is ignored for value-expression handling
-     * @deprecated misspelled; use {@link #isIgnoreOnValueExpression()} instead.
+     * @deprecated misspelled; use {@code isIgnoreOnValueExpression()} instead.
      * Retained for binary compatibility and scheduled for removal in the next major.
      */
     @Deprecated

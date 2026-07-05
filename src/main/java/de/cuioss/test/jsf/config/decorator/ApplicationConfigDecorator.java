@@ -34,8 +34,10 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Helper class acting as runtime-registry for {@link ResourceBundle},
- * {@link NavigationHandler},
+ * Helper class acting as runtime-registry for {@link ResourceBundle}s,
+ * {@link NavigationHandler} configuration, supported and default {@link Locale}s,
+ * the {@link ProjectStage} and further application-level settings used within
+ * JSF tests.
  *
  * @author Oliver Wolff
  */
@@ -159,7 +161,8 @@ public class ApplicationConfigDecorator {
     public ApplicationConfigDecorator setProjectStage(final ProjectStage projectStage) {
         var projectStageField = FieldWrapper.from(MockApplication20.class, "_projectStage");
         if (projectStageField.isEmpty()) {
-            throw new IllegalStateException("Unable to set projectStage, due to underlying Exception");
+            throw new IllegalStateException(
+                "Unable to set projectStage: the '_projectStage' field could not be found on MockApplication20");
         }
         projectStageField.get().writeValue(getMockApplicationInstance(application), projectStage);
         return this;

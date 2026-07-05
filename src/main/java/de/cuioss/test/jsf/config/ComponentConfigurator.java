@@ -30,7 +30,7 @@ import de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator;
  * @Test
  * void testComponentConfiguration(ComponentConfigDecorator componentConfig) {
  *     // Register a mock component
- *     componentConfig.registerMockRenderer("javax.faces.Output", "javax.faces.Text");
+ *     componentConfig.registerMockRenderer("jakarta.faces.Output", "jakarta.faces.Text");
  *
  *     // Test code using the configured component
  * }

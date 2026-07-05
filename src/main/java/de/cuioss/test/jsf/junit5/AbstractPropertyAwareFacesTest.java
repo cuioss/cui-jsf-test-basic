@@ -31,7 +31,6 @@ import lombok.Getter;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * Base class for JSF-tests that is capable of dealing
@@ -80,7 +79,7 @@ public abstract class AbstractPropertyAwareFacesTest<T>
      * Resolves the {@link PropertyMetadata} by using reflections and the
      * annotations {@link PropertyConfig} and / {@link PropertyConfigs} if provided
      *
-     * @return a {@link SortedSet} of {@link PropertyMetadata} defining the base
+     * @return a {@link List} of {@link PropertyMetadata} defining the base
      * line for the configured attributes
      */
     protected List<PropertyMetadata> resolvePropertyMetadata() {

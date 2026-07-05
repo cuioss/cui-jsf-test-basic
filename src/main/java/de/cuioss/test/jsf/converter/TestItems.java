@@ -110,7 +110,8 @@ public class TestItems<T> {
      * {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * Test item should pass without {@link ConverterException}
      *
-     * @param value valid value which should cause a {@link ConverterException}
+     * @param value valid value which should be converted without causing a
+     *              {@link ConverterException}
      * @return TestItems reference to this object
      */
     public TestItems<T> addValidObject(final T value) {
@@ -123,8 +124,8 @@ public class TestItems<T> {
      * Test item should pass without {@link ConverterException} and the result
      * should be the same as the given converterResult
      *
-     * @param value           valid value which should cause a
-     *                        {@link ConverterException}
+     * @param value           valid value which should be converted without
+     *                        causing a {@link ConverterException}
      * @param converterResult the String to be returned by
      *                        {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
      * @return TestItems reference to this object
@@ -246,9 +247,11 @@ public class TestItems<T> {
      * {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)}
      *
      * @param valid           indicating whether it is a valid or invalid item
-     * @param value           T value to be validated
-     * @param converterResult the String to be returned by
-     *                        {@link Converter#getAsString(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, Object)}
+     * @param value           the object value of the test item (the expected
+     *                        result of the conversion)
+     * @param converterResult the String value of the test item (the input passed
+     *                        to
+     *                        {@link Converter#getAsObject(jakarta.faces.context.FacesContext, jakarta.faces.component.UIComponent, String)})
      * @param level           {@link Severity} represent message severity, usually
      *                        {@link FacesMessage#SEVERITY_ERROR}
      * @param message         which should be set within the

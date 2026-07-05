@@ -61,7 +61,7 @@ public class ComponentConfigDecorator {
     private static final String TARGET_CLASS_MUST_NOT_BE_NULL = "targetClass  must not be null";
     private static final String VALIDATOR_MUST_NOT_BE_NULL = "validator must not be null";
     private static final String COMPONENT_MUST_NOT_BE_NULL = "component must not be null";
-    private static final String COMPONENT_TYPE_NOT_BE_NULL = "component must not be null";
+    private static final String COMPONENT_TYPE_NOT_BE_NULL = "componentType must not be null";
     private static final String CONVERTER_MUST_NOT_BE_NULL = "converter  must not be null";
 
     @NonNull
@@ -137,10 +137,15 @@ public class ComponentConfigDecorator {
             "In order to work this method needs a converter annotated with 'jakarta.faces.convert.FacesConverter', converterClass:"
                 + converter.getName());
         final var facesConverter = converter.getAnnotation(FacesConverter.class);
-        if (!Object.class.equals(facesConverter.forClass())) {
+        final var hasForClass = !Object.class.equals(facesConverter.forClass());
+        final var hasValue = !facesConverter.value().isEmpty();
+        checkArgument(hasForClass || hasValue,
+            "The @FacesConverter annotation on '" + converter.getName()
+                + "' must define either 'value' or a specific 'forClass' in order to be registered");
+        if (hasForClass) {
             registerConverter(converter, facesConverter.forClass());
         }
-        if (!facesConverter.value().isEmpty()) {
+        if (hasValue) {
             registerConverter(converter, facesConverter.value());
         }
         return this;
