@@ -28,11 +28,7 @@ import java.util.Locale;
 
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
 import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableJsfEnvironment
 @DisplayName("RequestConfigDecorator")
