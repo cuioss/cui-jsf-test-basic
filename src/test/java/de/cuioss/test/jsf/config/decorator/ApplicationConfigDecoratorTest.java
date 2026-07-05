@@ -28,11 +28,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static de.cuioss.tools.collect.CollectionLiterals.immutableSet;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableJsfEnvironment
 @DisplayName("ApplicationConfigDecorator")
@@ -47,7 +43,7 @@ class ApplicationConfigDecoratorTest {
     @Test
     @DisplayName("Should register a resource bundle and fall back to IdentityResourceBundle for invalid paths")
     void shouldRegisterResourceBundle(ApplicationConfigDecorator decorator, Application application,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         assertNull(application.getResourceBundle(facesContext, BUNDLE_NAME));
 
         decorator.registerResourceBundle(BUNDLE_NAME, BUNDLE_PATH);
@@ -66,7 +62,7 @@ class ApplicationConfigDecoratorTest {
     @EnableJsfEnvironment(useIdentityResourceBundle = false)
     @DisplayName("Should resolve a real resource bundle when identity mode is disabled (TEST-2)")
     void shouldResolveRealResourceBundle(ApplicationConfigDecorator decorator, Application application,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         decorator.registerResourceBundle(BUNDLE_NAME, BUNDLE_PATH);
 
         var bundle = application.getResourceBundle(facesContext, BUNDLE_NAME);
@@ -100,7 +96,7 @@ class ApplicationConfigDecoratorTest {
     @Test
     @DisplayName("Should register a navigation case")
     void shouldRegisterNavigationCase(ApplicationConfigDecorator decorator, Application application,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         decorator.registerNavigationCase("outcome", "/toViewId");
         application.getNavigationHandler().handleNavigation(facesContext, null, "outcome");
         assertEquals("/toViewId", facesContext.getViewRoot().getViewId());

@@ -54,3 +54,5 @@ link:doc/usage.adoc[Usage Documentation]
 link:doc/migration/4.1.adoc[Migration Guide to 4.1]
 
 link:doc/migration/4.3.adoc[Migration Guide to 4.3]
+
+link:doc/migration/4.4.adoc[Migration Guide to 4.4]

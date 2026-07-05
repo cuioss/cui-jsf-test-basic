@@ -26,10 +26,7 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import org.junit.jupiter.api.Test;
 
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.DEFAULT_LOCALE;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.FIREFOX;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.SUPPORTED_LOCALES;
-import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.USER_AGENT;
+import static de.cuioss.test.jsf.defaults.BasicApplicationConfiguration.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

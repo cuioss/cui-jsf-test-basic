@@ -22,9 +22,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("HtmlTreeAsserts")
 class HtmlTreeAssertsTest {
@@ -111,7 +109,7 @@ class HtmlTreeAssertsTest {
             // The live attribute list of the argument must retain its original order,
             // i.e. the comparison must sort copies, not the caller's documents.
             var afterAttributes = expected.getRootElement().getChild(DIV).getAttributes();
-            assertEquals(NAME, afterAttributes.get(0).getName(),
+            assertEquals(NAME, afterAttributes.getFirst().getName(),
                 "The comparison must not sort (mutate) the caller's attribute list");
             assertEquals(ID, afterAttributes.get(1).getName(),
                 "The comparison must not sort (mutate) the caller's attribute list");

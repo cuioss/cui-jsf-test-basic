@@ -22,12 +22,12 @@ import de.cuioss.test.jsf.support.components.*;
 import jakarta.faces.FacesException;
 import jakarta.faces.application.Application;
 import jakarta.faces.component.*;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlForm;
 import jakarta.faces.component.html.HtmlInputText;
-import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
 import jakarta.faces.render.Renderer;
 import jakarta.faces.validator.LengthValidator;
 import org.junit.jupiter.api.DisplayName;
@@ -37,10 +37,7 @@ import java.io.Serializable;
 
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.FORM_RENDERER_ID;
 import static de.cuioss.test.jsf.config.decorator.ComponentConfigDecorator.TEXT_RENDERER_ID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @EnableJsfEnvironment
 @DisplayName("ComponentConfigDecorator")
@@ -105,7 +102,7 @@ class ComponentConfigDecoratorTest {
     @Test
     @DisplayName("Should register the CuiMockComponent with its renderer")
     void shouldRegisterCuiMockComponent(ComponentConfigDecorator decorator, Application application,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         assertUIComponentIsNotRegistered(application, CuiMockComponent.COMPONENT_TYPE);
 
         assertRendererIsNotRegistered(facesContext, CuiMockComponent.FAMILY, CuiMockComponent.RENDERER_TYPE);
@@ -144,7 +141,7 @@ class ComponentConfigDecoratorTest {
     @Test
     @DisplayName("Should register a mock renderer for HtmlSelectBooleanCheckbox")
     void shouldRegisterMockRendererForHtmlSelectBooleanCheckbox(ComponentConfigDecorator decorator,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         assertRendererIsNotRegistered(facesContext, UISelectBoolean.COMPONENT_FAMILY,
             ComponentConfigDecorator.SELECT_BOOLEAN_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectBooleanCheckbox();
@@ -155,7 +152,7 @@ class ComponentConfigDecoratorTest {
     @Test
     @DisplayName("Should register a mock renderer for HtmlSelectOneRadio")
     void shouldRegisterMockRendererForHtmlSelectOneRadio(ComponentConfigDecorator decorator,
-            FacesContext facesContext) {
+        FacesContext facesContext) {
         assertRendererIsNotRegistered(facesContext, UISelectOne.COMPONENT_FAMILY,
             ComponentConfigDecorator.SELECT_ONE_RENDERER_ID);
         decorator.registerMockRendererForHtmlSelectOneRadio();
@@ -234,7 +231,7 @@ class ComponentConfigDecoratorTest {
     @Test
     @DisplayName("Should fail to register a validator that is missing the FacesValidator annotation")
     void shouldFailToRegisterValidatorWithMissingAnnotation(ComponentConfigDecorator decorator,
-            Application application) {
+        Application application) {
         assertValidatorIsNotRegistered(application, LengthValidator.VALIDATOR_ID);
         assertThrows(IllegalArgumentException.class, () -> decorator.registerValidator(LengthValidator.class));
     }
@@ -263,7 +260,7 @@ class ComponentConfigDecoratorTest {
     @Test
     @DisplayName("Should fail to register a behavior that is missing the FacesBehavior annotation")
     void shouldFailToRegisterBehaviorWithMissingAnnotation(ComponentConfigDecorator decorator,
-            Application application) {
+        Application application) {
         assertBehaviorIsNotRegistered(application, BehaviorWithoutAnnotation.BEHAVIOR_ID);
         assertThrows(IllegalArgumentException.class, () -> decorator.registerBehavior(BehaviorWithoutAnnotation.class));
     }
@@ -298,7 +295,7 @@ class ComponentConfigDecoratorTest {
     }
 
     private void assertRendererIsNotRegistered(final FacesContext facesContext, final String family,
-            final String rendererType) {
+        final String rendererType) {
         final Renderer renderer = facesContext.getRenderKit().getRenderer(family, rendererType);
         assertNull(renderer, "Renderer is registered " + rendererType + ", " + family);
     }

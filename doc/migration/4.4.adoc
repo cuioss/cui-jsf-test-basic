@@ -1,0 +1,38 @@
+= JSF Testing Framework Migration Guide to 4.4
+
+== Introduction
+
+This document describes the observable behaviour changes and API deprecations introduced in *4.4*. The release fixes a number of spec/contract violations in the mock layer and in the JUnit 5 lifecycle. Most downstream tests are unaffected, but a few fixes change behaviour that consumer tests may (accidentally) have depended on — those are listed here.
+
+No dependency-version change is required to adopt this release.
+
+== Behaviour changes
+
+These fixes change observable behaviour. Review your tests if you relied on the previous (incorrect) behaviour.
+
+=== Mock layer
+
+* *`CuiMockResourceHandler.libraryExists(...)`* — the logic was inverted. It now returns `true` for real libraries and `false` only for the sentinel `CuiMockResourceHandler.LIBRARY_NOT_THERE` (previously it was the other way round).
+* *`CuiMockConfigurableNavigationHandler.handleNavigation(...)`* — an outcome with no matching, registered navigation case no longer counts as a navigation: no redirect is committed and the tracking flags stay unset (JSF spec: stay on the current view). `NavigationAsserts.assertNavigatedWithOutcome("...")` therefore no longer passes for unregistered outcomes. Additionally, a registered case now only commits a redirect when `NavigationCase.isRedirect()` is `true`.
+* *`CuiMockHttpSession.invalidate()`* — now actually invalidates the session (delegates to `super.invalidate()`): subsequent `get/setAttribute` throw `IllegalStateException` and `HttpSessionListener.sessionDestroyed` is fired.
+* *`CuiMockHttpServletRequest.getSession(false)`* — returns `null` for an invalidated session instead of silently creating a fresh one, and preserves a pre-existing (foreign) session instead of replacing it.
+* *`CuiMockHttpServletRequest.getLocales()`* — never returns an empty enumeration; it falls back to `Locale.getDefault()` (servlet spec).
+* *`CuiMockUIViewRoot.getViewMap(false)`* — returns `null` until a view map has been created (JSF contract), rather than always returning a map.
+* *`ReverseConverter.getAsObject(...)`* — returns `null` for `null`/empty input (converter contract), rather than an empty String.
+* *`CuiMockResourceHandler.getRendererTypeForResourceName(...)`* — returns `null` for a `null`/empty resource name.
+
+=== Lifecycle
+
+* *Class-level `@JsfTestConfiguration`* is now applied exactly once per test. Previously it was applied twice (once in test-instance post-processing and again in `beforeEach`), so non-idempotent configurators ran twice. Make configuration classes idempotent regardless; if you counted invocations you will now see one.
+* *`ConfigurableFacesTest`* now tears the JSF runtime down after each test (`@AfterEach`). This prevents thread-local/`FactoryFinder` leaks into later tests. If you extended `ConfigurableFacesTest` and relied on state surviving between test methods, note the runtime is now recreated per test.
+* `@TestInstance(TestInstance.Lifecycle.PER_CLASS)` is documented as unsupported for `@EnableJsfEnvironment`; use the default `PER_METHOD` lifecycle.
+
+== Deprecations (deprecate-and-replace)
+
+The following misspelled/incorrect public API members are deprecated and kept for one release; use the replacements:
+
+* `ComponentPropertyMetadata.isIgnoreOnValueExpresssion()` → `isIgnoreOnValueExpression()`.
+* `CuiMockResourceHandler.getAvailableResouces()` / `setAvailableResouces(...)` → `getAvailableResources()` / `setAvailableResources(...)`.
+* `ReverseConverter.CONVERTER_ID` now holds the corrected id `de.cuioss.test.jsf.mocks.ReverseConverter`; the previous value is retained in the deprecated `ReverseConverter.RESERVE_CONVERTER_ID`.
+* `JsfProvidedConverter.CONVERTER_CLASS_GERNERATOR` → `CONVERTER_CLASS_GENERATOR`.
+* `JsfTestContextConfigurator` remains deprecated (superseded by `JsfTestSetup`) and is scheduled for removal in the next major.
