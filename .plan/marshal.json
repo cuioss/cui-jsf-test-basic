@@ -79,7 +79,8 @@
         "default:branch-cleanup": {
           "pr_merge_strategy": "squash",
           "final_merge_without_asking": false,
-          "auto_rebase_threshold": "no_overlap_only"
+          "auto_rebase_threshold": "no_overlap_only",
+          "use_merge_queue": true
         },
         "default:record-metrics": {},
         "default:finalize-step-print-phase-breakdown": {},
@@ -124,7 +125,8 @@
       "feature/",
       "fix/",
       "chore/"
-    ]
+    ],
+    "merge_queue_managed_externally": true
   },
   "providers": [
     {
