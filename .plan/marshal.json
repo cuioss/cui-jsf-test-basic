@@ -1,4 +1,7 @@
 {
+  "extension_defaults": {
+    "build.maven.profiles.mutating": "pre-commit"
+  },
   "plan": {
     "effort": "level-3",
     "open_in_ide": true,
@@ -12,7 +15,14 @@
       "effort": "level-3",
       "init_without_asking": true,
       "deep_lane": "auto",
-      "escalation": "auto"
+      "escalation": "auto",
+      "auto_route_recipe": true,
+      "auto_route_recipe_threshold": 0.6,
+      "lane_selection": "ask",
+      "lane_prune_thresholds": {
+        "confidence_complete": 95,
+        "linear_change_max_deliverables": 1
+      }
     },
     "phase-2-refine": {
       "confidence_threshold": 95,
@@ -24,11 +34,13 @@
     "phase-3-outline": {
       "plan_without_asking": false,
       "qgate": "auto",
-      "effort": "level-4"
+      "effort": "level-4",
+      "q_gate_validation": "once"
     },
     "phase-4-plan": {
       "execute_without_asking": true,
-      "effort": "level-3"
+      "effort": "level-3",
+      "q_gate_validation": "once"
     },
     "phase-5-execute": {
       "commit_and_push": true,
@@ -37,7 +49,6 @@
         "default:verify:compile",
         "default:verify:module-tests"
       ],
-      "per_task_budget_reserve_tokens": "50K",
       "verification_steps": {
         "default:verify:quality-gate": {},
         "default:verify:module-tests": {},
@@ -46,52 +57,106 @@
       "effort": {
         "default": "level-4",
         "verification-feedback": "level-3"
-      }
+      },
+      "cost_size_token_table": {
+        "XS": "5K",
+        "S": "25K",
+        "M": "60K",
+        "L": "130K",
+        "XL": "260K",
+        "XXL": "520K"
+      },
+      "per_envelope_budget_tokens": "400K",
+      "worktree_setup_commands": []
     },
     "phase-6-finalize": {
       "max_iterations": 3,
       "finalize_without_asking": true,
       "loop_back_without_asking": false,
-      "self_review": "auto",
-      "qgate": "auto",
-      "simplify": "auto",
       "checks_wait_timeout_seconds": 600,
-      "drop_review_on_scope_gate": false,
       "steps": {
         "default:finalize-step-sync-baseline": {
-          "auto_rebase_threshold": "no_overlap_only"
+          "auto_rebase_threshold": "no_overlap_only",
+          "lane": "minimal"
         },
-        "default:pre-push-quality-gate": {},
-        "default:finalize-step-whole-tree-gate": {},
-        "default:finalize-step-simplify": {},
-        "default:push": {},
-        "default:create-pr": {},
-        "default:ci-verify": {},
-        "default:automated-review": {
+        "default:finalize-step-simplify": {
+          "lane": "standard"
+        },
+        "default:functional-review": {
+          "lane": "standard"
+        },
+        "default:code-review": {
+          "lane": "standard"
+        },
+        "default:pre-push-quality-gate": {
+          "lane": "minimal"
+        },
+        "default:push": {
+          "lane": "minimal"
+        },
+        "default:create-pr": {
+          "lane": "minimal"
+        },
+        "default:ci-verify": {
+          "lane": "minimal"
+        },
+        "plan-marshall:automatic-review": {
           "review_bot_buffer_seconds": 180,
           "re_review_on_loopback": false,
           "re_review_on_branch_cleanup": true,
           "re_review_await_timeout_seconds": 600,
-          "re_review_on_timeout": "ask"
+          "re_review_on_timeout": "ask",
+          "required_bots": "",
+          "optional_bots": "",
+          "review_completion_poll_timeout_seconds": 600,
+          "review_rate_window_await": false,
+          "review_rate_window_timeout_seconds": 3600,
+          "lane": "ask"
         },
-        "default:sonar-roundtrip": {},
-        "default:lessons-capture": {},
+        "default:sonar-roundtrip": {
+          "touched_file_cleanup": "new_code_only",
+          "do_transition": false,
+          "ce_wait_timeout_seconds": 600,
+          "lane": "ask"
+        },
         "default:branch-cleanup": {
           "pr_merge_strategy": "squash",
           "final_merge_without_asking": false,
           "auto_rebase_threshold": "no_overlap_only",
-          "use_merge_queue": true
+          "use_merge_queue": true,
+          "merge_queue_wait_budget_seconds": 1800,
+          "merge_hold_window": "full_window_release_at_waits",
+          "merge_hold_budget_seconds": 3600,
+          "admin_merge_on_stuck_state": false,
+          "pre_merge_comment_barrier": "fail_into_loopback",
+          "lane": "minimal"
         },
-        "default:record-metrics": {},
-        "default:finalize-step-print-phase-breakdown": {},
-        "default:archive-plan": {}
+        "default:lessons-capture": {
+          "lane": "standard"
+        },
+        "default:record-metrics": {
+          "lane": "minimal"
+        },
+        "default:finalize-step-print-phase-breakdown": {
+          "lane": "minimal"
+        },
+        "default:archive-plan": {
+          "lane": "minimal"
+        }
       },
       "effort": {
         "default": "level-3",
         "verification-feedback": "level-3",
         "post-run-review": "level-4"
       }
-    }
+    },
+    "finding_raw_input_max_bytes": 65536
+  },
+  "orchestrator": {
+    "auto_emit": false,
+    "effort": {},
+    "parallelization_scope": 1,
+    "use_worktree": false
   },
   "build": {
     "queue": {
@@ -119,6 +184,7 @@
       ]
     }
   },
+  "interaction_mode": "advanced",
   "project": {
     "default_base_branch": "main",
     "working_prefixes": [
@@ -126,7 +192,10 @@
       "fix/",
       "chore/"
     ],
-    "merge_queue_managed_externally": true
+    "merge_queue_managed_externally": true,
+    "pr_strategy": "compact",
+    "pr_compact_max_changed_files": 150,
+    "user_language": "auto"
   },
   "providers": [
     {
@@ -184,10 +253,13 @@
       "logs_days": 1,
       "archived_plans_days": 5,
       "lessons_superseded_days": 0,
-      "temp_on_maintenance": true
-    }
-  },
-  "extension_defaults": {
-    "build.maven.profiles.mutating": "pre-commit"
+      "temp_on_maintenance": true,
+      "no_plan_body_days": 7,
+      "build_results_days": 5,
+      "plugin_cache_keep_versions": 5,
+      "plugin_cache_keep_days": 3
+    },
+    "provisioned_version": "0.1.1916",
+    "config_seed_fingerprint": "a2efc4ac"
   }
 }
