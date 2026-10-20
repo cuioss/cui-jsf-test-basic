@@ -106,7 +106,7 @@
           "re_review_on_branch_cleanup": true,
           "re_review_await_timeout_seconds": 600,
           "re_review_on_timeout": "ask",
-          "required_bots": "cuioss-review-bot,coderabbit",
+          "required_bots": "coderabbit",
           "optional_bots": "sourcery",
           "bot_lists_provenance": "answered",
           "review_completion_poll_timeout_seconds": 600,
